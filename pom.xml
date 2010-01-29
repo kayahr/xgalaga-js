@@ -1,0 +1,132 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>de.ailis.xgalaga</groupId>
+  <artifactId>xgalaga</artifactId>
+  <packaging>javascript</packaging>
+  <name>xgalaga</name>
+  <version>1.0.0-SNAPSHOT</version>
+  <url>http://www.ailis.de/~k/projects/xgalaga/</url>
+  <description>JavaScript implementation of xgalaga</description>
+  <inceptionYear>2010</inceptionYear>
+  <organization>
+    <name>Klaus Reimer</name>
+    <url>http://www.ailis.de/~k/</url>
+  </organization>
+
+  <scm>
+    <url>https://scm.ailis.de/viewvc/svn/javascript/xgalaga/trunk/</url>
+    <connection>scm:svn:http://scm.ailis.de/svn/javascript/xgalaga/trunk/</connection>
+    <developerConnection>scm:svn:https://scm.ailis.de/svn/javascript/xgalaga/trunk</developerConnection>
+  </scm>
+  
+  <licenses>
+    <license>
+      <name>LGPL</name>
+      <url>LICENSE.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  
+  <ciManagement>
+    <system>Hudson</system>
+    <url>https://www.ailis.de/hudson/</url>
+  </ciManagement>
+
+  <properties> 
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
+  </properties>
+
+  <build>
+    <plugins>      
+      <plugin>
+        <groupId>de.ailis.maven</groupId>
+        <artifactId>maven-javascript-plugin</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <extensions>true</extensions>
+        <configuration>
+          <order>
+            <file>xgalaga.js</file>
+            <file>xgalaga/Star.js</file>
+            <file>xgalaga/StarField.js</file>
+            <file>xgalaga/PathEntry.js</file>
+            <file>xgalaga/PathInfo.js</file>
+            <file>xgalaga/Level.js</file>
+            <file>xgalaga/Alien.js</file>
+            <file>xgalaga/Aliens.js</file>
+            <file>xgalaga/Game.js</file>
+            <file>xgalaga/levels.js</file>
+          </order>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+         <reportSets>
+           <reportSet>
+             <reports>
+               <report>index</report>
+               <report>dependencies</report>
+               <report>project-team</report>
+               <report>license</report>
+               <report>scm</report>
+             </reports>
+           </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>taglist-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
+
+  <distributionManagement>
+    <repository>
+      <id>ailis-releases</id>
+      <name>Ailis Maven Releases</name>
+      <url>https://www.ailis.de/nexus/content/repositories/releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>ailis-snapshots</id>
+      <name>Ailis Maven Snapshots</name>
+      <url>https://www.ailis.de/nexus/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <site>
+      <id>k-website</id>
+      <url>scpexe://k@ailis.de/home/k/public_html/projects/wlandsuite</url>
+    </site>
+  </distributionManagement>
+
+  <repositories>
+    <repository>
+      <id>ailis-releases</id>
+      <name>Ailis Maven Releases</name>
+      <url>https://www.ailis.de/nexus/content/repositories/releases</url>
+    </repository>
+    <repository>
+      <id>ailis-snapshots</id>
+      <name>Ailis Maven Snapshots</name>
+      <url>https://www.ailis.de/nexus/content/repositories/snapshots</url>
+      <snapshots />
+    </repository>
+  </repositories>
+    
+  <dependencies>
+    <dependency>
+      <groupId>org.prototypejs</groupId>
+      <artifactId>prototype</artifactId>
+      <version>1.6.1</version>
+    </dependency>
+  </dependencies>
+
+</project>
+
+
