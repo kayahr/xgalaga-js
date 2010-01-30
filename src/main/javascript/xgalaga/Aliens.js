@@ -324,6 +324,42 @@ xgalaga.Aliens.prototype.update = function(levelNo)
 
 
 /**
+ * Performs escorting action for specified alien.
+ *
+ * @param {Number} alienId
+ *            The alien ID
+ * @private
+ */
+
+xgalaga.Aliens.prototype.doEscort = function(alienId)
+{
+    var alien, flagshipId, flagship;
+
+    alien = this.aliens[alienId];
+    flagshipId = alien.getEscorting();
+    flagship = this.aliens[flagshipId];
+
+    if (!flagship.isAlive())
+    {
+        alien.setEscorting(-1);
+    }
+    else if (flagship.getDirection() >= 0)
+    {
+        alien.setDirection(flagship.getDirection());
+    }
+    else
+    {
+        alien.moveTo(20 * (alienId - 10 * parseInt(alienId / 10)) +
+            this.convoyY + this.convoyMove, -10);
+        alien.setDirection(-2);
+        alien.setPath(-1);
+        alien.setSteer(2);
+        alien.setEscorting(-1);
+    }
+};
+
+
+/**
  * Performs entering action for specified alien.
  *
  * @param {Number} alienId
@@ -466,7 +502,7 @@ xgalaga.Aliens.prototype.doEnter = function(alienId, level, metaLevel)
 
 xgalaga.Aliens.prototype.doConvoy = function(alienId, levelNo)
 {
-    var alien, liveCount, maxAttacking;
+    var alien, liveCount, maxAttacking, e, eAlien;
 
     liveCount = this.liveCount;
     maxAttacking = this.maxAttacking;
@@ -488,17 +524,18 @@ xgalaga.Aliens.prototype.doConvoy = function(alienId, levelNo)
         }
         this.attacking++;
 
-        /*
          // Flagship, grab escorts
-        if (alienId < 10) {
-            int e;
-            for(e=i+9;e<i+12;e++) {
-                if(aliens[e].alive && aliens[e].dir == -1) {
-                    aliens[e].escorting = i;
+        if (alienId < 10)
+        {
+            for (e = alienId + 9; e < alienId + 12; e++)
+            {
+                eAlien = this.aliens[e];
+                if (eAlien.isAlive() && eAlien.getDirection() == -1)
+                {
+                    eAlien.setEscorting(alienId);
                 }
             }
         }
-    */
     }
 };
 
