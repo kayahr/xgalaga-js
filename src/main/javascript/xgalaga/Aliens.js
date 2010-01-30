@@ -28,6 +28,8 @@ xgalaga.Aliens = function(game)
     aliens = this.aliens = [];
     for (i = 0; i < xgalaga.MAX_ALIENS; i++)
         aliens.push(new xgalaga.Alien(game, i));
+
+    this.torps = new xgalaga.AlienTorpedos(game);
 };
 
 /** The game. @private @type {xgalaga.Game} */
@@ -36,10 +38,13 @@ xgalaga.Aliens.prototype.game = null;
 /** The aliens. @private @type {Array} */
 xgalaga.Aliens.prototype.aliens = null;
 
-/** TODO Find out what it does. @private @type {Number} */
+/** The torpedos. @private @type {Array} */
+xgalaga.Aliens.prototype.torps = null;
+
+/** The convoy X position. @private @type {Number} */
 xgalaga.Aliens.prototype.convoyX = null;
 
-/** TODO Find out what it does. @private @type {Number} */
+/** The convoy movement. @private @type {Number} */
 xgalaga.Aliens.prototype.convoyMove = null;
 
 /** The maximum number of attacking aliens. @private @type {Number} */
@@ -47,12 +52,6 @@ xgalaga.Aliens.prototype.maxAttacking = null;
 
 /** The current number of attacking aliens. @private @type {Number} */
 xgalaga.Aliens.prototype.attacking = null;
-
-/** The maximum number of torpedos. @private @type {Number} */
-xgalaga.Aliens.prototype.maxTorps = null;
-
-/** The current number of torpedos. @private @type {Number} */
-xgalaga.Aliens.prototype.numTorps = null;
 
 /** The number of alive aliens. @private @type {Number} */
 xgalaga.Aliens.prototype.liveCount = 0;
@@ -72,12 +71,8 @@ xgalaga.Aliens.prototype.init = function(levelNo)
     this.convoyMove = 1;
     this.maxAttacking = Math.min(30, 1 + (levelNo * 2));
     this.attacking = 0;
-    this.maxTorps = 10 + (level * 5);
-    this.numTorps = 0;
 
     levels = xgalaga.LEVELS;
-
-    // TODO this.deleteTorps();
 
     // Calculate the real level number and the meta level number
     maxLevels = levels.length;
@@ -93,7 +88,8 @@ xgalaga.Aliens.prototype.init = function(levelNo)
         aliens[i].reset(level, metaLevel);
     this.liveCount = xgalaga.MAX_ALIENS;
 
-    // TODO Create torps
+    // Initialize the alien torpedos
+    this.torps.init(levelNo);
 };
 
 
@@ -159,7 +155,7 @@ xgalaga.Aliens.prototype.update = function(levelNo)
             if (alien.getEscorting() >= 0) this.doEscort(i);
 
             if (alien.isEntering())
-                this.doEnter(i, level, metaLevel);
+                this.doEnter(i, levelNo, level, metaLevel);
             else if (alien.getDirection() == -1)
                 this.doConvoy(i, levelNo);
             else if (alien.getDirection() == -2)
@@ -269,33 +265,13 @@ xgalaga.Aliens.prototype.update = function(levelNo)
                     }
                 }
 
-                /* TODO
-                tc = TORPCHANCE - level/2 - weapon*5;
-                if(tc < 35) tc = 35;
-
-                if(numetorps < maxetorps && (!(random()%tc))) {
-                    int xs, ys;
-
-                    // could aim better, not sure it should!
-
-                    if(aliens[i].x > plx + 200) {
-                        xs = -3;
-                    } else if(aliens[i].x > plx + 100) {
-                        xs = -2;
-                    } else if(aliens[i].x < plx - 200) {
-                        xs = 3;
-                    } else if(aliens[i].x < plx - 100) {
-                        xs = 2;
-                    } else {
-                        xs = 0;
-                    }
-                    ys = (ETORPSPEED+level/5) - ABS(xs);
-                    new_etorp(aliens[i].x, aliens[i].y, xs, ys);
-                }
-                */
+                this.torps.considerTorp(alien);
             }
         }
     }
+
+    // Update alien torpedos
+    this.torps.update();
 
 
     if (this.liveCount == 0)
@@ -364,6 +340,8 @@ xgalaga.Aliens.prototype.doEscort = function(alienId)
  *
  * @param {Number} alienId
  *            The alien ID
+ * @param {Number} levelNo
+ *            The level number
  * @param {xgalaga.Level} level
  *            The current level
  * @param {Number} metaLevel
@@ -371,7 +349,7 @@ xgalaga.Aliens.prototype.doEscort = function(alienId)
  * @private
  */
 
-xgalaga.Aliens.prototype.doEnter = function(alienId, level, metaLevel)
+xgalaga.Aliens.prototype.doEnter = function(alienId, levelNo, level, metaLevel)
 {
     var alien, moves, dir, diffX, diffY;
 
@@ -405,29 +383,7 @@ xgalaga.Aliens.prototype.doEnter = function(alienId, level, metaLevel)
             }
         }
 
-        /* TODO
-        tc = TORPCHANCE - level/2 - weapon*5;
-        if(tc < 35) tc = 35;
-        if(numetorps < maxetorps && (!(random()%tc))) {
-            int xs, ys;
-
-            // could aim better, not sure it should!
-
-            if(aliens[i].x > plx + 200) {
-                xs = -3;
-            } else if(aliens[i].x > plx + 100) {
-                xs = -2;
-            } else if(aliens[i].x < plx - 200) {
-                xs = 3;
-            } else if(aliens[i].x < plx - 100) {
-                xs = 2;
-            } else {
-                xs = 0;
-            }
-            ys = (ETORPSPEED+level/5) - ABS(xs);
-            new_etorp(aliens[i].x, aliens[i].y, xs, ys);
-        }
-        */
+        this.torps.considerTorp(alien);
     }
     else
     {
@@ -585,4 +541,7 @@ xgalaga.Aliens.prototype.render = function(ctx)
 
     for (i = 0; i < xgalaga.MAX_ALIENS; i++)
         this.aliens[i].render(ctx);
+
+    // Render alien torpedos
+    this.torps.render(ctx);
 };

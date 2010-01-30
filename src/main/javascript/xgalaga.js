@@ -20,8 +20,17 @@ xgalaga.MAX_STARS = 30;
 /** The maximum number of aliens. @final @type {Number} */
 xgalaga.MAX_ALIENS = 60;
 
+/** The maximum number of torpedos. @final @type {Number} */
+xgalaga.MAX_TORPS = 10;
+
 /** The maximum number of paths. @final @type {Number} */
 xgalaga.MAX_PATH = 50;
+
+/** The enemy torpedo speed. @final @type {Number} */
+xgalaga.ETORP_SPEED = 8;
+
+/** The enemy torpedo chance. @final @type {Number} */
+xgalaga.TORP_CHANCE = 60;
 
 /** Constant for direction north. @final @type {Number} */
 xgalaga.DIR_N = 0;

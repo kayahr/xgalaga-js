@@ -55,6 +55,8 @@
             <file>xgalaga/PathInfo.js</file>
             <file>xgalaga/Level.js</file>
             <file>xgalaga/Alien.js</file>
+            <file>xgalaga/AlienTorpedo.js</file>
+            <file>xgalaga/AlienTorpedos.js</file>
             <file>xgalaga/Aliens.js</file>
             <file>xgalaga/Game.js</file>
             <file>xgalaga/levels.js</file>

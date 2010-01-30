@@ -49,7 +49,7 @@ xgalaga.Game.prototype.width = null;
 xgalaga.Game.prototype.height = null;
 
 /** The render mode. @private @type {Number} */
-xgalaga.Game.prototype.renderMode = xgalaga.RENDER_MODE_CANVAS;
+xgalaga.Game.prototype.renderMode = xgalaga.RENDER_MODE_HTML;
 
 /** If game should start automatically after init. @private @type {Boolean} */
 xgalaga.Game.prototype.autoStart = true;
