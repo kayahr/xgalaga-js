@@ -70,7 +70,7 @@ xgalaga.Aliens.prototype.init = function(levelNo)
 
     this.convoyX = 0;
     this.convoyMove = 1;
-    this.maxAttacking = Math.min(30, 1 + (level * 2));
+    this.maxAttacking = Math.min(30, 1 + (levelNo * 2));
     this.attacking = 0;
     this.maxTorps = 10 + (level * 5);
     this.numTorps = 0;
@@ -161,13 +161,13 @@ xgalaga.Aliens.prototype.update = function(levelNo)
             if (alien.isEntering())
                 this.doEnter(i, level, metaLevel);
             else if (alien.getDirection() == -1)
-                this.doConvoy(i);
+                this.doConvoy(i, levelNo);
             else if (alien.getDirection() == -2)
             {
                 alien.move(this.convoyMove, 2);
-                if (alien.getY() >= 20 + (20*(i/10)))
+                if (alien.getY() >= 20 + (20 * parseInt(i / 10)))
                 {
-                    alien.setY(20 + (20*(i/10)));
+                    alien.setY(20 + (20 * parseInt(i / 10)));
                     alien.setDirection(-1);
                 }
             }
@@ -182,7 +182,7 @@ xgalaga.Aliens.prototype.update = function(levelNo)
 
                 if (alien.getY() > winHeight)
                 {
-                    alien.moveTo(20 * (i - 10 * (i / 10)) + this.convoyX +
+                    alien.moveTo(20 * (i - 10 * parseInt(i / 10)) + this.convoyX +
                         this.convoyMove, -30);
                     alien.setDirection(-2);
                     alien.setPath(-1);
@@ -212,45 +212,51 @@ xgalaga.Aliens.prototype.update = function(levelNo)
 
                             if (alien.getDirection() < 0)
                             {
-                                this.alien.setDirection(lastDir);
+                                alien.setDirection(lastDir);
 
-/* TODO
-                            newpath:
-                                switch(random()%8) {
-                                case 0:
-                                    start_path(P_LOOP, &aliens[i]);
-                                    break;
-                                case 1:
-                                    start_path(P_SWOOP1, &aliens[i]);
-                                    break;
-                                case 2:
-                                    start_path(P_SWOOP2, &aliens[i]);
-                                    break;
-                                case 3:
-                                    start_path(P_ZIGZAG, &aliens[i]);
-                                    break;
-                                case 4:
-                                    start_path(P_LOOP2, &aliens[i]);
-                                    break;
-                                case 5:
-                                    start_path(P_SPIN, &aliens[i]);
-                                    break;
-                                case 6:
-                                    start_path(P_LEFTDIAG, &aliens[i]);
-                                    break;
-                                case 7:
-                                    start_path(P_RIGHTDIAG, &aliens[i]);
-                                    break;
-                                default:
-                                    aliens[i].steer = TURNSPEED;
-                                    aliens[i].path = -1;
+                                do
+                                {
+                                    switch (parseInt(Math.random() * 8))
+                                    {
+                                        case 0:
+                                            alien.startPath(xgalaga.P_LOOP);
+                                            break;
+
+                                        case 1:
+                                            alien.startPath(xgalaga.P_SWOOP1);
+                                            break;
+
+                                        case 2:
+                                            alien.startPath(xgalaga.P_SWOOP2);
+                                            break;
+
+                                        case 3:
+                                            alien.startPath(xgalaga.P_ZIGZAG);
+                                            break;
+
+                                        case 4:
+                                            alien.startPath(xgalaga.P_LOOP2);
+                                            break;
+
+                                        case 5:
+                                            alien.startPath(xgalaga.P_SPIN);
+                                            break;
+
+                                        case 6:
+                                            alien.startPath(xgalaga.P_LEFTDIAG);
+                                            break;
+
+                                        case 7:
+                                            alien.startPath(xgalaga.P_RIGHTDIAG);
+                                            break;
+
+                                        default:
+                                            alien.setSteer(xgalaga.TURN_SPEED);
+                                            alien.setPath(-1);
+                                    }
                                 }
-                                if((aliens[i].path < 0) || (aliens[i].steer < 0)) {
-                                    goto newpath;
-                                }
-                            */
+                                while ((alien.getPath() < 0) || (alien.getSteer() < 0));
                             }
-
                         }
                         else
                         {
@@ -345,8 +351,8 @@ xgalaga.Aliens.prototype.doEnter = function(alienId, level, metaLevel)
     if (alien.getPath() >= 0)
     {
         dir = alien.getDirection();
-        alien.move(moves[dir][0] + metaLevel * moves[dir][0] / 2,
-            moves[dir][1] + metaLevel * moves[dir][1] / 2);
+        alien.move(moves[dir][0] + metaLevel * parseInt(moves[dir][0] / 2),
+            moves[dir][1] + metaLevel * parseInt(moves[dir][1] / 2));
 
         alien.decreaseSteer();
         if (alien.getSteer() <= 0)
@@ -354,7 +360,8 @@ xgalaga.Aliens.prototype.doEnter = function(alienId, level, metaLevel)
             alien.nextEnterPath(level);
 
             if (metaLevel > 1)
-                alien.setSteer(alien.getSteer() / (1 + ((metaLevel - 1) * 0.5)));
+                alien.setSteer(parseInt(alien.getSteer() / (1 +
+                    (parseInt((metaLevel - 1) * 0.5)))));
 
             if (alien.getDirection() < 0)
             {
@@ -441,8 +448,8 @@ xgalaga.Aliens.prototype.doEnter = function(alienId, level, metaLevel)
             }
         }
         dir = alien.getDirection();
-        alien.move(moves[dir][0] + metaLevel * moves[dir][0] / 2,
-            moves[dir][1] + metaLevel * moves[dir][1] / 2);
+        alien.move(moves[dir][0] + metaLevel * parseInt(moves[dir][0] / 2),
+            moves[dir][1] + metaLevel * parseInt(moves[dir][1] / 2));
     }
 };
 
@@ -450,36 +457,40 @@ xgalaga.Aliens.prototype.doEnter = function(alienId, level, metaLevel)
 /**
  * Performs convoy action.
  *
+ * @param {Number} alienId
+ *            The alien ID
+ * @param {Number} levelNo
+ *            The level number
  * @private
  */
 
-xgalaga.Aliens.prototype.doConvoy = function(alienId)
+xgalaga.Aliens.prototype.doConvoy = function(alienId, levelNo)
 {
-    var alien;
+    var alien, liveCount, maxAttacking;
+
+    liveCount = this.liveCount;
+    maxAttacking = this.maxAttacking;
 
     alien = this.aliens[alienId];
     alien.moveX(this.convoyMove);
-    /*
-    if (!this.entering && this.attacking < this.maxAttacking &&
-        (this.liveCount< this.maxAttacking ||
-
-    if((entering == 0) &&
-       (attacking < maxattacking) &&
-       ((livecount < maxattacking) ||
-        ((random()%10000) < (level + 2 *(48-(livecount)))))) {
-        switch(random()%2) {
-        case 0:
-            path_dir(P_PEELLEFT, 0, &aliens[i].dir, &aliens[i].steer);
-            aliens[i].path = P_PEELLEFT;
-            break;
-        case 1:
-            path_dir(P_PEELRIGHT, 0, &aliens[i].dir, &aliens[i].steer);
-            aliens[i].path = P_PEELRIGHT;
-            break;
+    if (!this.entering && (this.attacking < maxAttacking) &&
+           ((liveCount < maxAttacking) || (parseInt(Math.random() * 10000) <
+           (levelNo + 2 * (48 - (liveCount))))))
+    {
+        switch (parseInt(Math.random() * 2))
+        {
+            case 0:
+                alien.applyPath(xgalaga.P_PEELLEFT);
+                break;
+            case 1:
+                alien.applyPath(xgalaga.P_PEELRIGHT);
+                break;
         }
-        aliens[i].path_pos = 0;
-        attacking++;
-        if(i<10) { // Flagship, grab escorts
+        this.attacking++;
+
+        /*
+         // Flagship, grab escorts
+        if (alienId < 10) {
             int e;
             for(e=i+9;e<i+12;e++) {
                 if(aliens[e].alive && aliens[e].dir == -1) {
@@ -487,8 +498,8 @@ xgalaga.Aliens.prototype.doConvoy = function(alienId)
                 }
             }
         }
-    }
     */
+    }
 };
 
 

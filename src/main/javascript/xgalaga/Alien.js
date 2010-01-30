@@ -108,7 +108,8 @@ xgalaga.Alien.prototype.reset = function(level, metaLevel)
         this.pathPos = 0;
         entry = pathInfo.getEntry(0);
         this.direction = entry.getDirection();
-        this.steer = entry.getDuration() / (1 + ((metaLevel - 1) * 0.5));
+        this.steer = parseInt(entry.getDuration() / (1 +
+            (parseInt((metaLevel - 1) * 0.5))));
         this.escorting = -1;
     }
     else
@@ -327,6 +328,64 @@ xgalaga.Alien.prototype.nextPath = function()
     path = paths[this.path][this.pathPos];
     this.direction = path[0];
     this.steer = path[1];
+};
+
+
+/**
+ * Applies a path. Argument must be one of the xgalaga.P_* constants.
+ *
+ * @param {Number} path
+ *            The path to apply
+ */
+
+xgalaga.Alien.prototype.applyPath = function(path)
+{
+    var paths, entry;
+
+    this.path = path;
+    paths = xgalaga.PATHS;
+    entry = paths[path][0];
+    this.direction = entry[0];
+    this.steer = entry[1];
+    this.pathPos = 0;
+};
+
+
+/**
+ * Starts a path. Argument must be one of the xgalaga.P_* constants.
+ *
+ * @param {Number} path
+ *            The path to start
+ */
+
+xgalaga.Alien.prototype.startPath = function(path)
+{
+    var i, paths;
+
+    paths = xgalaga.PATHS[path];
+    for (i = 0; ( i < xgalaga.MAX_PATH) && (paths[i][0] >= 0);i++)
+    {
+        if (paths[i][0] == this.direction)
+            break;
+
+        if (paths[i][0] < 0)
+        {
+            this.steer = xgalaga.TURN_SPEED;
+            this.path = -1;
+            return;
+        }
+    }
+
+    if (i >= xgalaga.MAX_PATH)
+    {
+        this.steer = xgalaga.TURN_SPEED;
+        this.path = -1;
+        return;
+    }
+
+    this.path = path;
+    this.pathPos = i;
+    this.steer = paths[i][1];
 };
 
 

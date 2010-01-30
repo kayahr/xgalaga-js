@@ -17,8 +17,11 @@ xgalaga = {};
 /** The number of stars in the game. @final @type {Number} */
 xgalaga.MAX_STARS = 30;
 
-/** The maximum number of aliens */
+/** The maximum number of aliens. @final @type {Number} */
 xgalaga.MAX_ALIENS = 60;
+
+/** The maximum number of paths. @final @type {Number} */
+xgalaga.MAX_PATH = 50;
 
 /** Constant for direction north. @final @type {Number} */
 xgalaga.DIR_N = 0;
@@ -92,7 +95,7 @@ xgalaga.MOVES = [
 xgalaga.TURN_SPEED = 10;
 
 /** The start level @final @type {Number} */
-xgalaga.START_LEVEL = 1;
+xgalaga.START_LEVEL = 15;
 
 /** Constant for HTML render mode. @final @type {Number} */
 xgalaga.RENDER_MODE_HTML = 0;
@@ -521,3 +524,96 @@ xgalaga.PATHS = [
         [ -1, -1 ]
     ]
 ];
+
+/** Constant for path 'peel left'. @final @type {Number} */
+xgalaga.P_PEELLEFT = 0;
+
+/** Constant for path 'peel right'. @final @type {Number} */
+xgalaga.P_PEELRIGHT = 1;
+
+/** Constant for path 'loop'. @final @type {Number} */
+xgalaga.P_LOOP = 2;
+
+/** Constant for path 'swoop 1'. @final @type {Number} */
+xgalaga.P_SWOOP1 = 3;
+
+/** Constant for path 'swoop 2'. @final @type {Number} */
+xgalaga.P_SWOOP2 = 4;
+
+/** Constant for path 'zig zag'. @final @type {Number} */
+xgalaga.P_ZIGZAG = 5;
+
+/** Constant for path 'loop 2'. @final @type {Number} */
+xgalaga.P_LOOP2  = 6;
+
+/** Constant for path 'spin'. @final @type {Number} */
+xgalaga.P_SPIN = 7;
+
+/** Constant for path 'left diag'. @final @type {Number} */
+xgalaga.P_LEFTDIAG = 8;
+
+/** Constant for path 'right diag'. @final @type {Number} */
+xgalaga.P_RIGHTDIAG = 9;
+
+/** Constant for path 'enter 1'. @final @type {Number} */
+xgalaga.P_ENTER1 = 10;
+
+/** Constant for path 'enter 2'. @final @type {Number} */
+xgalaga.P_ENTER2 = 11;
+
+/** Constant for path 'enter 3'. @final @type {Number} */
+xgalaga.P_ENTER3 = 12;
+
+/** Constant for path 'enter 4'. @final @type {Number} */
+xgalaga.P_ENTER4 = 13;
+
+/** Constant for path 'enter 5'. @final @type {Number} */
+xgalaga.P_ENTER5 = 14;
+
+/** Constant for path 'enter 6'. @final @type {Number} */
+xgalaga.P_ENTER6 = 15;
+
+/** Constant for path 'enter 7'. @final @type {Number} */
+xgalaga.P_ENTER7 = 16;
+
+/** Constant for path 'enter 8'. @final @type {Number} */
+xgalaga.P_ENTER8 = 17;
+
+/** Constant for path 'enter 9'. @final @type {Number} */
+xgalaga.P_ENTER9 = 18;
+
+/** Constant for path 'enter 10'. @final @type {Number} */
+xgalaga.P_ENTER10 = 19;
+
+/** Constant for path 'enter 11'. @final @type {Number} */
+xgalaga.P_ENTER11 = 20;
+
+/** Constant for path 'enter 12'. @final @type {Number} */
+xgalaga.P_ENTER12 = 21;
+
+/** Constant for path 'enter 13'. @final @type {Number} */
+xgalaga.P_ENTER13 = 22;
+
+/** Constant for path 'enter 14'. @final @type {Number} */
+xgalaga.P_ENTER14 = 23;
+
+/** Constant for path 'enter 15'. @final @type {Number} */
+xgalaga.P_ENTER15 = 24;
+
+/** Constant for path 'enter 16'. @final @type {Number} */
+xgalaga.P_ENTER16 = 25;
+
+/** Constant for path 'enter 17'. @final @type {Number} */
+xgalaga.P_ENTER17 = 26;
+
+/** Constant for path 'enter 18'. @final @type {Number} */
+xgalaga.P_ENTER18 = 27;
+
+/** Constant for path 'enter 19'. @final @type {Number} */
+xgalaga.P_ENTER19 = 28;
+
+/** Constant for path 'enter 20'. @final @type {Number} */
+xgalaga.P_ENTER20 = 29;
+
+/** The number of paths. @final @type {NUmber} */
+xgalaga.NUM_PATHS = 30;
