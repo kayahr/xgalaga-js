@@ -14,19 +14,19 @@
 /**
  * Constructs a new star field.
  *
- * @param {HTMLElement} container
- *            The HTML container element
+ * @param {xgalaga.Game} game
+ *            The game
  * @constructor
  * @class A star field
  */
 
-xgalaga.StarField = function(container)
+xgalaga.StarField = function(game)
 {
     var stars, i;
     
     stars = this.stars = [];
     for (i = 0; i < xgalaga.MAX_STARS; i++)
-        stars.push(new xgalaga.Star(container));    
+        stars.push(new xgalaga.Star(game));
 };
 
 /** The stars. @private @type {Array} */
@@ -46,6 +46,24 @@ xgalaga.StarField.prototype.update = function()
 
     for (i = 0; i < xgalaga.MAX_STARS; i++)
         this.stars[i].update(this.speed);
+};
+
+
+/**
+ * Renders the star field.
+ *
+ * @param {Object} ctx
+ *            The graphics context. This is either a HTML container element
+ *            (For HTML render mode) or a canvas 2D context (For Canvas render
+ *            mode)
+ */
+
+xgalaga.StarField.prototype.render = function(ctx)
+{
+    var i;
+
+    for (i = 0; i < xgalaga.MAX_STARS; i++)
+        this.stars[i].render(ctx);
 };
 
 

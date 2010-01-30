@@ -14,34 +14,25 @@
 /**
  * Constructs a new alien.
  *
- * @param {HTMLElement} root
- *            The root HTML container element
+ * @param {xgalaga.Game} game
+ *            The game
  * @param {Number} alienId
  *            The alien ID
  * @constructor
  * @class An alien
  */
 
-xgalaga.Alien = function(root, alienId)
+xgalaga.Alien = function(game, alienId)
 {
-    var e, s;
-
+    this.game = game;
     this.id = alienId;
-    e = this.element = document.createElement("div");
-    root.appendChild(e);
-    if (e.offsetParent != root) root.style.position = "relative";
-    s = e.style;
-    s.left = "-20px";
-    s.top = "-20px";
-    s.width = "20px";
-    s.height = "20px";
-    s.overflow = "hidden";
-    s.position = "absolute";
-    s.display = "none";
 };
 
 /** The alien ID. @private @type {Number} */
 xgalaga.Alien.prototype.id = null;
+
+/** The game. @private @type {xgalaga.Game} */
+xgalaga.Alien.prototype.game = null;
 
 /** The current X position. @private @type {Number} */
 xgalaga.Alien.prototype.x = null;
@@ -76,8 +67,14 @@ xgalaga.Alien.prototype.entering = null;
 /** TODO enter delay. @private @type {Number} */
 xgalaga.Alien.prototype.enterDelay = null;
 
-/** The HTML element. @private @type {HTMLElement} */
+/** The HTML element (For HTML render mode). @private @type {HTMLElement} */
 xgalaga.Alien.prototype.element = null;
+
+/** The shape ID. @private @type {Number} */
+xgalaga.Alien.prototype.shape = null;
+
+/** The alien image. @private @type {Image} */
+xgalaga.Alien.prototype.image = null;
 
 
 /**
@@ -91,22 +88,20 @@ xgalaga.Alien.prototype.element = null;
 
 xgalaga.Alien.prototype.reset = function(level, metaLevel)
 {
-    var shape, pathInfo, parent, id, entry, s, element;
+    var shape, pathInfo, id, entry;
 
-    element = this.element;
     id = this.id;
-    s = element.style;
-    shape = level.getAlienShape(id);
+    shape = this.shape = level.getAlienShape(id);
     if (shape >= 0)
     {
-        s.display = "block";
         this.alive = true;
+        this.image = new Image();
+        this.image.src = "images/alien" + (shape + 1) + ".png";
         this.dying = false;
         this.entering = true;
         pathInfo = level.getPathInfo(id);
-        parent = element.offsetParent;
-        this.x = parseInt(pathInfo.getStartX() * parent.offsetWidth / 400);
-        this.y = parseInt(pathInfo.getStartY() * parent.offsetHeight / 500);
+        this.x = parseInt(pathInfo.getStartX() * this.game.getWidth() / 400);
+        this.y = parseInt(pathInfo.getStartY() * this.game.getHeight() / 500);
         this.enterDelay = level.getAlienEnterDelay(id) /
             (1 + ((metaLevel - 1) * 0.5));
         this.path = level.getAlienPath(id);
@@ -115,13 +110,11 @@ xgalaga.Alien.prototype.reset = function(level, metaLevel)
         this.direction = entry.getDirection();
         this.steer = entry.getDuration() / (1 + ((metaLevel - 1) * 0.5));
         this.escorting = -1;
-        this.element.style.backgroundImage = "url(images/alien" + (shape + 1) +
-            ".png)";
     }
     else
     {
         this.alive = false;
-        s.display = "none";
+        this.image = null;
     }
 };
 
@@ -379,24 +372,6 @@ xgalaga.Alien.prototype.rotateLeft = function()
 
 
 /**
- * Draws the alien.
- */
-
-xgalaga.Alien.prototype.draw = function()
-{
-    var e, s;
-
-    e = this.element;
-    s = e.style;
-
-    s.left = (this.x - 10) + "px";
-    s.top = (this.y - 10) + "px";
-
-    s.backgroundPosition = "0 " + (-(Math.max(0, this.direction) * 20)) + "px";
-};
-
-
-/**
  * Returns the enter delay.
  *
  * @return {Number} The enter delay
@@ -465,4 +440,67 @@ xgalaga.Alien.prototype.getSteer = function()
 xgalaga.Alien.prototype.setEntering = function(entering)
 {
     this.entering = entering;
+};
+
+
+/**
+ * Renders the alien.
+ *
+ * @param {Object} ctx
+ *            The graphics context. This is either a HTML container element
+ *            (For HTML render mode) or a canvas 2D context (For Canvas render
+ *            mode)
+ */
+
+xgalaga.Alien.prototype.render = function(ctx)
+{
+    var e, s, tmp, img;
+
+    switch (this.game.getRenderMode())
+    {
+        case xgalaga.RENDER_MODE_CANVAS:
+            if (!this.alive) return;
+            img = this.image;
+            if (!img.width || !img.height) return;
+            ctx.drawImage(img, 0, Math.max(0, this.direction) * 20, 20, 20,
+                this.x - 10, this.y - 10, 20, 20);
+            break;
+
+        default:
+            e = this.element;
+            if (!e)
+            {
+                e = this.element = document.createElement("div");
+                ctx.appendChild(e);
+                s = e.style;
+                s.left = "-20px";
+                s.top = "-20px";
+                s.width = "20px";
+                s.height = "20px";
+                s.overflow = "hidden";
+                s.position = "absolute";
+                s.display = "none";
+                e.prevAlive = false;
+                e.prevShape = -1;
+                e.prevX = -20;
+                e.prevY = -20;
+                e.prevDirection = -1;
+            } else s = e.style;
+
+            if ((tmp = this.alive) != e.prevAlive)
+                s.display = (e.prevAlive = tmp) ? "block" : "none";
+            if (tmp)
+            {
+                if ((tmp = this.shape) != e.prevShape)
+                    s.backgroundImage = "url(images/alien" + ((e.prevShape = tmp) +
+                        1) + ".png)";
+                if ((tmp = this.x) != e.prevX)
+                    s.left = ((e.prevX = tmp) - 10) + "px";
+                if ((tmp = this.y) != e.prevY)
+                    s.top = ((e.prevY = tmp) - 10) + "px";
+                if ((tmp = this.direction) != e.prevDirection)
+                    s.backgroundPosition = "0 " + (-(Math.max(0,
+                    (e.prevDirection = tmp)) * 20)) + "px";
+            }
+    }
 };

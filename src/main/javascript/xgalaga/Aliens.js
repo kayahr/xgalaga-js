@@ -14,24 +14,24 @@
 /**
  * Constructs new aliens.
  *
- * @param {HTMLElement} container
- *            The HTML container element
+ * @param {xgalaga.Game} game
+ *            The game
  * @constructor
  * @class The aliens
  */
 
-xgalaga.Aliens = function(container)
+xgalaga.Aliens = function(game)
 {
     var aliens, i;
 
-    this.container = container;
+    this.game = game;
     aliens = this.aliens = [];
     for (i = 0; i < xgalaga.MAX_ALIENS; i++)
-        aliens.push(new xgalaga.Alien(container, i));
+        aliens.push(new xgalaga.Alien(game, i));
 };
 
-/** The container HTML element. @private @type {HTMLElement} */
-xgalaga.Aliens.prototype.container = null;
+/** The game. @private @type {xgalaga.Game} */
+xgalaga.Aliens.prototype.game = null;
 
 /** The aliens. @private @type {Array} */
 xgalaga.Aliens.prototype.aliens = null;
@@ -107,12 +107,12 @@ xgalaga.Aliens.prototype.init = function(levelNo)
 
 xgalaga.Aliens.prototype.update = function(levelNo)
 {
-    var container, winWidth, winHeight, i, alien, moves, j, lastDir,
+    var game, winWidth, winHeight, i, alien, moves, j, lastDir,
         levels, maxLevels, realLevelNo, level, metaLevel, dir;
 
-    container = this.container;
-    winWidth = container.offsetWidth;
-    winHeight = container.offsetHeight;
+    game = this.game;
+    winWidth = game.getWidth();
+    winHeight = game.getHeight();
     moves = xgalaga.MOVES;
 
     // Calculate the real level number and the meta level number
@@ -288,8 +288,6 @@ xgalaga.Aliens.prototype.update = function(levelNo)
                 }
                 */
             }
-
-            alien.draw();
         }
     }
 
@@ -521,4 +519,22 @@ xgalaga.Aliens.prototype.getConvoyXPos = function(alienId)
 xgalaga.Aliens.prototype.getConvoyYPos = function(alienId)
 {
     return 20 + (20 * parseInt(alienId / 10));
+};
+
+
+/**
+ * Renders the aliens.
+ *
+ * @param {Object} ctx
+ *            The graphics context. This is either a HTML container element
+ *            (For HTML render mode) or a canvas 2D context (For Canvas render
+ *            mode)
+ */
+
+xgalaga.Aliens.prototype.render = function(ctx)
+{
+    var i;
+
+    for (i = 0; i < xgalaga.MAX_ALIENS; i++)
+        this.aliens[i].render(ctx);
 };

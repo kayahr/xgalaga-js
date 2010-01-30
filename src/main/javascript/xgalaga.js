@@ -94,6 +94,12 @@ xgalaga.TURN_SPEED = 10;
 /** The start level @final @type {Number} */
 xgalaga.START_LEVEL = 1;
 
+/** Constant for HTML render mode. @final @type {Number} */
+xgalaga.RENDER_MODE_HTML = 0;
+
+/** Constant for Canvas render mode. @final @type {Number} */
+xgalaga.RENDER_MODE_CANVAS = 1;
+
 /** The paths. @final @type {Array} */
 xgalaga.PATHS = [
     [
