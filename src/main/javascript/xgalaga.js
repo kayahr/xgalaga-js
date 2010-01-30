@@ -95,7 +95,7 @@ xgalaga.MOVES = [
 xgalaga.TURN_SPEED = 10;
 
 /** The start level @final @type {Number} */
-xgalaga.START_LEVEL = 15;
+xgalaga.START_LEVEL = 1;
 
 /** Constant for HTML render mode. @final @type {Number} */
 xgalaga.RENDER_MODE_HTML = 0;

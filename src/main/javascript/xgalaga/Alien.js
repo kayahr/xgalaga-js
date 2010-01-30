@@ -102,8 +102,8 @@ xgalaga.Alien.prototype.reset = function(level, metaLevel)
         pathInfo = level.getPathInfo(id);
         this.x = parseInt(pathInfo.getStartX() * this.game.getWidth() / 400);
         this.y = parseInt(pathInfo.getStartY() * this.game.getHeight() / 500);
-        this.enterDelay = level.getAlienEnterDelay(id) /
-            (1 + ((metaLevel - 1) * 0.5));
+        this.enterDelay =parseInt(level.getAlienEnterDelay(id) /
+            (1 + (parseInt((metaLevel - 1) * 0.5))));
         this.path = level.getAlienPath(id);
         this.pathPos = 0;
         entry = pathInfo.getEntry(0);
