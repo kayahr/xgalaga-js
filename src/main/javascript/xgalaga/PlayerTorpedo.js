@@ -136,6 +136,30 @@ xgalaga.PlayerTorpedo.prototype.getY = function()
 
 
 /**
+ * Returns the X speed.
+ *
+ * @return {Number} The X speed
+ */
+
+xgalaga.PlayerTorpedo.prototype.getXSpeed = function()
+{
+    return this.xSpeed;
+};
+
+
+/**
+ * Returns the Y speed.
+ *
+ * @return {Number} The Y speed
+ */
+
+xgalaga.PlayerTorpedo.prototype.getYSpeed = function()
+{
+    return this.ySpeed;
+};
+
+
+/**
  * Renders the rorpedo.
  *
  * @param {Object} ctx

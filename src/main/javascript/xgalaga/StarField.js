@@ -81,6 +81,19 @@ xgalaga.StarField.prototype.changeSpeed = function(delta)
 
 
 /**
+ * Sets the speed.
+ *
+ * @param {Number} speed
+ *            The speed to set
+ */
+
+xgalaga.StarField.prototype.setSpeed = function(speed)
+{
+    this.speed = speed;
+};
+
+
+/**
  * Returns the current star speed.
  *
  * @return {Number} The current star speed

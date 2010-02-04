@@ -503,6 +503,31 @@ xgalaga.Alien.prototype.setEntering = function(entering)
 
 
 /**
+ * Destroys the alien.
+ *
+ * TODO Dying flag seems to be unecessary.
+ */
+
+xgalaga.Alien.prototype.destroy = function()
+{
+    this.dying = false;
+    this.alive = false;
+};
+
+
+/**
+ * Checks if this alien is dying.
+ * 
+ * @return {Boolean} True if alien is dying, false if not
+ */
+
+xgalaga.Alien.prototype.isDying = function()
+{
+    return this.dying;
+};
+
+
+/**
  * Renders the alien.
  *
  * @param {Object} ctx

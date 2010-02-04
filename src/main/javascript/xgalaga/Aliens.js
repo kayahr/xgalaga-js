@@ -272,30 +272,6 @@ xgalaga.Aliens.prototype.update = function(levelNo)
 
     // Update alien torpedos
     this.torps.update();
-
-
-    if (this.liveCount == 0)
-    {
-        ENDE;
-
-    /* TODO
-        this.starField.changeSpeed(1);
-        speed = this.starField.getSpeed();
-        // TODO if (speed == 2) play_sound(SND_WARP);
-        if (speed >= 120)
-        {
-            this.starField.changeSpeed(-20);
-        }
-        else if (speed == 1)
-        {
-            alert("TODO hyperspace end");
-            init_aliens(++level);
-            gotlemon = 0;
-            starspeed = 1;
-            numtorps=0;
-        }
-        */
-    }
 };
 
 
@@ -544,4 +520,45 @@ xgalaga.Aliens.prototype.render = function(ctx)
 
     // Render alien torpedos
     this.torps.render(ctx);
+};
+
+
+/**
+ * Destroys the specified alien and decreases the attacking counter if alien
+ * was currently attacking.
+ *
+ * @param {xgalaga.Alien} alien
+ *            The alien to destroy
+ */
+
+xgalaga.Aliens.prototype.destroy = function(alien)
+{
+    alien.destroy();
+    if (alien.getDirection() >= 0) this.attacking--;
+};
+
+
+/**
+ * Returns the alien with the specified ID.
+ *
+ * @param {Number} index
+ *            The alien index
+ * @return {xgalaga.Alien} The alien
+ */
+
+xgalaga.Aliens.prototype.getAlien = function(index)
+{
+    return this.aliens[index];
+};
+
+
+/**
+ * Returns the number of aliens still alive.
+ *
+ * @return {Number} The number of alive aliens
+ */
+
+xgalaga.Aliens.prototype.getLiveCount = function()
+{
+    return this.liveCount;
 };

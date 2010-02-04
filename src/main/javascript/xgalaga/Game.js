@@ -196,7 +196,10 @@ xgalaga.Game.prototype.gotoLevel = function(levelNo)
 {
     this.levelNo = levelNo;
     this.aliens.init(levelNo);
-    this.player.reset();
+    if (levelNo == 1)
+        this.player.reset();
+    else
+        this.player.nextLevel();
     this.gameOver = false;
 };
 
@@ -312,7 +315,7 @@ xgalaga.Game.prototype.resume = function()
  
 xgalaga.Game.prototype.run = function()
 {
-    var ctx;
+    var ctx, speed;
 
     this.starField.update();
     this.aliens.update(this.levelNo);
@@ -328,6 +331,23 @@ xgalaga.Game.prototype.run = function()
     this.starField.render(ctx);
     this.aliens.render(ctx);
     this.player.render(ctx);
+
+
+    if (!this.aliens.getLiveCount())
+    {
+        this.starField.changeSpeed(1);
+        speed = this.starField.getSpeed();
+        // TODO if (speed == 2) play_sound(SND_WARP);
+        if (speed >= 120)
+        {
+            this.starField.setSpeed(-20);
+        }
+        else if (speed == 1)
+        {
+            this.gotoLevel(++this.levelNo);
+            this.starField.setSpeed(1);
+        }
+    }
 };
 
 
@@ -364,6 +384,30 @@ xgalaga.Game.prototype.getHeight = function()
 xgalaga.Game.prototype.getRenderMode = function()
 {
     return this.renderMode;
+};
+
+
+/**
+ * Returns the aliens.
+ * 
+ * @return {xgalaga.Aliens} The aliens
+ */
+
+xgalaga.Game.prototype.getAliens = function()
+{
+    return this.aliens;
+};
+
+
+/**
+ * Returns the star field.
+ *
+ * @return {xgalaga.StarField} The star field
+ */
+
+xgalaga.Game.prototype.getStarField = function()
+{
+    return this.starField;
 };
 
 

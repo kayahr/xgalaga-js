@@ -98,6 +98,17 @@ xgalaga.Player.prototype.reset = function()
 
 
 /**
+ * Resets the player for the next level.
+ */
+
+xgalaga.Player.prototype.nextLevel = function()
+{
+    this.numTorps = 0;
+    // TODO this.gotLemon = false;
+};
+
+
+/**
  * Fires a new torpedo if a torpedo slot is free.
  *
  * @param {Number} x
@@ -135,7 +146,7 @@ xgalaga.Player.prototype.newTorp = function(x, y, xs, ys)
 
 xgalaga.Player.prototype.update = function()
 {
-    var moveSpeed, winWidth, winHeight, game, i, torp;
+    var moveSpeed, winWidth, winHeight, game, i, torp, alien, aliens, j, k, ne;
 
     moveSpeed = this.moveSpeed;
     game = this.game;
@@ -169,6 +180,60 @@ xgalaga.Player.prototype.update = function()
         {
             torp.update();
             if (!torp.isAlive()) this.numTorps--;
+
+            aliens = this.game.getAliens();
+            for (j = 0; j < xgalaga.MAX_ALIENS; j++)
+            {
+                alien = aliens.getAlien(j);
+                if (alien.isAlive() && !alien.isDying() &&
+                   (Math.abs(torp.getX() - alien.getX()) < 8) &&
+                   ((Math.abs(torp.getY() - alien.getY()) < 8) ||
+                    (Math.abs((torp.getY() + torp.getYSpeed()/2) - alien.getY()) < 8)))
+                {
+                    aliens.destroy(alien);
+                    torp.setAlive(false);
+                    this.numTorps--;
+                    if (j >= 10)
+                    {
+                        if (alien.getDirection() < 0)
+                            this.score += 50;
+                        else
+                        {
+                            this.score += (6 - (j / 10)) * 100;
+                            /* TODO
+                            if (!Math.parseInt(Math.random() * (this.gotLemon ? 3 : xgalaga.PRIZE_CHANCE)))
+
+                                new_prize(aliens[j].x, aliens[j].y);
+                            */
+                        }
+                        /* TODO
+                        new_explosion(aliens[j].x, aliens[j].y, 0);
+                        */
+                    }
+                    else
+                    {
+                        if (alien.getDirection() < 0)
+                            this.score += 200;
+                        else
+                        {
+                            ne=0; /* count how many escorts */
+                            for (k = j + 9; k < j + 12; k++)
+                            {
+                                if (aliens.getAlien(k).getEscorting() == j)
+                                    ne++;
+                            }
+                            /*
+                            TODO
+                            score_flagship(aliens[j].x, aliens[j].y, ne);
+                            */
+                        }
+                        /*
+                         *TODO
+                        new_explosion(aliens[j].x, aliens[j].y, 1);
+                        */
+                    }
+                }
+            }
         }
     }
 };
@@ -311,7 +376,7 @@ xgalaga.Player.prototype.fire = function()
 {
     var winHeight;
 
-    if (this.torpOk <= 0)
+    if (this.torpOk <= 0 && this.game.getStarField().getSpeed() == 1)
     {
         winHeight = this.game.getHeight();
         switch (this.weapon)
