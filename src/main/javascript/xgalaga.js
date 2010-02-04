@@ -20,6 +20,9 @@ xgalaga.MAX_STARS = 30;
 /** The maximum number of aliens. @final @type {Number} */
 xgalaga.MAX_ALIENS = 60;
 
+/** The minimum number of torpedos. @final @type {Number} */
+xgalaga.MIN_TORPS = 3;
+
 /** The maximum number of torpedos. @final @type {Number} */
 xgalaga.MAX_TORPS = 10;
 
@@ -29,8 +32,14 @@ xgalaga.MAX_PATH = 50;
 /** The enemy torpedo speed. @final @type {Number} */
 xgalaga.ETORP_SPEED = 8;
 
+/** The player torpedo speed. @final @type {Number} */
+xgalaga.TORP_SPEED = 12;
+
 /** The enemy torpedo chance. @final @type {Number} */
 xgalaga.TORP_CHANCE = 60;
+
+/** The delay between torpedos. @final @type {Number} */
+xgalaga.TORP_DELAY = 5;
 
 /** Constant for direction north. @final @type {Number} */
 xgalaga.DIR_N = 0;
@@ -102,6 +111,12 @@ xgalaga.MOVES = [
 
 /** The turn speed. @final @type {Number} */
 xgalaga.TURN_SPEED = 10;
+
+/** The minimum player speed. @final @type {Number} */
+xgalaga.MIN_SPEED = 3;
+
+/** The maximum player speed. @final @type {Number} */
+xgalaga.MAX_SPEED = 8;
 
 /** The start level @final @type {Number} */
 xgalaga.START_LEVEL = 1;
@@ -626,3 +641,42 @@ xgalaga.P_ENTER20 = 29;
 
 /** The number of paths. @final @type {NUmber} */
 xgalaga.NUM_PATHS = 30;
+
+/** Constant for singleshot weapon. @final @type {Number} */
+xgalaga.WEAPON_SINGLESHOT = 0;
+
+/** Constant for doubleshot weapon. @final @type {Number} */
+xgalaga.WEAPON_DOUBLESHOT = 1;
+
+/** Constant for tripleshot weapon. @final @type {Number} */
+xgalaga.WEAPON_TRIPLESHOT = 2;
+
+/** The roll center. @type {Number} */
+xgalaga.ctrlRollCenter = 0;
+
+/** The roll center. @type {Number} */
+xgalaga.ctrlPitchCenter = 0;
+
+/** The roll range in degree. @type {Number} */
+xgalaga.ctrlRollRange = 45;
+
+/** The roll range in degree. @type {Number} */
+xgalaga.ctrlPitchRange = 45;
+
+/** The pitch dead zone in degree. @type {Number} */
+xgalaga.ctrlPitchDeadZone = 10;
+
+/** The roll dead zone in degree. @type {Number} */
+xgalaga.ctrlRollDeadZone = 10;
+
+/** Keycodes for yaw right. @type {Number} */
+xgalaga.ctrlRight = [ 76, 39 ];
+
+/** Keycodes for yaw left. @type {Number} */
+xgalaga.ctrlLeft = [ 75, 37 ];
+
+/** Keycodes for fire. @type {Number} */
+xgalaga.ctrlFire = [ 32, 81 ];
+
+/** Keycodes for menu. @type {Number} */
+xgalaga.ctrlMenu = [ 27, -1 ];

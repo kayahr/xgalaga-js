@@ -58,6 +58,7 @@
             <file>xgalaga/AlienTorpedo.js</file>
             <file>xgalaga/AlienTorpedos.js</file>
             <file>xgalaga/Aliens.js</file>
+            <file>xgalaga/Player.js</file>
             <file>xgalaga/Game.js</file>
             <file>xgalaga/levels.js</file>
           </order>
