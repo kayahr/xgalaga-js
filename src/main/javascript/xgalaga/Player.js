@@ -146,10 +146,12 @@ xgalaga.Player.prototype.newTorp = function(x, y, xs, ys)
 
 xgalaga.Player.prototype.update = function()
 {
-    var moveSpeed, winWidth, winHeight, game, i, torp, alien, aliens, j, k, ne;
+    var moveSpeed, winWidth, winHeight, game, i, torp, alien, aliens, j, k, ne,
+        explosions;
 
     moveSpeed = this.moveSpeed;
     game = this.game;
+    explosions = game.getExplosions();
     winWidth = game.getWidth();
     winHeight = game.getHeight();
 
@@ -206,9 +208,7 @@ xgalaga.Player.prototype.update = function()
                                 new_prize(aliens[j].x, aliens[j].y);
                             */
                         }
-                        /* TODO
-                        new_explosion(aliens[j].x, aliens[j].y, 0);
-                        */
+                        explosions.newExplosion(alien.getX(), alien.getY(), 0);
                     }
                     else
                     {
@@ -227,10 +227,7 @@ xgalaga.Player.prototype.update = function()
                             score_flagship(aliens[j].x, aliens[j].y, ne);
                             */
                         }
-                        /*
-                         *TODO
-                        new_explosion(aliens[j].x, aliens[j].y, 1);
-                        */
+                        explosions.newExplosion(alien.getX(), alien.getY(), 1);
                     }
                 }
             }

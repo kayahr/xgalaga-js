@@ -69,6 +69,9 @@ xgalaga.Game.prototype.aliens = null;
 /** The player. @private @type {xgalaga.Player} */
 xgalaga.Game.prototype.player = null;
 
+/** The explosions. @private @type {xgalaga.Explosions} */
+xgalaga.Game.prototype.explosions = null;
+
 /** The current level number. @private @type {Number} */
 xgalaga.Game.prototype.levelNo = null;
 
@@ -149,6 +152,7 @@ xgalaga.Game.prototype.init = function()
     this.starField = new xgalaga.StarField(this);
     this.aliens = new xgalaga.Aliens(this);
     this.player = new xgalaga.Player(this);
+    this.explosions = new xgalaga.Explosions(this);
 
     // Go to starting level
     this.gotoLevel(xgalaga.START_LEVEL);
@@ -320,6 +324,7 @@ xgalaga.Game.prototype.run = function()
     this.starField.update();
     this.aliens.update(this.levelNo);
     this.player.update();
+    this.explosions.update();
 
     ctx = this.ctx;
 
@@ -331,7 +336,7 @@ xgalaga.Game.prototype.run = function()
     this.starField.render(ctx);
     this.aliens.render(ctx);
     this.player.render(ctx);
-
+    this.explosions.render(ctx);
 
     if (!this.aliens.getLiveCount())
     {
@@ -389,13 +394,25 @@ xgalaga.Game.prototype.getRenderMode = function()
 
 /**
  * Returns the aliens.
- * 
+ *
  * @return {xgalaga.Aliens} The aliens
  */
 
 xgalaga.Game.prototype.getAliens = function()
 {
     return this.aliens;
+};
+
+
+/**
+ * Returns the explosions.
+ *
+ * @return {xgalaga.Explosions} The explosions
+ */
+
+xgalaga.Game.prototype.getExplosions = function()
+{
+    return this.explosions;
 };
 
 

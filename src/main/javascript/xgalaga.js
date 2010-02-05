@@ -29,6 +29,9 @@ xgalaga.MAX_TORPS = 10;
 /** The maximum number of paths. @final @type {Number} */
 xgalaga.MAX_PATH = 50;
 
+/** The maximum number of simultanous explosions. @final @type {Number} */
+xgalaga.MAX_EXPLOSIONS = 10;
+
 /** The enemy torpedo speed. @final @type {Number} */
 xgalaga.ETORP_SPEED = 8;
 
