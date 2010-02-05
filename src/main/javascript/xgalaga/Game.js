@@ -405,6 +405,18 @@ xgalaga.Game.prototype.getAliens = function()
 
 
 /**
+ * Returns the player.
+ *
+ * @return {xgalaga.Player} The player
+ */
+
+xgalaga.Game.prototype.getPlayer = function()
+{
+    return this.player;
+};
+
+
+/**
  * Returns the explosions.
  *
  * @return {xgalaga.Explosions} The explosions

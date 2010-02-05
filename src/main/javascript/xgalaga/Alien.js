@@ -43,7 +43,7 @@ xgalaga.Alien.prototype.y = null;
 /** The current direction. @private @type {Number} */
 xgalaga.Alien.prototype.direction = null;
 
-/** TODO steer. @private @type {Number} */
+/** The current steer. @private @type {Number} */
 xgalaga.Alien.prototype.steer = null;
 
 /** If alien is alive. @private @type {Boolean} */
@@ -64,7 +64,7 @@ xgalaga.Alien.prototype.escorting = null;
 /** If alien is currently entering. @private @type {Boolean} */
 xgalaga.Alien.prototype.entering = null;
 
-/** TODO enter delay. @private @type {Number} */
+/** The enter delay. @private @type {Number} */
 xgalaga.Alien.prototype.enterDelay = null;
 
 /** The HTML element (For HTML render mode). @private @type {HTMLElement} */

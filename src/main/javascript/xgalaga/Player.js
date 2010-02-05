@@ -98,6 +98,18 @@ xgalaga.Player.prototype.reset = function()
 
 
 /**
+ * Returns the current X position of the player.
+ * 
+ * @return {Number} The current X position
+ */
+
+xgalaga.Player.prototype.getX = function()
+{
+    return this.x;
+};
+
+
+/**
  * Resets the player for the next level.
  */
 
