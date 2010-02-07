@@ -222,7 +222,7 @@ xgalaga.Player.prototype.update = function()
                 this.alive = true;
                 this.flashing = 50;
                 this.deadTime = 0;
-                this.x = parseInt(winWidth / 2);
+                this.mx = this.x = parseInt(winWidth / 2);
             }
         }
     }
