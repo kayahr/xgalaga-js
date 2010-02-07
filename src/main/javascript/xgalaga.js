@@ -671,6 +671,12 @@ xgalaga.WEAPON_DOUBLESHOT = 1;
 /** Constant for tripleshot weapon. @final @type {Number} */
 xgalaga.WEAPON_TRIPLESHOT = 2;
 
+/** The prompt function. @type {Function} */
+xgalaga.onPrompt = function(title, message, onSubmit, context)
+{
+    onSubmit.call(context, prompt(title + " " + message));
+};
+
 /** The roll center. @type {Number} */
 xgalaga.ctrlRollCenter = 0;
 
@@ -712,3 +718,15 @@ xgalaga.msgShips = "Ships";
 
 /** The thousand separator character. @type {String} */
 xgalaga.msgThousandSep = ",";
+
+/** The new high score title. @type {String} */
+xgalaga.msgNewHighScoreTitle = "Congratulations!";
+
+/** The new high score message. @type {String} */
+xgalaga.msgNewHighScore = "You scored %SCORE% points! This is rank %RANK% in the high score list! Please enter your name:";
+
+/** The next level message. @type {String} */
+xgalaga.msgNextLevel = "Level <span class=\"level\">%LEVEL%</span>"
+
+/** The game over message. @type {String} */
+xgalaga.msgGameOver = "Game Over<br /><span class=\"detail\">End Score: <span class=\"score\">%SCORE%</span></span>";

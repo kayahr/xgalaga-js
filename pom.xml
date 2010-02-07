@@ -61,6 +61,9 @@
             <file>xgalaga/Player.js</file>
             <file>xgalaga/Explosion.js</file>
             <file>xgalaga/Explosions.js</file>
+            <file>xgalaga/Highscores.js</file>
+            <file>xgalaga/Menu.js</file>
+            <file>xgalaga/Hud.js</file>
             <file>xgalaga/Game.js</file>
             <file>xgalaga/levels.js</file>
           </order>

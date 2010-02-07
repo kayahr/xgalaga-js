@@ -1,3 +1,61 @@
+#mainMenu
+{
+    position: absolute;
+    width: 260px;
+    height: 330px;
+    top: 50%;
+    left: -50%;
+    margin-top: -165px;
+    margin-left: -130px;
+    z-index: 3;
+    transition: left 0.5s ease-in-out;
+    -o-transition: left 0.5s ease-in-out;
+    -webkit-transition: left 0.5s ease-in-out;
+    -moz-transition: left 0.5s ease-in-out;
+}
+
+#mainMenu.visible
+{
+ 	left: 50%;
+}
+
+#mainMenu #title
+{
+    height: 29px;
+    background: url(../images/title.png) no-repeat center center;
+}
+
+#mainMenu #buttons
+{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+#mainMenu .button
+{
+	width: 260px;
+	height: 42px;
+    margin-top: 10px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.2) no-repeat center center;
+}
+
+#mainMenu #newGameButton
+{
+    background-image: url(../images/newgame.png);
+}
+
+#mainMenu #continueGameButton
+{
+    background-image: url(../images/continue.png);
+}
+
+#mainMenu .hidden-button
+{
+    display: none;
+}
+
 #hud
 {
     font-family: Verdana, sans-serif;
@@ -84,3 +142,44 @@
     background-image: url(../images/background1.jpeg);
 }
 
+#stateLabel
+{
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    top: 33%;
+    text-align: center;
+    font-family: Verdana, sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+    color: rgba(0, 255, 0, 0);
+    transition: color .5s ease-in-out;
+    -o-transition: color .5s ease-in-out;
+    -webkit-transition: color .5s ease-in-out;
+    -moz-transition: color .5s ease-in-out;
+    text-transform: uppercase;
+}
+
+#stateLabel .detail
+{
+    font-size: 13px;
+    display: block;
+    margin-top: 1em;
+}
+
+#stateLabel .level
+{
+	display: block;
+	font-size: 64px;
+}
+
+#stateLabel .score
+{
+	display: block;
+	font-size: 50px;
+}
+
+#stateLabel.visible
+{
+    color: rgba(96, 255, 96, 0.66);
+}

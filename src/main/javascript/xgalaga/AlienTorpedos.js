@@ -54,8 +54,7 @@ xgalaga.AlienTorpedos.prototype.init = function(level)
     this.level = level;
     this.maxTorps = 10 + (level * 5);
     this.numTorps = 0;
-    
-    // TODO this.deleteTorps();
+    this.firstTorp = null;
 };
 
 

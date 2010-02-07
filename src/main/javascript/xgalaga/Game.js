@@ -96,6 +96,12 @@ xgalaga.Game.prototype.paused = false;
 /** If game is over. @private @type {Boolean} */
 xgalaga.Game.prototype.gameOver = true;
 
+/** The game-state label. @private @type {HTMLElement} */
+xgalaga.Game.prototype.stateLabel = null;
+
+/** The menu. @private @type {xgalaga.Menu} */
+xgalaga.Game.prototype.menu = null;
+
 /** The hud. @private @type {xgalaga.Hud} */
 xgalaga.Game.prototype.hud = null;
 
@@ -110,7 +116,7 @@ xgalaga.Game.prototype.hud = null;
  
 xgalaga.Game.prototype.init = function()
 {
-    var container, canvas, hud;
+    var container, canvas, hud, menu, stateLabel;
     
     // Try to get container reference
     this.container = container = document.getElementById(this.containerId);
@@ -152,6 +158,15 @@ xgalaga.Game.prototype.init = function()
     // Initialize the game size
     this.resize();
 
+    // Create the game state label
+    this.stateLabel = stateLabel = document.createElement("span");
+    container.appendChild(stateLabel);
+    stateLabel.id = "stateLabel";
+
+    // Create the menu
+    menu = this.menu = new xgalaga.Menu(this);
+    container.appendChild(menu.getElement());
+
     // Create the HUD
     hud = this.hud = new xgalaga.Hud(this);
     container.appendChild(hud.getElement());
@@ -162,9 +177,9 @@ xgalaga.Game.prototype.init = function()
     this.player = new xgalaga.Player(this);
     this.explosions = new xgalaga.Explosions(this);
 
-    // Go to starting level
-    this.gotoLevel(xgalaga.START_LEVEL);
-    
+    // Start game with intro
+    this.startIntro();
+
     // Mark game as initialized
     this.initialized = true;
 
@@ -197,6 +212,16 @@ xgalaga.Game.prototype.resize = function()
 
 
 /**
+ * Resets the game.
+ */
+
+xgalaga.Game.prototype.reset = function()
+{
+    this.gotoLevel(xgalaga.START_LEVEL);
+};
+
+
+/**
  * Goes to the specified level.
  *
  * @param {Number} levelNo
@@ -208,6 +233,7 @@ xgalaga.Game.prototype.gotoLevel = function(levelNo)
 {
     var player;
 
+    this.hideStateLabel();
     this.levelNo = levelNo;
     this.aliens.init(levelNo);
     player = this.player;
@@ -317,7 +343,7 @@ xgalaga.Game.prototype.pause = function()
 
 xgalaga.Game.prototype.resume = function()
 {
-    if (this.paused && (this.gameOver /* || TODO !this.menu.isOpen()*/))
+    if (this.paused && (this.gameOver || !this.menu.isOpen()))
     {
         // Start the game thread
         if (!this.timer)
@@ -339,10 +365,13 @@ xgalaga.Game.prototype.run = function()
     var ctx, speed;
 
     this.starField.update();
-    this.aliens.update(this.levelNo);
-    this.player.update();
-    this.explosions.update();
-
+    this.aliens.update();
+    if (!this.gameOver)
+    {
+        this.player.update();
+        this.explosions.update();
+    }
+    
     ctx = this.ctx;
 
     if (this.renderMode == xgalaga.RENDER_MODE_CANVAS)
@@ -352,22 +381,34 @@ xgalaga.Game.prototype.run = function()
 
     this.starField.render(ctx);
     this.aliens.render(ctx);
-    this.player.render(ctx);
-    this.explosions.render(ctx);
-
-    if (!this.aliens.getLiveCount())
+    if (!this.gameOver)
     {
-        this.starField.changeSpeed(1);
-        speed = this.starField.getSpeed();
-        // TODO if (speed == 2) play_sound(SND_WARP);
-        if (speed >= 120)
+        this.player.render(ctx);
+        this.explosions.render(ctx);
+
+        if (!this.aliens.getLiveCount())
         {
-            this.starField.setSpeed(-20);
-        }
-        else if (speed == 1)
-        {
-            this.gotoLevel(++this.levelNo);
-            this.starField.setSpeed(1);
+            this.starField.changeSpeed(1);
+            speed = this.starField.getSpeed();
+            if (speed == 2)
+            {
+                // TODO play_sound(SND_WARP);
+                this.stateLabel.innerHTML = xgalaga.msgNextLevel.replace(
+                    "%LEVEL%", this.levelNo + 1);
+                this.hud.close();
+                this.showStateLabel();
+            }
+            if (speed >= 120)
+            {
+                this.starField.setSpeed(-20);
+            }
+            else if (speed == 1)
+            {
+                this.hideStateLabel();
+                this.hud.open();
+                this.gotoLevel(++this.levelNo);
+                this.starField.setSpeed(1);
+            }
         }
     }
 };
@@ -491,12 +532,10 @@ xgalaga.Game.prototype.isControl = function(control, controls)
 xgalaga.Game.prototype.handleControlDown = function(control)
 {
     // Controls when within menu
-    /* TODO
     if (this.menu.isOpen())
     {
         return false;
     }
-    */
 
     // Controls when playing
     if (!this.gameOver && !this.paused)
@@ -507,10 +546,8 @@ xgalaga.Game.prototype.handleControlDown = function(control)
             this.player.startMoveLeft();
         else if (this.isControl(control, xgalaga.ctrlFire))
             this.player.startFire();
-        /* TODO
         else if (this.isControl(control, xgalaga.ctrlMenu))
             this.gotoMenu();
-        */
         else
             return false;
     }
@@ -535,7 +572,7 @@ xgalaga.Game.prototype.handleControlDown = function(control)
 xgalaga.Game.prototype.handleControlUp = function(control)
 {
     // Controls when playing
-    if (/*TODO !this.menu.isOpen() &&*/ !this.gameOver && !this.paused)
+    if (!this.menu.isOpen() && !this.gameOver && !this.paused)
     {
         if (this.isControl(control, xgalaga.ctrlRight))
             this.player.stopMoveRight();
@@ -715,8 +752,21 @@ xgalaga.Game.prototype.handleOrientationChange = function(event)
 
 xgalaga.Game.prototype.endGame = function()
 {
-    this.hud.close();
-    this.gotoLevel(1);
+    var score;
+
+    if (!this.gameOver)
+    {
+        this.gameOver = true;
+        score = this.player.getScore();
+        this.stateLabel.innerHTML = xgalaga.msgGameOver.replace("%SCORE%",
+            xgalaga.formatNumber(score));
+        this.showStateLabel();
+        if (xgalaga.HighScores.getInstance().determineRank(score))
+            this.newHighScore.bind(this).delay(5);
+        else
+            this.startIntro.bind(this).delay(5);
+        this.hud.close();
+    }
 };
 
 
@@ -729,4 +779,149 @@ xgalaga.Game.prototype.endGame = function()
 xgalaga.Game.prototype.getHud = function()
 {
     return this.hud;
+};
+
+
+/**
+ * Starts a new game.
+ */
+
+xgalaga.Game.prototype.newGame = function()
+{
+    //this.playSound(xgalaga.SND_LEVEL_UP);
+
+    this.gameOver = true;
+    this.menu.close();
+    this.resume();
+    this.destroyAll();
+    this.stateLabel.innerHTML = xgalaga.msgNextLevel.replace("%LEVEL%", 1);
+    this.showStateLabel();
+    this.reset.bind(this).delay(2);
+};
+
+
+/**
+ * Plays an intro which is used as a background for the main menu.
+ */
+
+xgalaga.Game.prototype.startIntro = function()
+{
+    this.hideStateLabel();
+    this.aliens.init(1);
+    this.menu.open();
+};
+
+
+/**
+ * Checks if the game is over.
+ *
+ * @return {Boolean} True if game is over, false if not
+ */
+
+xgalaga.Game.prototype.isGameOver = function()
+{
+    return this.gameOver;
+};
+
+
+/**
+ * Pauses the game and opens the menu.
+ */
+
+xgalaga.Game.prototype.gotoMenu = function()
+{
+    this.pause();
+    this.hud.close();
+    this.menu.open();
+};
+
+
+/**
+ * Closes the menu and continues the game.
+ */
+
+xgalaga.Game.prototype.continueGame = function()
+{
+    this.menu.close();
+    this.hud.open();
+    this.resume();
+};
+
+
+/**
+ * Destroys all items.
+ */
+
+xgalaga.Game.prototype.destroyAll = function()
+{
+    this.aliens.destroyAll();
+};
+
+
+/**
+ * Records a new high score.
+ *
+ * @param {Number} place
+ *            The achieved place
+ * @private
+ */
+
+xgalaga.Game.prototype.newHighScore = function(place)
+{
+    var message, rank, highScores, score;
+
+    score = this.player.getScore();
+    highScores = xgalaga.HighScores.getInstance();
+    rank = highScores.determineRank(score);
+    message = xgalaga.msgNewHighScore.replace("%SCORE%",
+        xgalaga.formatNumber(score)).
+        replace("%RANK%", rank)
+    xgalaga.onPrompt(xgalaga.msgNewHighScoreTitle, message,
+        this.saveHighScore, this);
+};
+
+
+/**
+ * Submits the high score name. This method must be called by the external
+ * newHighScore
+ *
+ * @param {String} name
+ *            The high score name
+ * @private
+ */
+
+xgalaga.Game.prototype.saveHighScore = function(name)
+{
+    var highScores;
+    
+    if (name)
+    {
+        highScores = xgalaga.HighScores.getInstance();
+        highScores.add(name, this.levelNo, this.player.getScore());
+    }
+    this.startIntro();
+};
+
+
+/**
+ * Shows the game state label.
+ *
+ * @private
+ */
+
+xgalaga.Game.prototype.showStateLabel = function()
+{
+    this.stateLabel.className = "visible";
+};
+
+
+/**
+ * Hides the game state label.
+ *
+ * @private
+ */
+
+xgalaga.Game.prototype.hideStateLabel = function()
+{
+    this.stateLabel.className = "hidden";
 };

@@ -35,6 +35,9 @@ xgalaga.Aliens = function(game)
 /** The game. @private @type {xgalaga.Game} */
 xgalaga.Aliens.prototype.game = null;
 
+/** The current level number. @private @type {Number} */
+xgalaga.Aliens.prototype.levelNo = null;
+
 /** The aliens. @private @type {Array} */
 xgalaga.Aliens.prototype.aliens = null;
 
@@ -56,6 +59,23 @@ xgalaga.Aliens.prototype.attacking = null;
 /** The number of alive aliens. @private @type {Number} */
 xgalaga.Aliens.prototype.liveCount = 0;
 
+
+/**
+ * Destroys all aliens.
+ */
+
+xgalaga.Aliens.prototype.destroyAll = function()
+{
+    var aliens, i;
+
+    aliens = this.aliens;
+    for (i = 0; i < xgalaga.MAX_ALIENS; i++)
+        aliens[i].destroy();
+    this.liveCount = 0;
+    this.torps.init(1);
+};
+
+
 /**
  * Initializes the aliens for the specified level.
  *
@@ -67,6 +87,7 @@ xgalaga.Aliens.prototype.init = function(levelNo)
 {
     var levels, level, maxLevels, realLevelNo, metaLevel, aliens, i;
 
+    this.levelNo = levelNo;
     this.convoyX = 0;
     this.convoyMove = 1;
     this.maxAttacking = Math.min(30, 1 + (levelNo * 2));
@@ -95,16 +116,12 @@ xgalaga.Aliens.prototype.init = function(levelNo)
 
 /**
  * Updates the aliens.
- *
- * @param {Number} levelNo
- *
- *
  */
 
-xgalaga.Aliens.prototype.update = function(levelNo)
+xgalaga.Aliens.prototype.update = function()
 {
     var game, winWidth, winHeight, i, alien, moves, j, lastDir,
-        levels, maxLevels, realLevelNo, level, metaLevel, dir;
+        levels, maxLevels, realLevelNo, level, metaLevel, dir, levelNo;
 
     game = this.game;
     winWidth = game.getWidth();
@@ -112,6 +129,7 @@ xgalaga.Aliens.prototype.update = function(levelNo)
     moves = xgalaga.MOVES;
 
     // Calculate the real level number and the meta level number
+    levelNo = this.levelNo;
     levels = xgalaga.LEVELS;
     maxLevels = levels.length;
     realLevelNo = ((levelNo - 1) % maxLevels) + 1;
