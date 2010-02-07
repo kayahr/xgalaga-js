@@ -76,6 +76,15 @@ xgalaga.Player.prototype.frame = 0;
 /** The torpedos. @private @type {Array} */
 xgalaga.Player.prototype.torps = null;
 
+/** If player is dead. @private @type {Boolean} */
+xgalaga.Player.prototype.dead = null;
+
+/** If dead time. @private @type {Number} */
+xgalaga.Player.prototype.deadTime = null;
+
+/** The flashing timer. @private @type {Number} */
+xgalaga.Player.prototype.flashing = null;
+
 
 /**
  * Resets the Player.
@@ -89,6 +98,9 @@ xgalaga.Player.prototype.reset = function()
     this.moveSpeed = xgalaga.MIN_SPEED;
     this.shieldsLeft = 0;
     this.ships = 2;
+    this.alive = true;
+    this.deadTime = 0;
+    this.flashing = 50;
     this.weapon = xgalaga.WEAPON_SINGLESHOT;
     this.maxTorps = xgalaga.MIN_TORPS;
 
@@ -186,6 +198,30 @@ xgalaga.Player.prototype.update = function()
     // Try to fire the weapon if requested
     if (this.firing) this.fire();
 
+    // Handles player death
+    if (!this.alive)
+    {
+        this.deadTime++;
+        if(this.deadTime >= 100)
+        {
+            if (this.ships <= 0)
+            {
+                this.game.endGame();
+            }
+            else
+            {
+                this.ships--;
+                this.maxTorps = xgalaga.MIN_TORPS;
+                this.weapon = 0;
+                this.moveSpeed = xgalaga.MIN_SPEED;
+                this.alive = true;
+                this.flashing = 50;
+                this.deadTime = 0;
+                this.x = parseInt(winWidth / 2);
+            }
+        }
+    }
+
     // Update player torpedos
     for (i = 0; i < xgalaga.MAX_TORPS; i++)
     {
@@ -259,16 +295,20 @@ xgalaga.Player.prototype.update = function()
 
 xgalaga.Player.prototype.render = function(ctx)
 {
-    var e, s, tmp, img, i;
+    var e, s, tmp, img, i, visible;
 
+    visible = this.alive && !(this.flashing % 2);
+    if (this.flashing) this.flashing--;
     switch (this.game.getRenderMode())
     {
         case xgalaga.RENDER_MODE_CANVAS:
-            // TODO if (!this.alive) return;
-            img = this.image;
-            if (!img.width || !img.height) return;
-            ctx.drawImage(img, 0, (this.frame % 4) * 20, 20, 20,
-                this.x - 10, this.y - 10, 20, 20);
+            if (visible)
+            {
+                img = this.image;
+                if (!img.width || !img.height) return;
+                ctx.drawImage(img, 0, (this.frame % 4) * 20, 20, 20,
+                    this.x - 10, this.y - 10, 20, 20);
+            }
             break;
 
         default:
@@ -286,15 +326,15 @@ xgalaga.Player.prototype.render = function(ctx)
                 s.position = "absolute";
                 s.display = "none";
                 s.backgroundImage = "url(" + this.image.src + ")";
-                e.prevAlive = false;
+                e.prevVisible = false;
                 e.prevShape = -1;
                 e.prevX = -20;
                 e.prevY = -20;
                 e.prevFrame = -1;
             } else s = e.style;
 
-            if ((tmp = this.alive) != e.prevAlive)
-                s.display = (e.prevAlive = tmp) ? "block" : "none";
+            if ((tmp = visible) != e.prevVisible)
+                s.display = (e.prevVisible = tmp) ? "block" : "none";
             if (tmp)
             {
                 if ((tmp = this.x) != e.prevX)
@@ -321,7 +361,7 @@ xgalaga.Player.prototype.render = function(ctx)
 
 xgalaga.Player.prototype.startMoveLeft = function()
 {
-    this.mx = 0;
+    if (this.alive) this.mx = 0;
 };
 
 
@@ -341,7 +381,7 @@ xgalaga.Player.prototype.stopMoveLeft = function()
 
 xgalaga.Player.prototype.startMoveRight = function()
 {
-    this.mx = 32767;
+    if (this.alive) this.mx = 32767;
 };
 
 
@@ -361,7 +401,7 @@ xgalaga.Player.prototype.stopMoveRight = function()
 
 xgalaga.Player.prototype.startFire = function()
 {
-    this.firing = true;
+    if (this.alive) this.firing = true;
 };
 
 
@@ -416,4 +456,67 @@ xgalaga.Player.prototype.fire = function()
                 break;
         }
     }
+};
+
+
+/**
+ * Checks if player is dead.
+ *
+ * @return {Boolean} True if player is dead, false if not
+ */
+
+xgalaga.Player.prototype.isDead = function()
+{
+    return !this.alive;
+};
+
+
+/**
+ * Checks if player is flashing (invulnerable).
+ *
+ * @return {Boolean} True if player is flashing, false if not
+ */
+
+xgalaga.Player.prototype.isFlashing = function()
+{
+    return !!this.flashing;
+};
+
+
+/**
+ * Checks if player has shield.
+ *
+ * TODO Implement me
+ *
+ * @return {Boolean} True if player has shield, false if not
+ */
+
+xgalaga.Player.prototype.hasShield = function()
+{
+    return false;
+};
+
+
+/**
+ * Destroys the player ship.
+ */
+
+xgalaga.Player.prototype.destroy = function()
+{
+    this.alive = false;
+    this.stopMoveLeft();
+    this.stopMoveRight();
+    this.stopFire();
+};
+
+
+/**
+ * Returns the currently installed weapon.
+ *
+ * @return {Number} The currently installed weapon
+ */
+
+xgalaga.Player.prototype.getWeapon = function()
+{
+    return this.weapon;
 };

@@ -14,6 +14,9 @@
 /**
  * Constructs a new star field.
  *
+ * TODO Clean up the parallax scrolling. Implement switch between classic
+ * and new theme.
+ *
  * @param {xgalaga.Game} game
  *            The game
  * @constructor
@@ -23,7 +26,14 @@
 xgalaga.StarField = function(game)
 {
     var stars, i;
-    
+
+    game.container.style.background = "url(images/stars.png)";
+    game.canvas.style.background = "url(images/nebular2.png)";
+    this.container = game.container;
+    this.canvas = game.canvas;
+    this.y = 0;
+    this.ny = 0;
+
     stars = this.stars = [];
     for (i = 0; i < xgalaga.MAX_STARS; i++)
         stars.push(new xgalaga.Star(game));
@@ -46,6 +56,11 @@ xgalaga.StarField.prototype.update = function()
 
     for (i = 0; i < xgalaga.MAX_STARS; i++)
         this.stars[i].update(this.speed);
+
+    this.y += 1 * ((this.speed < 20) ? Math.abs(this.speed) : 20);
+    if (this.y > 1500) this.y -= 1500;
+    this.ny += 5 * ((this.speed < 20) ? Math.abs(this.speed) : 20);
+    if (this.ny > 1500) this.ny -= 1500;
 };
 
 
@@ -64,6 +79,9 @@ xgalaga.StarField.prototype.render = function(ctx)
 
     for (i = 0; i < xgalaga.MAX_STARS; i++)
         this.stars[i].render(ctx);
+
+    this.container.style.backgroundPosition = "center " + parseInt(this.y) + "px";
+    this.canvas.style.backgroundPosition = "center " + parseInt(this.ny) + "px";
 };
 
 

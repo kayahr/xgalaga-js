@@ -690,3 +690,13 @@ xgalaga.Game.prototype.handleOrientationChange = function(event)
         this.handleControlUp(-5);
     }
 };
+
+
+/**
+ * Ends the game.
+ */
+
+xgalaga.Game.prototype.endGame = function()
+{
+    this.gotoLevel(1);
+};

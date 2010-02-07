@@ -85,7 +85,6 @@ xgalaga.Explosions.prototype.newExplosion = function(x, y, type)
     var i, explosions, explosion;
 
     explosions = this.explosions;
-    console.log(xgalaga.MAX_EXPLOSIONS);
     for (i = 0; i < xgalaga.MAX_EXPLOSIONS; i++)
     {
         explosion = explosions[i];

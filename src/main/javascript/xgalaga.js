@@ -15,7 +15,7 @@ xgalaga = {};
 
 
 /** The number of stars in the game. @final @type {Number} */
-xgalaga.MAX_STARS = 30;
+xgalaga.MAX_STARS = 30 * 0;
 
 /** The maximum number of aliens. @final @type {Number} */
 xgalaga.MAX_ALIENS = 60;

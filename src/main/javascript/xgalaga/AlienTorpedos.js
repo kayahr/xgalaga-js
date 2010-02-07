@@ -68,19 +68,16 @@ xgalaga.AlienTorpedos.prototype.update = function()
     var t, nextT, game, winWidth, winHeight, x, pldead, plflash, plshield,
         playerShipHeight, plx, player, explosions;
 
-    // TODO
-
-    pldead = false;
-    plflash = false;
-    plshield = false;
-    playerShipHeight = 20;
-
     game = this.game;
     player = game.getPlayer();
+    pldead = player.isDead();
+    plflash = player.isFlashing();
+    plshield = player.hasShield();
     plx = player.getX();
     explosions = game.getExplosions();
     winWidth = game.getWidth();
     winHeight = game.getHeight();
+    playerShipHeight = 20;
     t = this.firstTorp;
     while (t)
     {
@@ -103,18 +100,8 @@ xgalaga.AlienTorpedos.prototype.update = function()
                       (Math.abs(t.getX() - plx) < 8) &&
                       (Math.abs(t.getY() - (winHeight - parseInt(playerShipHeight / 2))) < 8))
             {
-                /* DEAD! */
-                pldead = 1;
+                player.destroy();
                 explosions.newExplosion(plx, winHeight - 10, 2);
-            }
-            else
-            {
-                /** TODO
-                W_DrawImage(baseWin,
-                            t->x-(enemyTorp->width/2),
-                            t->y-(enemyTorp->height/2),
-                            t->frame, enemyTorp, W_Red);
-                */
             }
         }
         t = nextT;
@@ -158,7 +145,7 @@ xgalaga.AlienTorpedos.prototype.considerTorp = function(alien)
     game = this.game;
     player = game.getPlayer();
     level = this.level;
-    weapon = 0; // TODO
+    weapon = player.getWeapon();
     plx = player.getX();
     chance = Math.max(35, xgalaga.TORP_CHANCE - parseInt(level / 2) -
         weapon * 5);
