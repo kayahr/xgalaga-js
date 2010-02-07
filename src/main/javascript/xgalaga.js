@@ -13,6 +13,23 @@
 /** The application namespace. @type {Object} */
 xgalaga = {};
 
+/**
+ * Formats a number
+ *
+ * @param {Number} number
+ *            The number to format
+ * @return {String} The formatted number
+ */
+
+xgalaga.formatNumber = function(number)
+{
+    var rest;
+
+    rest = parseInt(number / 1000);
+    if (rest) return xgalaga.formatNumber(rest) + xgalaga.msgThousandSep +
+        (1000 + (Math.abs(number) % 1000)).toString().substring(1);
+    return number;
+};
 
 /** The number of stars in the game. @final @type {Number} */
 xgalaga.MAX_STARS = 30 * 0;
@@ -683,3 +700,15 @@ xgalaga.ctrlFire = [ 32, 81 ];
 
 /** Keycodes for menu. @type {Number} */
 xgalaga.ctrlMenu = [ 27, -1 ];
+
+/** The score display label. @type {String} */
+xgalaga.msgScore = "Score";
+
+/** The level display label. @type {String} */
+xgalaga.msgLevel = "Level";
+
+/** The ships display label. @type {String} */
+xgalaga.msgShips = "Ships";
+
+/** The thousand separator character. @type {String} */
+xgalaga.msgThousandSep = ",";

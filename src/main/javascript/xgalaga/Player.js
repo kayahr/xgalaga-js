@@ -34,6 +34,9 @@ xgalaga.Player = function(game)
 /** The game. @private @type {xgalaga.Game} */
 xgalaga.Player.prototype.game = null;
 
+/** The score. @private @type {Number} */
+xgalaga.Player.prototype.score = 0;
+
 /** The X position. @private @type {Number} */
 xgalaga.Player.prototype.x = null;
 
@@ -97,6 +100,7 @@ xgalaga.Player.prototype.reset = function()
     this.mx = this.x = parseInt(this.game.getWidth() / 2);
     this.moveSpeed = xgalaga.MIN_SPEED;
     this.shieldsLeft = 0;
+    this.score = 0;
     this.ships = 2;
     this.alive = true;
     this.deadTime = 0;
@@ -211,6 +215,7 @@ xgalaga.Player.prototype.update = function()
             else
             {
                 this.ships--;
+                this.game.getHud().setShips(this.ships);
                 this.maxTorps = xgalaga.MIN_TORPS;
                 this.weapon = 0;
                 this.moveSpeed = xgalaga.MIN_SPEED;
@@ -246,10 +251,10 @@ xgalaga.Player.prototype.update = function()
                     if (j >= 10)
                     {
                         if (alien.getDirection() < 0)
-                            this.score += 50;
+                            this.addScore(50);
                         else
                         {
-                            this.score += (6 - (j / 10)) * 100;
+                            this.addScore((6 - parseInt(j / 10)) * 100);
                             /* TODO
                             if (!Math.parseInt(Math.random() * (this.gotLemon ? 3 : xgalaga.PRIZE_CHANCE)))
 
@@ -261,7 +266,7 @@ xgalaga.Player.prototype.update = function()
                     else
                     {
                         if (alien.getDirection() < 0)
-                            this.score += 200;
+                            this.addScore(200);
                         else
                         {
                             ne=0; /* count how many escorts */
@@ -519,4 +524,39 @@ xgalaga.Player.prototype.destroy = function()
 xgalaga.Player.prototype.getWeapon = function()
 {
     return this.weapon;
+};
+
+
+/**
+ * Adds points to the score.
+ */
+
+xgalaga.Player.prototype.addScore = function(score)
+{
+    this.score += score;
+    this.game.getHud().setScore(this.score);
+};
+
+
+/**
+ * Returns the current score.
+ *
+ * @return {Number} The current score
+ */
+
+xgalaga.Player.prototype.getScore = function()
+{
+    return this.score;
+};
+
+
+/**
+ * Returns the current number of ships.
+ *
+ * @return {Number} The current number of ships
+ */
+
+xgalaga.Player.prototype.getShips = function()
+{
+    return this.ships;
 };

@@ -96,6 +96,10 @@ xgalaga.Game.prototype.paused = false;
 /** If game is over. @private @type {Boolean} */
 xgalaga.Game.prototype.gameOver = true;
 
+/** The hud. @private @type {xgalaga.Hud} */
+xgalaga.Game.prototype.hud = null;
+
+
 
 
 /**
@@ -106,7 +110,7 @@ xgalaga.Game.prototype.gameOver = true;
  
 xgalaga.Game.prototype.init = function()
 {
-    var container, canvas;
+    var container, canvas, hud;
     
     // Try to get container reference
     this.container = container = document.getElementById(this.containerId);
@@ -147,6 +151,10 @@ xgalaga.Game.prototype.init = function()
     
     // Initialize the game size
     this.resize();
+
+    // Create the HUD
+    hud = this.hud = new xgalaga.Hud(this);
+    container.appendChild(hud.getElement());
 
     // Perform game initialization
     this.starField = new xgalaga.StarField(this);
@@ -198,12 +206,21 @@ xgalaga.Game.prototype.resize = function()
 
 xgalaga.Game.prototype.gotoLevel = function(levelNo)
 {
+    var player;
+
     this.levelNo = levelNo;
     this.aliens.init(levelNo);
+    player = this.player;
     if (levelNo == 1)
-        this.player.reset();
+    {
+        this.hud.open();
+        player.reset();
+    }
     else
-        this.player.nextLevel();
+        player.nextLevel();
+    this.hud.setLevel(levelNo);
+    this.hud.setScore(player.getScore());
+    this.hud.setShips(player.getShips());
     this.gameOver = false;
 };
 
@@ -698,5 +715,18 @@ xgalaga.Game.prototype.handleOrientationChange = function(event)
 
 xgalaga.Game.prototype.endGame = function()
 {
+    this.hud.close();
     this.gotoLevel(1);
+};
+
+
+/**
+ * Returns the HUD.
+ *
+ * @return {xgalaga.Hud} The HUD
+ */
+
+xgalaga.Game.prototype.getHud = function()
+{
+    return this.hud;
 };
