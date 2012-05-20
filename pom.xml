@@ -136,6 +136,14 @@
     </repository>
   </repositories>
 
+  <dependencies>
+    <dependency>
+      <groupId>com.jquery</groupId>
+      <artifactId>jquery</artifactId>
+      <version>1.7.2-1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+
 </project>
 
 

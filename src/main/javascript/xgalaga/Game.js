@@ -131,37 +131,30 @@ xgalaga.Game.prototype.levelNo = 0;
 /**
  * The key down handler.
  * @private
- * @type {Function} 
+ * @type {!function(!jQuery.event=)} 
  */
-xgalaga.Game.prototype.keyDownHandler = null;
+xgalaga.Game.prototype.keyDownHandler;
 
 /**
  * The key up handler.
  * @private
- * @type {Function} 
+ * @type {!function(!jQuery.event=)} 
  */
-xgalaga.Game.prototype.keyUpHandler = null;
+xgalaga.Game.prototype.keyUpHandler;
 
 /**
  * The mouse down handler.
  * @private
- * @type {Function} 
+ * @type {!function(!jQuery.event=)} 
  */
-xgalaga.Game.prototype.mouseDownHandler = null;
+xgalaga.Game.prototype.mouseDownHandler;
 
 /**
  * The mouse up handler.
  * @private
- * @type {Function} 
+ * @type {!function(!jQuery.event=)} 
  */
-xgalaga.Game.prototype.mouseUpHandler = null;
-
-/**
- * The orientation change handler.
- * @private
- * @type {Function} 
- */
-xgalaga.Game.prototype.orientationChangeHandler = null;
+xgalaga.Game.prototype.mouseUpHandler;
 
 /**
  * If game has been paused.
@@ -243,7 +236,7 @@ xgalaga.Game.prototype.init = function()
 
     // Re-call resize method when window resizes
     // TODO
-    //Event.observe(window, "resize", this.resize.bindAsEventListener(this));
+    jQuery(window).bind("resize", this.resize.bind(this));
 
     // Create game thread
     this.gameThread = this.run.bind(this);
@@ -372,25 +365,22 @@ xgalaga.Game.prototype.start = function()
         this.timer = window.setInterval(this.gameThread, 33);
 
     // Install keyboard handlers
-    window.addEventListener("keydown", this.keyDownHandler, false);
-    window.addEventListener("keyup", this.keyUpHandler, false);
-    this.container.addEventListener("mousedown", this.mouseDownHandler, false);
-    this.container.addEventListener("mouseup", this.mouseUpHandler, false);
+    jQuery(window).bind("keydown", this.keyDownHandler);
+    jQuery(window).bind("keyup", this.keyUpHandler);
+    jQuery(this.container).bind("mousedown", this.mouseDownHandler);
+    jQuery(this.container).bind("mouseup", this.mouseUpHandler);
 };
-
 
 /**
  * Stops the game
  */
- 
 xgalaga.Game.prototype.stop = function()
 {
     // Uninstall keyboard handlers
-    document.removeEventListener("orientationchange", this.orientationChangeHandler, false);
-    window.removeEventListener("keydown", this.keyDownHandler, false);
-    window.removeEventListener("keyup", this.keyUpHandler, false);     
-    this.container.removeEventListener("mousedown", this.mouseDownHandler, false);     
-    this.container.removeEventListener("mouseup", this.mouseUpHandler, false);     
+    jQuery(window).unbind("keydown", this.keyDownHandler);
+    jQuery(window).unbind("keyup", this.keyUpHandler);     
+    jQuery(this.container).unbind("mousedown", this.mouseDownHandler);     
+    jQuery(this.container).unbind("mouseup", this.mouseUpHandler);     
 
     // Stop game thread
     if (this.timer)
@@ -688,14 +678,14 @@ xgalaga.Game.prototype.handleControlUp = function(control)
 /**
  * Handles the key down event.
  *
- * @param {Event} event
+ * @param {!jQuery.event=} event
  *            The key down event
  * @private
  */
 
 xgalaga.Game.prototype.handleKeyDown = function(event)
 {
-    if (this.handleControlDown(event.keyCode) ||
+    if (this.handleControlDown(event.which) ||
         this.handleControlDown(0)) event.preventDefault();
 };
 
@@ -703,14 +693,14 @@ xgalaga.Game.prototype.handleKeyDown = function(event)
 /**
  * Handles the key up event.
  *
- * @param {Event} event
+ * @param {!jQuery.event=} event
  *            The key down event
  * @private
  */
 
 xgalaga.Game.prototype.handleKeyUp = function(event)
 {
-    if (this.handleControlUp(event.keyCode) ||
+    if (this.handleControlUp(event.which) ||
         this.handleControlUp(0)) event.preventDefault();
 };
 
@@ -718,7 +708,7 @@ xgalaga.Game.prototype.handleKeyUp = function(event)
 /**
  * Handles the mouse down event.
  *
- * @param {Event} event
+ * @param {!jQuery.event=} event
  *            The mouse down event
  * @private
  */
@@ -732,7 +722,7 @@ xgalaga.Game.prototype.handleMouseDown = function(event)
 /**
  * Handles the mouse up event.
  *
- * @param {Event} event
+ * @param {!jQuery.event=} event
  *            The mouse up event
  * @private
  */

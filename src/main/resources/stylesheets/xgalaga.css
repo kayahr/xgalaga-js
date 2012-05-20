@@ -1,12 +1,40 @@
+body
+{
+    margin: 0;
+    padding: 0;
+    background: #000;
+}
+
+#game-area
+{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    min-width: 468px;
+    min-height: 596px;
+    margin: auto;
+}
+
+#game-output
+{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
 #mainMenu
 {
     position: absolute;
-    width: 260px;
+    width: 280px;
     height: 330px;
     top: 50%;
     left: -50%;
     margin-top: -165px;
-    margin-left: -130px;
+    margin-left: -140px;
     z-index: 3;
     transition: left 0.5s ease-in-out;
     -o-transition: left 0.5s ease-in-out;
@@ -21,7 +49,7 @@
 
 #mainMenu #title
 {
-    height: 29px;
+    height: 37px;
     background: url(../images/title.png) no-repeat center center;
 }
 
@@ -78,7 +106,6 @@
     right: 0;
     position: absolute;
     height: 35px;
-    background: url(../images/hud_gradient.png) repeat-x;
 }
 
 #hud #topBar
@@ -139,7 +166,6 @@
     top: 0;
     background-color: #000;
     background-position: center center;
-    background-image: url(../images/background1.jpeg);
 }
 
 #stateLabel
