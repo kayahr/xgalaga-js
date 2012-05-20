@@ -60,7 +60,7 @@ xgalaga.Game.prototype.height = 0;
  * @private
  * @type {number} 
  */
-xgalaga.Game.prototype.renderMode = xgalaga.RENDER_MODE_CANVAS;
+xgalaga.Game.prototype.renderMode = xgalaga.RENDER_MODE_HTML;
 
 /**
  * If game should start automatically after init.
@@ -186,24 +186,23 @@ xgalaga.Game.prototype.init = function()
     // Try to get container reference
     container = /** @type {!HTMLElement} */ jQuery(".output", this.container)[0];
    
-    // Create the canvas
-    switch (this.renderMode)
+    canvas = this.canvas = /** @type {HTMLCanvasElement} */ 
+        document.createElement("canvas");
+    container.appendChild(canvas);
+    canvas.className = "canvas";
+    if (canvas["getContext"])
     {
-        case xgalaga.RENDER_MODE_CANVAS:
-            canvas = this.canvas = /** @type {HTMLCanvasElement} */ 
-                document.createElement("canvas");
-            container.appendChild(canvas);
-            canvas.className = "canvas";
-            this.ctx = /** @type {!CanvasRenderingContext2D} */ 
-                canvas.getContext("2d");
-            break;
-            
-        default:
-            this.ctx = container;
+        this.renderMode = xgalaga.RENDER_MODE_CANVAS;
+        this.ctx = /** @type {!CanvasRenderingContext2D} */ 
+            canvas.getContext("2d");
+    }
+    else
+    {
+        this.renderMode = xgalaga.RENDER_MODE_HTML;
+        this.ctx = container;
     }
 
     // Re-call resize method when window resizes
-    // TODO
     jQuery(window).bind("resize", this.resize.bind(this));
 
     // Create game thread
@@ -327,8 +326,8 @@ xgalaga.Game.prototype.start = function()
         this.timer = window.setInterval(this.gameThread, 33);
 
     // Install keyboard handlers
-    jQuery(window).bind("keydown", this.keyDownHandler);
-    jQuery(window).bind("keyup", this.keyUpHandler);
+    jQuery(document).bind("keydown", this.keyDownHandler);
+    jQuery(document).bind("keyup", this.keyUpHandler);
 };
 
 /**
@@ -337,8 +336,8 @@ xgalaga.Game.prototype.start = function()
 xgalaga.Game.prototype.stop = function()
 {
     // Uninstall keyboard handlers
-    jQuery(window).unbind("keydown", this.keyDownHandler);
-    jQuery(window).unbind("keyup", this.keyUpHandler);     
+    jQuery(document).unbind("keydown", this.keyDownHandler);
+    jQuery(document).unbind("keyup", this.keyUpHandler);     
 
     // Stop game thread
     if (this.timer)
@@ -551,7 +550,7 @@ xgalaga.Game.prototype.handleKeyUp = function(event)
     var key;
     
     key = event.which;
-    
+
     // Controls when playing
     if (!this.menu && !this.gameOver && !this.paused)
     {
