@@ -433,7 +433,7 @@ xgalaga.Game.prototype.run = function()
             speed = this.starField.getSpeed();
             if (speed == 2)
             {
-                // TODO play_sound(SND_WARP);
+                this.playSound("warp");
                 this.stateLabel.innerHTML = xgalaga.msgNextLevel.replace(
                     "%LEVEL%", "" + (this.levelNo + 1));
                 this.hud.close();
@@ -668,8 +668,6 @@ xgalaga.Game.prototype.getHud = function()
 
 xgalaga.Game.prototype.newGame = function()
 {
-    //this.playSound(xgalaga.SND_LEVEL_UP);
-
     this.gameOver = true;
     this.hideMenu();
     this.resume();
@@ -819,4 +817,21 @@ xgalaga.Game.prototype.showStateLabel = function()
 xgalaga.Game.prototype.hideStateLabel = function()
 {
     this.stateLabel.className = "hidden";
+};
+
+/**
+ * Plays a sound.
+ * 
+ * @param {string} sound
+ *            The sound to play.
+ */
+xgalaga.Game.prototype.playSound = function(sound)
+{
+    var e, audio;
+    
+    e = document.getElementById(sound + "-sound");
+    if (!e) return;
+    audio = (/** @type {!HTMLMediaElement} */ e.cloneNode(true));
+    e = e.cloneNode(true);
+    if (audio["play"]) audio.play();
 };

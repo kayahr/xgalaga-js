@@ -93,6 +93,17 @@ xgalaga.Explosion.prototype.run = function(x, y, type)
     this.type = type;
     this.frame = 0;
     this.running = true;
+    switch (type)
+    {
+        case 1:
+            this.game.playSound("explode");
+            break;
+        case 2:
+            this.game.playSound("explode_big");
+            break;
+        default:
+            this.game.playSound("torphit");
+    }
 };
 
 /**

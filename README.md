@@ -18,7 +18,6 @@ You can play the game right here:
 TODO
 ----
 
-* Sound
 * Power-ups
 * Bonus ships
 * Highscore-List

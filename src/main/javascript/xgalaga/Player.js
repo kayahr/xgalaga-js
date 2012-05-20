@@ -236,7 +236,7 @@ xgalaga.Player.prototype.newTorp = function(x, y, xs, ys)
         {
             torp.reset(x, y, xs, ys);
             this.numTorps++;
-            // TODO play_sound(SND_FIRETORP);
+            this.game.playSound("firetorp");
             return;
         }
     }
