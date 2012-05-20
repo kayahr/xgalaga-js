@@ -17,6 +17,8 @@ body
     border-radius: 20px;
     background: #000;
     -webkit-box-shadow: 0px 0px 20px 20px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 20px 20px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 20px 20px rgba(0, 0, 0, 0.75);
     overflow: hidden;
 }
 
