@@ -27,7 +27,7 @@ body
     top: 0;
     right: 0;
     bottom: 0;
-    z-index: 3;
+    z-index: 2;
     border: 2px solid #f00;
     border-radius: 20px;
     overflow: hidden;
@@ -62,7 +62,7 @@ body
     left: 50%;
     margin-top: -273px;
     margin-left: -209px;
-    z-index: 2;
+    z-index: 3;
     transition: left 0.5s ease-in-out;
     -o-transition: left 0.5s ease-in-out;
     -webkit-transition: left 0.5s ease-in-out;
