@@ -197,6 +197,18 @@ xgalaga.AlienTorpedo.prototype.getY = function()
 };
 
 /**
+ * Destroys the torpedo.
+ */
+xgalaga.AlienTorpedo.prototype.destroy = function()
+{
+    if (this.element)
+    {
+        this.element.parentNode.removeChild(this.element);
+        this.element = null;
+    }
+};
+
+/**
  * Renders the rorpedo.
  *
  * @param {(!HTMLElement|!CanvasRenderingContext2D)} ctx

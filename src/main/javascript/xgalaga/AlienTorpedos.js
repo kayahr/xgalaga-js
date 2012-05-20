@@ -101,6 +101,7 @@ xgalaga.AlienTorpedos.prototype.update = function()
                     t.getPrev().setNext(t.getNext());
                 if (t == this.firstTorp)
                     this.firstTorp = t.getNext();
+                t.destroy();
                 this.numTorps--;
             }
             else if (!pldead && !plflash && !plshield &&
