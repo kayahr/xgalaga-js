@@ -1,25 +1,18 @@
 /**
- * $Id$
  * Copyright (C) 2010 Klaus Reimer <k@ailis.de>
  * See LICENSE.TXT for licensing information
- *
- * @fileoverview
- * Provides the xgalaga.PlayerTorpedo class.
- *
- * @author Klaus Reimer (k@ailis.de)
- * @version $Revision: 910 $
+ * 
+ * @require xgalaga.js
  */
-
 
 /**
  * Constructs a new torpedo.
  *
- * @param {xgalaga.Game} game
+ * @param {!xgalaga.Game} game
  *            The game
  * @constructor
  * @class A torpedo
  */
-
 xgalaga.PlayerTorpedo = function(game)
 {
     this.game = game;
@@ -27,38 +20,74 @@ xgalaga.PlayerTorpedo = function(game)
     this.image.src = "images/mtorp.png"
 };
 
-/** If torpedo is alive. @private @type {Boolean} */
+/**
+ * The game.
+ * @private
+ * @type {!xgalaga.Game}
+ */
+xgalaga.PlayerTorpedo.prototype.game;
+
+/**
+ * The HTML element for HTML rendering.
+ * @private
+ * @type {?Element}
+ */
+xgalaga.PlayerTorpedo.prototype.element = null;
+
+/**
+ * If torpedo is alive.
+ * @private
+ * @type {boolean} 
+ */
 xgalaga.PlayerTorpedo.prototype.alive = true;
 
-/** The torpedo image. @private @type {Image} */
-xgalaga.PlayerTorpedo.prototype.image = null;
+/**
+ * The torpedo image.
+ * @private
+ * @type {!Image} 
+ */
+xgalaga.PlayerTorpedo.prototype.image;
 
-/** The current X position. @private @type {Number} */
-xgalaga.PlayerTorpedo.prototype.x = null;
+/**
+ * The current X position.
+ * @private
+ * @type {number} 
+ */
+xgalaga.PlayerTorpedo.prototype.x = 0;
 
-/** The current Y position. @private @type {Number} */
-xgalaga.PlayerTorpedo.prototype.y = null;
+/**
+ * The current Y position.
+ * @private
+ * @type {number} 
+ */
+xgalaga.PlayerTorpedo.prototype.y = 0;
 
-/** The X speed. @private @type {Number} */
-xgalaga.PlayerTorpedo.prototype.xSpeed = null;
+/**
+ * The X speed.
+ * @private
+ * @type {number} 
+ */
+xgalaga.PlayerTorpedo.prototype.xSpeed = 0;
 
-/** The Y speed. @private @type {Number} */
-xgalaga.PlayerTorpedo.prototype.ySpeed = null;
-
+/**
+ * The Y speed.
+ * @private
+ * @type {number} 
+ */
+xgalaga.PlayerTorpedo.prototype.ySpeed = 0;
 
 /**
  * Resets the torpedo.
  * 
- * @param {Number} x
+ * @param {number} x
  *            The X position of the torpedo
- * @param {Number} y
+ * @param {number} y
  *            The Y position of the torpedo
- * @param {Number} xSpeed
+ * @param {number} xSpeed
  *            The X speed
- * @param {Number} ySpeed
+ * @param {number} ySpeed
  *            The Y speed
  */
-
 xgalaga.PlayerTorpedo.prototype.reset = function(x, y, xSpeed, ySpeed)
 {
     this.x = x;
@@ -68,11 +97,9 @@ xgalaga.PlayerTorpedo.prototype.reset = function(x, y, xSpeed, ySpeed)
     this.alive = true;
 };
 
-
 /**
- * Updatess the torpedo
+ * Updates the torpedo.
  */
-
 xgalaga.PlayerTorpedo.prototype.update = function()
 {
     var x, y, xSpeed, winWidth;
@@ -83,14 +110,14 @@ xgalaga.PlayerTorpedo.prototype.update = function()
     winWidth = this.game.getWidth();
     xSpeed = Math.abs(xSpeed);
     if (y < -xSpeed || x < xSpeed || x > winWidth - xSpeed)
-        this.alive = 0;
+        this.alive = false;
 };
 
 
 /**
  * Sets the alive state of the torpedo.
  *
- * @param {Boolean} alive
+ * @param {boolean} alive
  *            The alive state to set
  */
 
@@ -103,7 +130,7 @@ xgalaga.PlayerTorpedo.prototype.setAlive = function(alive)
 /**
  * Checks if torpedo is alive.
  *
- * @return {Boolean} True if torped is alive, false if not
+ * @return {boolean} True if torped is alive, false if not
  */
 xgalaga.PlayerTorpedo.prototype.isAlive = function()
 {
@@ -114,7 +141,7 @@ xgalaga.PlayerTorpedo.prototype.isAlive = function()
 /**
  * Returns the current X position of the torpedo.
  *
- * @return {Number} The X position
+ * @return {number} The X position
  */
 
 xgalaga.PlayerTorpedo.prototype.getX = function()
@@ -126,7 +153,7 @@ xgalaga.PlayerTorpedo.prototype.getX = function()
 /**
  * Returns the current Y position of the torpedo.
  *
- * @return {Number} The Y position
+ * @return {number} The Y position
  */
 
 xgalaga.PlayerTorpedo.prototype.getY = function()
@@ -138,7 +165,7 @@ xgalaga.PlayerTorpedo.prototype.getY = function()
 /**
  * Returns the X speed.
  *
- * @return {Number} The X speed
+ * @return {number} The X speed
  */
 
 xgalaga.PlayerTorpedo.prototype.getXSpeed = function()
@@ -150,7 +177,7 @@ xgalaga.PlayerTorpedo.prototype.getXSpeed = function()
 /**
  * Returns the Y speed.
  *
- * @return {Number} The Y speed
+ * @return {number} The Y speed
  */
 
 xgalaga.PlayerTorpedo.prototype.getYSpeed = function()
@@ -158,16 +185,14 @@ xgalaga.PlayerTorpedo.prototype.getYSpeed = function()
     return this.ySpeed;
 };
 
-
 /**
- * Renders the rorpedo.
+ * Renders the torpedo.
  *
- * @param {Object} ctx
+ * @param {(!HTMLElement|!CanvasRenderingContext2D)} ctx
  *            The graphics context. This is either a HTML container element
  *            (For HTML render mode) or a canvas 2D context (For Canvas render
  *            mode)
  */
-
 xgalaga.PlayerTorpedo.prototype.render = function(ctx)
 {
     var e, s, tmp, img;
@@ -195,15 +220,15 @@ xgalaga.PlayerTorpedo.prototype.render = function(ctx)
                 s.overflow = "hidden";
                 s.position = "absolute";
                 s.backgroundImage = "url(" + this.image.src + ")";
-                e.prevAlive = false;
-                e.prevFrame = -1;
-                e.prevX = -5;
-                e.prevY = -7;
+                e["prevAlive"] = false;
+                e["prevFrame"] = -1;
+                e["prevX"] = -5;
+                e["prevY"] = -7;
             } else s = e.style;
 
-            if ((tmp = this.alive) != e.prevAlive)
+            if ((tmp = this.alive) != !!e["prevAlive"])
             {
-                e.prevAlive = tmp;
+                e["prevAlive"] = tmp;
                 if (tmp)
                     ctx.appendChild(e);
                 else
@@ -211,10 +236,10 @@ xgalaga.PlayerTorpedo.prototype.render = function(ctx)
             }
             if (tmp)
             {
-                if ((tmp = this.x) != e.prevX)
-                    s.left = ((e.prevX = tmp) - 2) + "px";
-                if ((tmp = this.y) != e.prevY)
-                    s.top = ((e.prevY = tmp) - 3) + "px";
+                if ((tmp = this.x) != +e["prevX"])
+                    s.left = ((e["prevX"] = tmp) - 2) + "px";
+                if ((tmp = this.y) != +e["prevY"])
+                    s.top = ((e["prevY"] = tmp) - 3) + "px";
             }
     }
 };

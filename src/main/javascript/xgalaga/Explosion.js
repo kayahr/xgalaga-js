@@ -1,25 +1,18 @@
 /**
- * $Id$
  * Copyright (C) 2010 Klaus Reimer <k@ailis.de>
  * See LICENSE.TXT for licensing information
- * 
- * @fileoverview
- * Provides the xgalaga.Explosion class.
- * 
- * @author Klaus Reimer (k@ailis.de)
- * @version $Revision: 910 $
+ *
+ * @require xgalaga.js
  */
-
 
 /**
  * Constructs a new explosion.
  *
- * @param {xgalaga.Game} game
+ * @param {!xgalaga.Game} game
  *            The game
  * @constructor
  * @class An explosion
  */
-
 xgalaga.Explosion = function(game)
 {
     this.game = game;
@@ -27,36 +20,72 @@ xgalaga.Explosion = function(game)
     this.image.src = "images/explosion.png"
 };
 
-/** The explosition image. @private @type {Image} */
-xgalaga.Explosion.prototype.image = null;
+/**
+ * The game.
+ * @private
+ * @type {!xgalaga.Game}
+ */
+xgalaga.Explosion.prototype.game;
 
-/** If explosion is currently running. @private @type {Boolean} */
+/**
+ * The HTML element (For HTML render mode).
+ * @private
+ * @type {?Element}
+ */
+xgalaga.Explosion.prototype.element;
+
+/**
+ * The explosion image.
+ * @private
+ * @type {!Image} 
+ */
+xgalaga.Explosion.prototype.image;
+
+/**
+ * If explosion is currently running.
+ * @private
+ * @type {boolean} 
+ */
 xgalaga.Explosion.prototype.running = false;
 
-/** The current animation frame index. @private @type {Number} */
+/**
+ * The current animation frame index.
+ * @private
+ * @type {number} 
+ */
 xgalaga.Explosion.prototype.frame = 0;
 
-/** The current X position. @private @type {Number} */
-xgalaga.Explosion.prototype.x = null;
+/**
+ * The current X position.
+ * @private
+ * @type {number} 
+ */
+xgalaga.Explosion.prototype.x = 0;
 
-/** The current Y position. @private @type {Number} */
-xgalaga.Explosion.prototype.y = null;
+/**
+ * The current Y position.
+ * @private
+ * @type {number} 
+ */
+xgalaga.Explosion.prototype.y = 0;
 
-/** The explosion type. @private @type {Number} */
-xgalaga.Explosion.prototype.type = null;
-
+/**
+ * The explosion type.
+ * @private
+ * @type {number} 
+ */
+xgalaga.Explosion.prototype.type = 0;
 
 /**
  * Starts the explosion at the specified position and with the specified type.
  *
- * @param {Number} x
+ * @param {number} x
  *            The X position of the torpedo
- * @param {Number} y
+ * @param {number} y
  *            The Y position of the torpedo
- * @param {Number} type
+ * @param {number} type
  *            The explosion type
  */
-
 xgalaga.Explosion.prototype.run = function(x, y, type)
 {
     this.x = x;
@@ -66,23 +95,20 @@ xgalaga.Explosion.prototype.run = function(x, y, type)
     this.running = true;
 };
 
-
 /**
  * Checks if this explosion is still running;
  * 
- * @return {Boolean} True if explosion is still running, false if not
+ * @return {boolean} 
+ *            True if explosion is still running, false if not
  */
-
 xgalaga.Explosion.prototype.isRunning = function()
 {
     return this.running;
 };
 
-
 /**
  * Updates the explosion.
  */
-
 xgalaga.Explosion.prototype.update = function()
 {
     if (!this.running) return;
@@ -91,16 +117,14 @@ xgalaga.Explosion.prototype.update = function()
     if (this.frame > 4) this.running = false;
 };
 
-
 /**
  * Renders the explosion.
  *
- * @param {Object} ctx
+ * @param {(!HTMLElement|!CanvasRenderingContext2D)} ctx
  *            The graphics context. This is either a HTML container element
  *            (For HTML render mode) or a canvas 2D context (For Canvas render
  *            mode)
  */
-
 xgalaga.Explosion.prototype.render = function(ctx)
 {
     var e, s, tmp, img;
@@ -128,15 +152,15 @@ xgalaga.Explosion.prototype.render = function(ctx)
                 s.overflow = "hidden";
                 s.position = "absolute";
                 s.backgroundImage = "url(" + this.image.src + ")";
-                e.prevRunning = false;
-                e.prevFrame = -1;
-                e.prevX = -32;
-                e.prevY = -32;
+                e["prevRunning"] = false;
+                e["prevFrame"] = -1;
+                e["prevX"] = -32;
+                e["prevY"] = -32;
             } else s = e.style;
 
-            if ((tmp = this.running) != e.prevRunning)
+            if ((tmp = this.running) != !!e["prevRunning"])
             {
-                e.prevRunning = running;
+                e["prevRunning"] = this.running;
                 if (tmp)
                     ctx.appendChild(e);
                 else
@@ -144,13 +168,13 @@ xgalaga.Explosion.prototype.render = function(ctx)
             }
             if (tmp)
             {
-                if ((tmp = this.x) != e.prevX)
-                    s.left = ((e.prevX = tmp) - 2) + "px";
-                if ((tmp = this.y) != e.prevY)
-                    s.top = ((e.prevY = tmp) - 2) + "px";
-                if ((tmp = this.frame) != e.prevFrame)
+                if ((tmp = this.x) != +e["prevX"])
+                    s.left = ((e["prevX"] = tmp) - 2) + "px";
+                if ((tmp = this.y) != +e["prevY"])
+                    s.top = ((e["prevY"] = tmp) - 2) + "px";
+                if ((tmp = this.frame) != +e["prevFrame"])
                     s.backgroundPosition = "0 " +
-                        (-((e.prevFrame = tmp) % 65) * 65) + "px";
+                        (-((e["prevFrame"] = tmp) % 65) * 65) + "px";
             }
     }
 };

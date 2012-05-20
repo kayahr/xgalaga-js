@@ -1,13 +1,10 @@
 /**
- * $Id$
  * Copyright (C) 2010 Klaus Reimer <k@ailis.de>
  * See LICENSE.TXT for licensing information
  * 
- * @fileoverview
- * Provides the xgalaga.Level class.
- * 
  * @author Klaus Reimer (k@ailis.de)
- * @version $Revision: 910 $
+ *
+ * @require xgalaga.js
  */
 
 
@@ -34,25 +31,41 @@ xgalaga.Level = function(pathInfos, alienShapes, alienPaths, alienEnterDelays)
     this.alienEnterDelays = alienEnterDelays;
 };
 
-/** The path infos. @private @type {Array} */
+/**
+ * The path infos.
+ * @private
+ * @type {Array} 
+ */
 xgalaga.Level.prototype.pathInfos = null;
 
-/** The alien shapes. @private @type {Array} */
+/**
+ * The alien shapes.
+ * @private
+ * @type {Array} 
+ */
 xgalaga.Level.prototype.alienShapes = null;
 
-/** The alien paths. @private @type {Array} */
+/**
+ * The alien paths.
+ * @private
+ * @type {Array} 
+ */
 xgalaga.Level.prototype.alienPaths = null;
 
-/** The alien enter delays. @private @type {Array} */
+/**
+ * The alien enter delays.
+ * @private
+ * @type {Array} 
+ */
 xgalaga.Level.prototype.alienEnterDelays = null;
 
 
 /**
  * Returns the shape for the specified alien.
  *
- * @param {Number} alienId
+ * @param {number} alienId
  *            The ID of the alien
- * @return {Number} The shape
+ * @return {number} The shape
  */
 
 xgalaga.Level.prototype.getAlienShape = function(alienId)
@@ -64,7 +77,7 @@ xgalaga.Level.prototype.getAlienShape = function(alienId)
 /**
  * Returns the path infos for the specified alien.
  *
- * @param {Number} alienId
+ * @param {number} alienId
  *            The ID of the alien
  * @return {xgalaga.PathInfo} The path infos
  */
@@ -78,9 +91,9 @@ xgalaga.Level.prototype.getPathInfo = function(alienId)
 /**
  * Returns the enter delay of the specified alien.
  *
- * @param {Number} alienId
+ * @param {number} alienId
  *            The ID of the alien
- * @return {Number} The enter delay
+ * @return {number} The enter delay
  */
 
 xgalaga.Level.prototype.getAlienEnterDelay = function(alienId)
@@ -92,9 +105,9 @@ xgalaga.Level.prototype.getAlienEnterDelay = function(alienId)
 /**
  * Returns the path of the specified alien.
  *
- * @param {Number} alienId
+ * @param {number} alienId
  *            The ID of the alien
- * @return {Number} The alien path
+ * @return {number} The alien path
  */
 
 xgalaga.Level.prototype.getAlienPath = function(alienId)

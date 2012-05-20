@@ -1,25 +1,18 @@
 /**
- * $Id$
  * Copyright (C) 2010 Klaus Reimer <k@ailis.de>
  * See LICENSE.TXT for licensing information
- * 
- * @fileoverview
- * Provides the xgalaga.Aliens class.
- * 
- * @author Klaus Reimer (k@ailis.de)
- * @version $Revision: 910 $
+ *
+ * @require xgalaga.js
  */
-
 
 /**
  * Constructs new aliens.
  *
- * @param {xgalaga.Game} game
+ * @param {!xgalaga.Game} game
  *            The game
  * @constructor
  * @class The aliens
  */
-
 xgalaga.Aliens = function(game)
 {
     var aliens, i;
@@ -32,38 +25,79 @@ xgalaga.Aliens = function(game)
     this.torps = new xgalaga.AlienTorpedos(game);
 };
 
-/** The game. @private @type {xgalaga.Game} */
-xgalaga.Aliens.prototype.game = null;
+/**
+ * The game.
+ * @private
+ * @type {!xgalaga.Game} 
+ */
+xgalaga.Aliens.prototype.game;
 
-/** The current level number. @private @type {Number} */
-xgalaga.Aliens.prototype.levelNo = null;
+/**
+ * The current level number.
+ * @private
+ * @type {number} 
+ */
+xgalaga.Aliens.prototype.levelNo = 0;
 
-/** The aliens. @private @type {Array} */
-xgalaga.Aliens.prototype.aliens = null;
+/**
+ * The aliens.
+ * @private
+ * @type {!Array.<xgalaga.Alien>} 
+ */
+xgalaga.Aliens.prototype.aliens;
 
-/** The torpedos. @private @type {Array} */
-xgalaga.Aliens.prototype.torps = null;
+/**
+ * The torpedos.
+ * @private
+ * @type {!xgalaga.AlienTorpedos} 
+ */
+xgalaga.Aliens.prototype.torps;
 
-/** The convoy X position. @private @type {Number} */
-xgalaga.Aliens.prototype.convoyX = null;
+/**
+ * How many aliens are currently entering the level.
+ * @private
+ * @type {number}
+ */
+xgalaga.Aliens.prototype.entering = 0;
 
-/** The convoy movement. @private @type {Number} */
-xgalaga.Aliens.prototype.convoyMove = null;
+/**
+ * The convoy X position.
+ * @private
+ * @type {number} 
+ */
+xgalaga.Aliens.prototype.convoyX = 0;
 
-/** The maximum number of attacking aliens. @private @type {Number} */
-xgalaga.Aliens.prototype.maxAttacking = null;
+/**
+ * The convoy movement.
+ * @private
+ * @type {number} 
+ */
+xgalaga.Aliens.prototype.convoyMove = 0;
 
-/** The current number of attacking aliens. @private @type {Number} */
-xgalaga.Aliens.prototype.attacking = null;
+/**
+ * The maximum number of attacking aliens.
+ * @private
+ * @type {number} 
+ */
+xgalaga.Aliens.prototype.maxAttacking = 0;
 
-/** The number of alive aliens. @private @type {Number} */
+/**
+ * The current number of attacking aliens.
+ * @private
+ * @type {number} 
+ */
+xgalaga.Aliens.prototype.attacking = 0;
+
+/**
+ * The number of alive aliens.
+ * @private
+ * @type {number} 
+ */
 xgalaga.Aliens.prototype.liveCount = 0;
-
 
 /**
  * Destroys all aliens.
  */
-
 xgalaga.Aliens.prototype.destroyAll = function()
 {
     var aliens, i;
@@ -75,14 +109,12 @@ xgalaga.Aliens.prototype.destroyAll = function()
     this.torps.init(1);
 };
 
-
 /**
  * Initializes the aliens for the specified level.
  *
- * @param {Number} levelNo
+ * @param {number} levelNo
  *            The level number
  */
-
 xgalaga.Aliens.prototype.init = function(levelNo)
 {
     var levels, level, maxLevels, realLevelNo, metaLevel, aliens, i;
@@ -98,7 +130,7 @@ xgalaga.Aliens.prototype.init = function(levelNo)
     // Calculate the real level number and the meta level number
     maxLevels = levels.length;
     realLevelNo = ((levelNo - 1) % maxLevels) + 1;
-    metaLevel = parseInt((levelNo - 1) / maxLevels) + 1;
+    metaLevel = parseInt((levelNo - 1) / maxLevels, 10) + 1;
 
     // Get the level data
     level = levels[realLevelNo - 1];
@@ -133,7 +165,7 @@ xgalaga.Aliens.prototype.update = function()
     levels = xgalaga.LEVELS;
     maxLevels = levels.length;
     realLevelNo = ((levelNo - 1) % maxLevels) + 1;
-    metaLevel = parseInt((levelNo - 1) / maxLevels) + 1;
+    metaLevel = parseInt((levelNo - 1) / maxLevels, 10) + 1;
     level = levels[realLevelNo - 1];
 
     this.convoyX += this.convoyMove;
@@ -179,9 +211,9 @@ xgalaga.Aliens.prototype.update = function()
             else if (alien.getDirection() == -2)
             {
                 alien.move(this.convoyMove, 2);
-                if (alien.getY() >= 20 + (20 * parseInt(i / 10)))
+                if (alien.getY() >= 20 + (20 * parseInt(i / 10, 10)))
                 {
-                    alien.setY(20 + (20 * parseInt(i / 10)));
+                    alien.setY(20 + (20 * parseInt(i / 10, 10)));
                     alien.setDirection(-1);
                 }
             }
@@ -196,8 +228,8 @@ xgalaga.Aliens.prototype.update = function()
 
                 if (alien.getY() > winHeight)
                 {
-                    alien.moveTo(20 * (i - 10 * parseInt(i / 10)) + this.convoyX +
-                        this.convoyMove, -30);
+                    alien.moveTo(20 * (i - 10 * parseInt(i / 10, 10)) +
+                        this.convoyX + this.convoyMove, -30);
                     alien.setDirection(-2);
                     alien.setPath(-1);
                     alien.setSteer(2);
@@ -222,7 +254,7 @@ xgalaga.Aliens.prototype.update = function()
                         if (alien.getPath() >= 0)
                         {
                             lastDir = alien.getDirection();
-                            alien.nextPath(level);
+                            alien.nextPath();
 
                             if (alien.getDirection() < 0)
                             {
@@ -230,7 +262,7 @@ xgalaga.Aliens.prototype.update = function()
 
                                 do
                                 {
-                                    switch (parseInt(Math.random() * 8))
+                                    switch (parseInt(Math.random() * 8, 10))
                                     {
                                         case 0:
                                             alien.startPath(xgalaga.P_LOOP);
@@ -274,7 +306,7 @@ xgalaga.Aliens.prototype.update = function()
                         }
                         else
                         {
-                            if (parseInt(Math.random() * 2))
+                            if (parseInt(Math.random() * 2, 10))
                                 alien.rotateRight();
                             else
                                 alien.rotateLeft();
@@ -296,7 +328,7 @@ xgalaga.Aliens.prototype.update = function()
 /**
  * Performs escorting action for specified alien.
  *
- * @param {Number} alienId
+ * @param {number} alienId
  *            The alien ID
  * @private
  */
@@ -319,8 +351,8 @@ xgalaga.Aliens.prototype.doEscort = function(alienId)
     }
     else
     {
-        alien.moveTo(20 * (alienId - 10 * parseInt(alienId / 10)) +
-            this.convoyY + this.convoyMove, -10);
+        alien.moveTo(20 * (alienId - 10 * parseInt(alienId / 10, 10)) +
+            this.convoyX + this.convoyMove, -10);
         alien.setDirection(-2);
         alien.setPath(-1);
         alien.setSteer(2);
@@ -332,13 +364,13 @@ xgalaga.Aliens.prototype.doEscort = function(alienId)
 /**
  * Performs entering action for specified alien.
  *
- * @param {Number} alienId
+ * @param {number} alienId
  *            The alien ID
- * @param {Number} levelNo
+ * @param {number} levelNo
  *            The level number
- * @param {xgalaga.Level} level
+ * @param {!xgalaga.Level} level
  *            The current level
- * @param {Number} metaLevel
+ * @param {number} metaLevel
  *            The meta level number
  * @private
  */
@@ -359,8 +391,8 @@ xgalaga.Aliens.prototype.doEnter = function(alienId, levelNo, level, metaLevel)
     if (alien.getPath() >= 0)
     {
         dir = alien.getDirection();
-        alien.move(moves[dir][0] + metaLevel * parseInt(moves[dir][0] / 2),
-            moves[dir][1] + metaLevel * parseInt(moves[dir][1] / 2));
+        alien.move(moves[dir][0] + metaLevel * parseInt(moves[dir][0] / 2, 10),
+            moves[dir][1] + metaLevel * parseInt(moves[dir][1] / 2, 10));
 
         alien.decreaseSteer();
         if (alien.getSteer() <= 0)
@@ -369,7 +401,7 @@ xgalaga.Aliens.prototype.doEnter = function(alienId, levelNo, level, metaLevel)
 
             if (metaLevel > 1)
                 alien.setSteer(parseInt(alien.getSteer() / (1 +
-                    (parseInt((metaLevel - 1) * 0.5)))));
+                    (parseInt((metaLevel - 1) * 0.5, 10))), 10));
 
             if (alien.getDirection() < 0)
             {
@@ -426,7 +458,7 @@ xgalaga.Aliens.prototype.doEnter = function(alienId, levelNo, level, metaLevel)
                 }
                 else
                 {
-                    if (this.getConvoyXPos(alienId) > alian.getX())
+                    if (this.getConvoyXPos(alienId) > alien.getX())
                         alien.setDirection(xgalaga.DIR_SE);
                     else
                         alien.setDirection(xgalaga.DIR_SW);
@@ -434,8 +466,8 @@ xgalaga.Aliens.prototype.doEnter = function(alienId, levelNo, level, metaLevel)
             }
         }
         dir = alien.getDirection();
-        alien.move(moves[dir][0] + metaLevel * parseInt(moves[dir][0] / 2),
-            moves[dir][1] + metaLevel * parseInt(moves[dir][1] / 2));
+        alien.move(moves[dir][0] + metaLevel * parseInt(moves[dir][0] / 2, 10),
+            moves[dir][1] + metaLevel * parseInt(moves[dir][1] / 2, 10));
     }
 };
 
@@ -443,13 +475,12 @@ xgalaga.Aliens.prototype.doEnter = function(alienId, levelNo, level, metaLevel)
 /**
  * Performs convoy action.
  *
- * @param {Number} alienId
+ * @param {number} alienId
  *            The alien ID
- * @param {Number} levelNo
+ * @param {number} levelNo
  *            The level number
  * @private
  */
-
 xgalaga.Aliens.prototype.doConvoy = function(alienId, levelNo)
 {
     var alien, liveCount, maxAttacking, e, eAlien;
@@ -460,10 +491,10 @@ xgalaga.Aliens.prototype.doConvoy = function(alienId, levelNo)
     alien = this.aliens[alienId];
     alien.moveX(this.convoyMove);
     if (!this.entering && (this.attacking < maxAttacking) &&
-           ((liveCount < maxAttacking) || (parseInt(Math.random() * 10000) <
-           (levelNo + 2 * (48 - (liveCount))))))
+       ((liveCount < maxAttacking) || (parseInt(Math.random() * 10000, 10) <
+       (levelNo + 2 * (48 - (liveCount))))))
     {
-        switch (parseInt(Math.random() * 2))
+        switch (parseInt(Math.random() * 2, 10))
         {
             case 0:
                 alien.applyPath(xgalaga.P_PEELLEFT);
@@ -489,41 +520,37 @@ xgalaga.Aliens.prototype.doConvoy = function(alienId, levelNo)
     }
 };
 
-
 /**
  * Returns the X position of the specified alien when in the convoy.
  *
- * @param {Number} alienId
+ * @param {number} alienId
  *            The ID of the alien
- * @return {Number} The X position in the convoy
+ * @return {number} The X position in the convoy
  * @private
  */
-
 xgalaga.Aliens.prototype.getConvoyXPos = function(alienId)
 {
-    return this.convoyX + (20 * (alienId - 10 * parseInt(alienId / 10)));
+    return this.convoyX + (20 * (alienId - 10 * parseInt(alienId / 10, 10)));
 };
-
 
 /**
  * Returns the Y position of the specified alien when in the convoy.
  *
- * @param {Number} alienId
+ * @param {number} alienId
  *            The ID of the alien
- * @return {Number} The Y position in the convoy
+ * @return {number} The Y position in the convoy
  * @private
  */
-
 xgalaga.Aliens.prototype.getConvoyYPos = function(alienId)
 {
-    return 20 + (20 * parseInt(alienId / 10));
+    return 20 + (20 * parseInt(alienId / 10, 10));
 };
 
 
 /**
  * Renders the aliens.
  *
- * @param {Object} ctx
+ * @param {(!HTMLElement|!CanvasRenderingContext2D)} ctx
  *            The graphics context. This is either a HTML container element
  *            (For HTML render mode) or a canvas 2D context (For Canvas render
  *            mode)
@@ -559,7 +586,7 @@ xgalaga.Aliens.prototype.destroy = function(alien)
 /**
  * Returns the alien with the specified ID.
  *
- * @param {Number} index
+ * @param {number} index
  *            The alien index
  * @return {xgalaga.Alien} The alien
  */
@@ -573,7 +600,7 @@ xgalaga.Aliens.prototype.getAlien = function(index)
 /**
  * Returns the number of aliens still alive.
  *
- * @return {Number} The number of alive aliens
+ * @return {number} The number of alive aliens
  */
 
 xgalaga.Aliens.prototype.getLiveCount = function()

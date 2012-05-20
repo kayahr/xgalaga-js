@@ -1,23 +1,18 @@
 /**
- * $Id: game-assistant.js 910 2009-08-05 12:26:08Z k $
  * Copyright (C) 2009 Klaus Reimer <k@ailis.de>
  * See LICENSE.TXT for licensing information
  * 
- * @fileoverview
- * Provides the Hud class.
- * 
- * @author Klaus Reimer (k@ailis.de)
- * @version $Revision: 910 $
+ * @require xgalaga.js
  */
-
 
 /**
  * Constructs a new hud
  * 
+ * @param {!xgalaga.Game} game
+ *            The game.
  * @constructor
  * @class The hud
  */
-
 xgalaga.Hud = function(game)
 {
     var root, value, topBar, display;
@@ -44,7 +39,7 @@ xgalaga.Hud = function(game)
     display.appendChild(value);
     value.id = "levelValue";
     value.className = "value";
-    value.appendChild(document.createTextNode(1));
+    value.appendChild(document.createTextNode("1"));
 
     // Create the score box
     display = document.createElement("div");
@@ -56,7 +51,7 @@ xgalaga.Hud = function(game)
     display.appendChild(value);
     value.id = "scoreValue";
     value.className = "value";
-    value.appendChild(document.createTextNode(0));
+    value.appendChild(document.createTextNode("0"));
 
     // Create the ships display
     display = document.createElement("div");
@@ -68,27 +63,50 @@ xgalaga.Hud = function(game)
     display.appendChild(value);
     value.id = "shipsValue";
     value.className = "value";
-    value.appendChild(document.createTextNode(0));
+    value.appendChild(document.createTextNode("0"));
 };
 
-/** The game reference. @private @type {xgalaga.Game} */
-xgalaga.Hud.prototype.game = null;
+/**
+ * The game reference.
+ * @private
+ * @type {!xgalaga.Game} 
+ */
+xgalaga.Hud.prototype.game;
 
-/** The HTML element. @private @type {HTMLElement} */
-xgalaga.Hud.prototype.element = null;
+/**
+ * The HTML element.
+ * @private
+ * @type {!Element} 
+ */
+xgalaga.Hud.prototype.element;
 
-/** If hud is open or not. @private @type {Boolean} */
+/**
+ * If hud is open or not.
+ * @private
+ * @type {boolean} 
+ */
 xgalaga.Hud.prototype.opened = false;
 
-/** The ships HTML element. @private @type {HTMLElement} */
-xgalaga.Hud.prototype.shipsElement = null;
+/**
+ * The ships HTML element.
+ * @private
+ * @type {!Element} 
+ */
+xgalaga.Hud.prototype.shipsElement;
 
-/** The level HTML element. @private @type {HTMLElement} */
-xgalaga.Hud.prototype.levelElement = null;
+/**
+ * The level HTML element.
+ * @private
+ * @type {!Element} 
+ */
+xgalaga.Hud.prototype.levelElement;
 
-/** The score HTML element. @private @type {HTMLElement} */
-xgalaga.Hud.prototype.scoreElement = null;
-
+/**
+ * The score HTML element.
+ * @private
+ * @type {!Element} 
+ */
+xgalaga.Hud.prototype.scoreElement;
 
 /**
  * Opens the hud screen.
@@ -115,7 +133,7 @@ xgalaga.Hud.prototype.close = function()
 /**
  * Checks if hud is open.
  * 
- * @return {Boolean} True if hud is open, false if not
+ * @return {boolean} True if hud is open, false if not
  */
 
 xgalaga.Hud.prototype.isOpen = function()
@@ -127,7 +145,7 @@ xgalaga.Hud.prototype.isOpen = function()
 /**
  * Returns the root HTML element of the hud screen.
  * 
- * @return {HTMLElement} The root HTML element
+ * @return {!Element} The root HTML element
  */
 
 xgalaga.Hud.prototype.getElement = function()
@@ -139,7 +157,7 @@ xgalaga.Hud.prototype.getElement = function()
 /**
  * Sets the level display value.
  * 
- * @param {Number} level
+ * @param {number} level
  *            The level display value to set
  */
 
@@ -152,7 +170,7 @@ xgalaga.Hud.prototype.setLevel = function(level)
 /**
  * Sets the score display value.
  * 
- * @param {Number} score
+ * @param {number} score
  *            The score display value to set
  */
 
@@ -165,7 +183,7 @@ xgalaga.Hud.prototype.setScore = function(score)
 /**
  * Sets the ships display value.
  *
- * @param {Number} ships
+ * @param {number} ships
  *            The ships display value to set
  */
 

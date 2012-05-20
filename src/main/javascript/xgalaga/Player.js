@@ -1,25 +1,18 @@
 /**
- * $Id$
  * Copyright (C) 2010 Klaus Reimer <k@ailis.de>
  * See LICENSE.TXT for licensing information
  * 
- * @fileoverview
- * Provides the xgalaga.Player class.
- * 
- * @author Klaus Reimer (k@ailis.de)
- * @version $Revision: 910 $
+ * @require xgalaga.js
  */
-
 
 /**
  * Constructs a new player.
  *
- * @param {xgalaga.Game} game
+ * @param {!xgalaga.Game} game
  *            The game
  * @constructor
  * @class The player
  */
-
 xgalaga.Player = function(game)
 {
     var i;
@@ -31,73 +24,161 @@ xgalaga.Player = function(game)
         this.torps[i] = new xgalaga.PlayerTorpedo(game);
 };
 
-/** The game. @private @type {xgalaga.Game} */
-xgalaga.Player.prototype.game = null;
+/**
+ * The game.
+ * @private
+ * @type {!xgalaga.Game} 
+ */
+xgalaga.Player.prototype.game;
 
-/** The score. @private @type {Number} */
+/**
+ * The HTML element (For HTML rendering).
+ * @private
+ * @type {?Element} 
+ */
+xgalaga.Player.prototype.element;
+
+/**
+ * The score.
+ * @private
+ * @type {number} 
+ */
 xgalaga.Player.prototype.score = 0;
 
-/** The X position. @private @type {Number} */
-xgalaga.Player.prototype.x = null;
+/**
+ * The X position.
+ * @private
+ * @type {number} 
+ */
+xgalaga.Player.prototype.x = 0;
 
-/** The Y position. @private @type {Number} */
-xgalaga.Player.prototype.y = null;
+/**
+ * The Y position.
+ * @private
+ * @type {number} 
+ */
+xgalaga.Player.prototype.y = 0;
 
-/** The X position to move to. @private @type {Number} */
-xgalaga.Player.prototype.mx = null;
+/**
+ * The X position to move to.
+ * @private
+ * @type {number} 
+ */
+xgalaga.Player.prototype.mx = 0;
 
-/** If player is alive. @private @type {Boolean} */
+/**
+ * If player is alive.
+ * @private
+ * @type {boolean} 
+ */
 xgalaga.Player.prototype.alive = true;
 
-/** The current move speed. @private @type {Number} */
-xgalaga.Player.prototype.moveSpeed = null;
+/**
+ * The current move speed.
+ * @private
+ * @type {number} 
+ */
+xgalaga.Player.prototype.moveSpeed = 0;
 
-/** The currently installed weapon. @private @type {Number} */
-xgalaga.Player.prototype.weapon = null;
+/**
+ * The currently installed weapon.
+ * @private
+ * @type {number} 
+ */
+xgalaga.Player.prototype.weapon = 0;
 
-/** The current number of torpedos. @private @type {Number} */
-xgalaga.Player.prototype.numTorps = null;
+/**
+ * The current number of torpedos.
+ * @private
+ * @type {number} 
+ */
+xgalaga.Player.prototype.numTorps = 0;
 
-/** The maximum torpedos. @private @type {Number} */
-xgalaga.Player.prototype.maxTorps = null;
+/**
+ * The maximum torpedos.
+ * @private
+ * @type {number} 
+ */
+xgalaga.Player.prototype.maxTorps = 0;
 
-/** The torpedo timer. @private @type {Number} */
+/**
+ * The torpedo timer.
+ * @private
+ * @type {number} 
+ */
 xgalaga.Player.prototype.torpOk = 0;
 
-/** The number of ships. @private @type {Number} */
-xgalaga.Player.prototype.ships = null;
+/**
+ * The number of ships.
+ * @private
+ * @type {number} 
+ */
+xgalaga.Player.prototype.ships = 0;
 
-/** The shields left. @private @type {Number} */
-xgalaga.Player.prototype.shieldsLeft = null;
+/**
+ * The shields left.
+ * @private
+ * @type {number} 
+ */
+xgalaga.Player.prototype.shieldsLeft = 0;
 
-/** The ship image. @private @type {Number} */
-xgalaga.Player.prototype.image = null;
+/**
+ * The ship image.
+ * @private
+ * @type {!Image} 
+ */
+xgalaga.Player.prototype.image;
 
-/** The current frame. @private @type {Number} */
+/**
+ * The current frame.
+ * @private
+ * @type {number} 
+ */
 xgalaga.Player.prototype.frame = 0;
 
-/** The torpedos. @private @type {Array} */
-xgalaga.Player.prototype.torps = null;
+/**
+ * The torpedos.
+ * @private
+ * @type {!Array.<!xgalaga.PlayerTorpedo>} 
+ */
+xgalaga.Player.prototype.torps;
 
-/** If player is dead. @private @type {Boolean} */
-xgalaga.Player.prototype.dead = null;
+/**
+ * If player is dead.
+ * @private
+ * @type {boolean} 
+ */
+xgalaga.Player.prototype.dead = false;
 
-/** If dead time. @private @type {Number} */
-xgalaga.Player.prototype.deadTime = null;
+/**
+ * If dead time.
+ * @private
+ * @type {number} 
+ */
+xgalaga.Player.prototype.deadTime = 0;
 
-/** The flashing timer. @private @type {Number} */
-xgalaga.Player.prototype.flashing = null;
+/**
+ * The flashing timer.
+ * @private
+ * @type {number} 
+ */
+xgalaga.Player.prototype.flashing = 0;
 
+/**
+ * If player is firing.
+ * @private
+ * @type {boolean}
+ */
+xgalaga.Player.prototype.firing = false;
 
 /**
  * Resets the Player.
  */
-
 xgalaga.Player.prototype.reset = function()
 {
     var i;
 
-    this.mx = this.x = parseInt(this.game.getWidth() / 2);
+    this.mx = this.x = parseInt(this.game.getWidth() / 2, 10);
     this.moveSpeed = xgalaga.MIN_SPEED;
     this.shieldsLeft = 0;
     this.score = 0;
@@ -112,44 +193,38 @@ xgalaga.Player.prototype.reset = function()
         this.torps[i].setAlive(false);
 };
 
-
 /**
  * Returns the current X position of the player.
  * 
- * @return {Number} The current X position
+ * @return {number} The current X position
  */
-
 xgalaga.Player.prototype.getX = function()
 {
     return this.x;
 };
 
-
 /**
  * Resets the player for the next level.
  */
-
 xgalaga.Player.prototype.nextLevel = function()
 {
     this.numTorps = 0;
     // TODO this.gotLemon = false;
 };
 
-
 /**
  * Fires a new torpedo if a torpedo slot is free.
  *
- * @param {Number} x
+ * @param {number} x
  *            Starting X position
- * @param {Number} y
+ * @param {number} y
  *            Starting Y position
- * @param {Number} xs
+ * @param {number} xs
  *            The X speed
- * @param {Number} ys
+ * @param {number} ys
  *            The Y speed
  * @private
  */
-
 xgalaga.Player.prototype.newTorp = function(x, y, xs, ys)
 {
     var i, torp;
@@ -167,11 +242,9 @@ xgalaga.Player.prototype.newTorp = function(x, y, xs, ys)
     }
 };
 
-
 /**
  * Updates the player
  */
-
 xgalaga.Player.prototype.update = function()
 {
     var moveSpeed, winWidth, winHeight, game, i, torp, alien, aliens, j, k, ne,
@@ -222,7 +295,7 @@ xgalaga.Player.prototype.update = function()
                 this.alive = true;
                 this.flashing = 50;
                 this.deadTime = 0;
-                this.mx = this.x = parseInt(winWidth / 2);
+                this.mx = this.x = parseInt(winWidth / 2, 10);
             }
         }
     }
@@ -254,7 +327,7 @@ xgalaga.Player.prototype.update = function()
                             this.addScore(50);
                         else
                         {
-                            this.addScore((6 - parseInt(j / 10)) * 100);
+                            this.addScore((6 - parseInt(j / 10, 10)) * 100);
                             /* TODO
                             if (!Math.parseInt(Math.random() * (this.gotLemon ? 3 : xgalaga.PRIZE_CHANCE)))
 
@@ -288,16 +361,14 @@ xgalaga.Player.prototype.update = function()
     }
 };
 
-
 /**
  * Renders the player.
  *
- * @param {Object} ctx
+ * @param {(!HTMLElement|!CanvasRenderingContext2D)} ctx
  *            The graphics context. This is either a HTML container element
  *            (For HTML render mode) or a canvas 2D context (For Canvas render
  *            mode)
  */
-
 xgalaga.Player.prototype.render = function(ctx)
 {
     var e, s, tmp, img, i, visible;
@@ -331,24 +402,24 @@ xgalaga.Player.prototype.render = function(ctx)
                 s.position = "absolute";
                 s.display = "none";
                 s.backgroundImage = "url(" + this.image.src + ")";
-                e.prevVisible = false;
-                e.prevShape = -1;
-                e.prevX = -20;
-                e.prevY = -20;
-                e.prevFrame = -1;
+                e["prevVisible"] = false;
+                e["prevShape"] = -1;
+                e["prevX"] = -20;
+                e["prevY"] = -20;
+                e["prevFrame"] = -1;
             } else s = e.style;
 
-            if ((tmp = visible) != e.prevVisible)
-                s.display = (e.prevVisible = tmp) ? "block" : "none";
+            if ((tmp = visible) != !!e["prevVisible"])
+                s.display = (e["prevVisible"] = tmp) ? "block" : "none";
             if (tmp)
             {
-                if ((tmp = this.x) != e.prevX)
-                    s.left = ((e.prevX = tmp) - 10) + "px";
-                if ((tmp = this.y) != e.prevY)
-                    s.top = ((e.prevY = tmp) - 10) + "px";
-                if ((tmp = this.frame) != e.prevFrame)
+                if ((tmp = this.x) != +e["prevX"])
+                    s.left = ((e["prevX"] = tmp) - 10) + "px";
+                if ((tmp = this.y) != +e["prevY"])
+                    s.top = ((e["prevY"] = tmp) - 10) + "px";
+                if ((tmp = this.frame) != +e["prevFrame"])
                     s.backgroundPosition = "0 " +
-                    (-((e.prevFrame = tmp) % 4) * 20) + "px";
+                    (-((e["prevFrame"] = tmp) % 4) * 20) + "px";
             }
     }
 
@@ -467,7 +538,7 @@ xgalaga.Player.prototype.fire = function()
 /**
  * Checks if player is dead.
  *
- * @return {Boolean} True if player is dead, false if not
+ * @return {boolean} True if player is dead, false if not
  */
 
 xgalaga.Player.prototype.isDead = function()
@@ -479,7 +550,7 @@ xgalaga.Player.prototype.isDead = function()
 /**
  * Checks if player is flashing (invulnerable).
  *
- * @return {Boolean} True if player is flashing, false if not
+ * @return {boolean} True if player is flashing, false if not
  */
 
 xgalaga.Player.prototype.isFlashing = function()
@@ -493,7 +564,7 @@ xgalaga.Player.prototype.isFlashing = function()
  *
  * TODO Implement me
  *
- * @return {Boolean} True if player has shield, false if not
+ * @return {boolean} True if player has shield, false if not
  */
 
 xgalaga.Player.prototype.hasShield = function()
@@ -518,7 +589,7 @@ xgalaga.Player.prototype.destroy = function()
 /**
  * Returns the currently installed weapon.
  *
- * @return {Number} The currently installed weapon
+ * @return {number} The currently installed weapon
  */
 
 xgalaga.Player.prototype.getWeapon = function()
@@ -529,19 +600,20 @@ xgalaga.Player.prototype.getWeapon = function()
 
 /**
  * Adds points to the score.
+ * 
+ * @param {number} score
+ *            The points to add.
  */
-
 xgalaga.Player.prototype.addScore = function(score)
 {
     this.score += score;
     this.game.getHud().setScore(this.score);
 };
 
-
 /**
  * Returns the current score.
  *
- * @return {Number} The current score
+ * @return {number} The current score
  */
 
 xgalaga.Player.prototype.getScore = function()
@@ -553,7 +625,7 @@ xgalaga.Player.prototype.getScore = function()
 /**
  * Returns the current number of ships.
  *
- * @return {Number} The current number of ships
+ * @return {number} The current number of ships
  */
 
 xgalaga.Player.prototype.getShips = function()

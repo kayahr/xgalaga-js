@@ -1,19 +1,15 @@
 /**
- * $Id: game-assistant.js 910 2009-08-05 12:26:08Z k $
  * Copyright (C) 2009 Klaus Reimer <k@ailis.de>
  * See LICENSE.TXT for licensing information
  * 
- * @fileoverview
- * Provides the Menu class.
- * 
- * @author Klaus Reimer (k@ailis.de)
- * @version $Revision: 910 $
+ * @require xgalaga.js
  */
-
 
 /**
  * Constructs a new menu screen
  * 
+ * @param {!xgalaga.Game} game
+ *            The game.
  * @constructor
  * @class The menu screen
  */
@@ -51,43 +47,43 @@ xgalaga.Menu = function(game)
     buttons.appendChild(e);
     e.id = "continueGameButton";
     e.className = "button";
-    e.onclick = function() { game.continueGame.call(game); };
-    
-    // Create preferences button
-    if (xgalaga.onHelp)
-    {
-        e = document.createElement("div");
-        buttons.appendChild(e);
-        e.id = "helpButton";
-        e.className = "button";
-        e.onclick = xgalaga.onHelp;
-    }    
-
-    // Create preferences button
-    if (xgalaga.onPreferences)
-    {
-        e = document.createElement("div");
-        buttons.appendChild(e);
-        e.id = "preferencesButton";
-        e.className = "button";
-        e.onclick = xgalaga.onPreferences;
-    }    
+    e.onclick = function() { game.continueGame.call(game); };    
 };
 
-/** The game reference. @private @type {xgalaga.Game} */
-xgalaga.Menu.prototype.game = null;
+/**
+ * The game reference.
+ * @private
+ * @type {!xgalaga.Game} 
+ */
+xgalaga.Menu.prototype.game;
 
-/** The HTML element. @private @type {HTMLElement} */
-xgalaga.Menu.prototype.element = null;
+/**
+ * The HTML element.
+ * @private
+ * @type {!Element} 
+ */
+xgalaga.Menu.prototype.element;
 
-/** If menu is open or not. @private @type {Boolean} */
+/**
+ * If menu is open or not.
+ * @private
+ * @type {boolean} 
+ */
 xgalaga.Menu.prototype.opened = false;
 
-/** The buttons container. @private @type {HTMLElement} */
-xgalaga.Menu.prototype.buttons = null;
+/**
+ * The buttons container.
+ * @private
+ * @type {!Element} 
+ */
+xgalaga.Menu.prototype.buttons;
 
-/** The continue button. @private @type {HTMLElement} */
-xgalaga.Menu.prototype.continueButton = null;
+/**
+ * The continue button.
+ * @private
+ * @type {!Element} 
+ */
+xgalaga.Menu.prototype.continueButton;
 
 
 /**
@@ -121,7 +117,7 @@ xgalaga.Menu.prototype.close = function()
 /**
  * Checks if menu is open.
  * 
- * @return {Boolean} True if menu is open, false if not
+ * @return {boolean} True if menu is open, false if not
  */
 
 xgalaga.Menu.prototype.isOpen = function()
@@ -133,9 +129,8 @@ xgalaga.Menu.prototype.isOpen = function()
 /**
  * Returns the root HTML element of the menu screen.
  * 
- * @return {HTMLElement} The root HTML element
+ * @return {!Element} The root HTML element
  */
-
 xgalaga.Menu.prototype.getElement = function()
 {
     return this.element;

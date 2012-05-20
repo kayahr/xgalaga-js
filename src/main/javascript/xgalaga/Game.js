@@ -1,28 +1,21 @@
 /**
- * $Id$
  * Copyright (C) 2010 Klaus Reimer <k@ailis.de>
  * See LICENSE.TXT for licensing information
  * 
- * @fileoverview
- * Provides the xgalaga.Game class.
- * 
- * @author Klaus Reimer (k@ailis.de)
- * @version $Revision: 910 $
+ * @require xgalaga.js
  */
-
 
 /**
  * Constructs a new game.
  *
- * @param {HTMLElement} containerId
+ * @param {string} containerId
  *            The ID of the HTML container element
- * @param {Boolean} autoStart
+ * @param {boolean} autoStart
  *            If game should start automatically after initialization.
  *            This parameter is optional and defaults to true
  * @constructor
  * @class A game
  */
-
 xgalaga.Game = function(containerId, autoStart)
 {
     this.containerId = containerId;
@@ -30,83 +23,187 @@ xgalaga.Game = function(containerId, autoStart)
     this.init();
 };
 
-/** The ID of the HTML container element. @private @type {String} */
-xgalaga.Game.prototype.containerId = null;
+/** 
+ * The ID of the HTML container element. 
+ * @private 
+ * @type {string} 
+ */
+xgalaga.Game.prototype.containerId;
 
-/** The HTML container element. @private @type {HTMLElement} */
+/**
+ * The HTML container element.
+ * @private
+ * @type {?Element} 
+ */
 xgalaga.Game.prototype.container = null;
 
-/** The game canvas. @private @type {HTMLCanvasElement} */
+/**
+ * The game canvas.
+ * @private
+ * @type {?HTMLCanvasElement} 
+ */
 xgalaga.Game.prototype.canvas = null;
 
-/** The graphics context. @private @type {Object} */
-xgalaga.Game.prototype.ctx = null;
+/**
+ * The graphics context.
+ * @private
+ * @type {(!CanvasRenderingContext2D|!HTMLElement)} 
+ */
+xgalaga.Game.prototype.ctx;
 
-/** The screen width. @private @type {Number} */
-xgalaga.Game.prototype.width = null;
+/**
+ * The screen width.
+ * @private
+ * @type {number} 
+ */
+xgalaga.Game.prototype.width = 0;
 
-/** The screen height. @private @type {Number} */
-xgalaga.Game.prototype.height = null;
+/**
+ * The screen height.
+ * @private
+ * @type {number} 
+ */
+xgalaga.Game.prototype.height = 0;
 
-/** The render mode. @private @type {Number} */
+/**
+ * The render mode.
+ * @private
+ * @type {number} 
+ */
 xgalaga.Game.prototype.renderMode = xgalaga.RENDER_MODE_CANVAS;
 
-/** If game should start automatically after init. @private @type {Boolean} */
+/**
+ * If game should start automatically after init.
+ * @private
+ * @type {boolean} 
+ */
 xgalaga.Game.prototype.autoStart = true;
 
-/** The game thread. @private @type {Function} */
+/**
+ * The game thread.
+ * @private
+ * @type {Function} 
+ */
 xgalaga.Game.prototype.gameThread = null;
 
-/** The game thread timer. @private @type {Object} */
+/**
+ * The game thread timer.
+ * @private
+ * @type {?number} 
+ */
 xgalaga.Game.prototype.timer = null;
 
-/** The star field. @private @type {xgalaga.StarField} */
-xgalaga.Game.prototype.starField = null;
+/**
+ * The star field.
+ * @private
+ * @type {!xgalaga.StarField} 
+ */
+xgalaga.Game.prototype.starField;
 
-/** The aliens. @private @type {xgalaga.Aliens} */
-xgalaga.Game.prototype.aliens = null;
+/**
+ * The aliens.
+ * @private
+ * @type {!xgalaga.Aliens} 
+ */
+xgalaga.Game.prototype.aliens;
 
-/** The player. @private @type {xgalaga.Player} */
-xgalaga.Game.prototype.player = null;
+/**
+ * The player.
+ * @private
+ * @type {!xgalaga.Player} 
+ */
+xgalaga.Game.prototype.player;
 
-/** The explosions. @private @type {xgalaga.Explosions} */
-xgalaga.Game.prototype.explosions = null;
+/**
+ * The explosions.
+ * @private
+ * @type {!xgalaga.Explosions} 
+ */
+xgalaga.Game.prototype.explosions;
 
-/** The current level number. @private @type {Number} */
-xgalaga.Game.prototype.levelNo = null;
+/**
+ * The current level number.
+ * @private
+ * @type {number} 
+ */
+xgalaga.Game.prototype.levelNo = 0;
 
-/** The key down handler. @private @type {Function} */
+/**
+ * The key down handler.
+ * @private
+ * @type {Function} 
+ */
 xgalaga.Game.prototype.keyDownHandler = null;
 
-/** The key up handler. @private @type {Function} */
+/**
+ * The key up handler.
+ * @private
+ * @type {Function} 
+ */
 xgalaga.Game.prototype.keyUpHandler = null;
 
-/** The mouse down handler. @private @type {Function} */
+/**
+ * The mouse down handler.
+ * @private
+ * @type {Function} 
+ */
 xgalaga.Game.prototype.mouseDownHandler = null;
 
-/** The mouse up handler. @private @type {Function} */
+/**
+ * The mouse up handler.
+ * @private
+ * @type {Function} 
+ */
 xgalaga.Game.prototype.mouseUpHandler = null;
 
-/** The orientation change handler. @private @type {Function} */
+/**
+ * The orientation change handler.
+ * @private
+ * @type {Function} 
+ */
 xgalaga.Game.prototype.orientationChangeHandler = null;
 
-/** If game has been paused. @private @type {Boolean} */
+/**
+ * If game has been paused.
+ * @private
+ * @type {boolean} 
+ */
 xgalaga.Game.prototype.paused = false;
 
-/** If game is over. @private @type {Boolean} */
+/**
+ * If game is over.
+ * @private
+ * @type {boolean} 
+ */
 xgalaga.Game.prototype.gameOver = true;
 
-/** The game-state label. @private @type {HTMLElement} */
+/**
+ * The game-state label.
+ * @private
+ * @type {Element} 
+ */
 xgalaga.Game.prototype.stateLabel = null;
 
-/** The menu. @private @type {xgalaga.Menu} */
+/**
+ * The menu.
+ * @private
+ * @type {xgalaga.Menu} 
+ */
 xgalaga.Game.prototype.menu = null;
 
-/** The hud. @private @type {xgalaga.Hud} */
+/**
+ * The hud.
+ * @private
+ * @type {xgalaga.Hud} 
+ */
 xgalaga.Game.prototype.hud = null;
 
-
-
+/**
+ * If game has been initialized or not.
+ * @private
+ * @type {boolean}
+ */
+xgalaga.Game.prototype.initialized = false;
 
 /**
  * Initializes the game.
@@ -124,7 +221,7 @@ xgalaga.Game.prototype.init = function()
     // If not yet present then delay initialization
     if (!container)
     {
-        this.init.bind(this).delay(0.1);
+        window.setTimeout(this.init.bind(this), 100);
         return;
     }
 
@@ -132,10 +229,12 @@ xgalaga.Game.prototype.init = function()
     switch (this.renderMode)
     {
         case xgalaga.RENDER_MODE_CANVAS:
-            canvas = this.canvas = document.createElement("canvas");
+            canvas = this.canvas = /** @type {HTMLCanvasElement} */ 
+                document.createElement("canvas");
             container.appendChild(canvas);
             canvas.id = "gameCanvas";
-            this.ctx = canvas.getContext("2d");
+            this.ctx = /** @type {!CanvasRenderingContext2D} */ 
+                canvas.getContext("2d");
             break;
             
         default:
@@ -143,17 +242,17 @@ xgalaga.Game.prototype.init = function()
     }
 
     // Re-call resize method when window resizes
-    Event.observe(window, "resize", this.resize.bindAsEventListener(this));
+    // TODO
+    //Event.observe(window, "resize", this.resize.bindAsEventListener(this));
 
     // Create game thread
     this.gameThread = this.run.bind(this);
 
     // Create keyboard listeners
-    this.keyDownHandler = this.handleKeyDown.bindAsEventListener(this);
-    this.keyUpHandler = this.handleKeyUp.bindAsEventListener(this);
-    this.mouseDownHandler = this.handleMouseDown.bindAsEventListener(this);
-    this.mouseUpHandler = this.handleMouseUp.bindAsEventListener(this);
-    this.orientationChangeHandler = this.handleOrientationChange.bindAsEventListener(this);
+    this.keyDownHandler = this.handleKeyDown.bind(this);
+    this.keyUpHandler = this.handleKeyUp.bind(this);
+    this.mouseDownHandler = this.handleMouseDown.bind(this);
+    this.mouseUpHandler = this.handleMouseUp.bind(this);
     
     // Initialize the game size
     this.resize();
@@ -224,7 +323,7 @@ xgalaga.Game.prototype.reset = function()
 /**
  * Goes to the specified level.
  *
- * @param {Number} levelNo
+ * @param {number} levelNo
  *            The number of the level to go to
  * @private
  */
@@ -250,23 +349,19 @@ xgalaga.Game.prototype.gotoLevel = function(levelNo)
     this.gameOver = false;
 };
 
-
 /**
  * Checks if game is initialized.
  *
- * @return {Boolean} True if game is initialized, false if not
+ * @return {boolean} True if game is initialized, false if not
  */
-
 xgalaga.Game.prototype.isInitialized = function()
 {
     return this.initialized;
 };
 
-
 /**
  * Starts the game.
  */
- 
 xgalaga.Game.prototype.start = function()
 {
     // Do nothing if game is not initialized yet
@@ -277,7 +372,6 @@ xgalaga.Game.prototype.start = function()
         this.timer = window.setInterval(this.gameThread, 33);
 
     // Install keyboard handlers
-    document.addEventListener("orientationchange", this.orientationChangeHandler, false);
     window.addEventListener("keydown", this.keyDownHandler, false);
     window.addEventListener("keyup", this.keyUpHandler, false);
     this.container.addEventListener("mousedown", this.mouseDownHandler, false);
@@ -394,7 +488,7 @@ xgalaga.Game.prototype.run = function()
             {
                 // TODO play_sound(SND_WARP);
                 this.stateLabel.innerHTML = xgalaga.msgNextLevel.replace(
-                    "%LEVEL%", this.levelNo + 1);
+                    "%LEVEL%", "" + (this.levelNo + 1));
                 this.hud.close();
                 this.showStateLabel();
             }
@@ -417,7 +511,7 @@ xgalaga.Game.prototype.run = function()
 /**
  * Returns the screen width.
  *
- * @return {Number} The screen width
+ * @return {number} The screen width
  */
 
 xgalaga.Game.prototype.getWidth = function()
@@ -429,7 +523,7 @@ xgalaga.Game.prototype.getWidth = function()
 /**
  * Returns the screen height.
  *
- * @return {Number} The screen height
+ * @return {number} The screen height
  */
 
 xgalaga.Game.prototype.getHeight = function()
@@ -441,7 +535,7 @@ xgalaga.Game.prototype.getHeight = function()
 /**
  * Returns the render mode.
  * 
- * @return {Number} The render mode
+ * @return {number} The render mode
  */
 
 xgalaga.Game.prototype.getRenderMode = function()
@@ -501,11 +595,11 @@ xgalaga.Game.prototype.getStarField = function()
 /**
  * Checks if control is in the specified controls array.
  *
- * @param {Number} control
+ * @param {number} control
  *            The control to check
  * @param {Array} controls
  *            Controls array
- * @return {Boolean} True if control is in the array, false if not
+ * @return {boolean} True if control is in the array, false if not
  * @private
  */
 
@@ -522,9 +616,9 @@ xgalaga.Game.prototype.isControl = function(control, controls)
 /**
  * Handles the control down event.
  *
- * @param {Number} control
+ * @param {number} control
  *            The control id
- * @return {Boolean} True if event was handles, false if not
+ * @return {boolean} True if event was handles, false if not
  *
  * @private
  */
@@ -562,9 +656,9 @@ xgalaga.Game.prototype.handleControlDown = function(control)
 /**
  * Handles the control up event.
  *
- * @param {Number} control
+ * @param {number} control
  *            The control id
- * @return {Boolean} True if event was handles, false if not
+ * @return {boolean} True if event was handles, false if not
  *
  * @private
  */
@@ -650,103 +744,6 @@ xgalaga.Game.prototype.handleMouseUp = function(event)
 
 
 /**
- * Handles the orientation change event.
- *
- * @param {Event} event
- *            The orientation change event
- * @private
- */
-
-xgalaga.Game.prototype.handleOrientationChange = function(event)
-{
-    var roll, pitch;
-
-    // If position is not 0 or 1 then a orientation change was performed.
-    // Remember this orientation change because this is the base for
-    // calculating the yaw angle.
-    if (event.position > 1) this.lastOrientation = event.position;
-
-    // Do nothing more if game is over
-    if (this.gameOver) return;
-
-    // Calculate the yaw angle
-    switch (this.lastOrientation)
-    {
-        case 2:
-            roll = event.roll;
-            pitch = -event.pitch;
-            break;
-
-        case 3:
-            roll = -event.roll;
-            pitch = event.pitch;
-            break;
-
-        case 4:
-            roll = -event.pitch;
-            pitch = -event.roll;
-            break;
-
-        case 5:
-            roll = event.pitch;
-            pitch = event.roll;
-            break;
-
-        default:
-            roll = 0;
-            pitch = 0;
-    }
-
-    roll -= xgalaga.ctrlRollCenter;
-    pitch -= xgalaga.ctrlPitchCenter;
-
-    // Dead zone
-    rollDeadZone = xgalaga.ctrlRollDeadZone / 2;
-    pitchDeadZone = xgalaga.ctrlPitchDeadZone / 2;
-    if (Math.abs(roll) < rollDeadZone) roll = 0;
-    if (Math.abs(pitch) < pitchDeadZone) pitch = 0;
-
-    // Calculate power
-    rollRange = xgalaga.ctrlRollRange / 2;
-    pitchRange = xgalaga.ctrlPitchRange / 2;
-    rollPower = Math.min(100, (Math.abs(roll) - rollDeadZone) * 100 / (rollRange - rollDeadZone));
-    pitchPower = Math.min(100, (Math.abs(pitch) - pitchDeadZone) * 100 / (pitchRange - pitchDeadZone));
-
-    // Apply the roll and pitch
-    if (roll > 0)
-    {
-        this.handleControlUp(-2);
-        this.handleControlDown(-3);
-    }
-    else if (roll < 0)
-    {
-        this.handleControlUp(-3);
-        this.handleControlDown(-2);
-    }
-    else
-    {
-        this.handleControlUp(-2);
-        this.handleControlUp(-3);
-    }
-    if (pitch > 0)
-    {
-        this.handleControlUp(-4);
-        this.handleControlDown(-5);
-    }
-    else if (pitch < 0)
-    {
-        this.handleControlUp(-5);
-        this.handleControlDown(-4);
-    }
-    else
-    {
-        this.handleControlUp(-4);
-        this.handleControlUp(-5);
-    }
-};
-
-
-/**
  * Ends the game.
  */
 
@@ -761,10 +758,11 @@ xgalaga.Game.prototype.endGame = function()
         this.stateLabel.innerHTML = xgalaga.msgGameOver.replace("%SCORE%",
             xgalaga.formatNumber(score));
         this.showStateLabel();
+        
         if (xgalaga.HighScores.getInstance().determineRank(score))
-            this.newHighScore.bind(this).delay(5);
+            window.setTimeout(this.newHighScore.bind(this), 500);
         else
-            this.startIntro.bind(this).delay(5);
+            window.setTimeout(this.startIntro.bind(this), 500);
         this.hud.close();
     }
 };
@@ -794,9 +792,10 @@ xgalaga.Game.prototype.newGame = function()
     this.menu.close();
     this.resume();
     this.destroyAll();
-    this.stateLabel.innerHTML = xgalaga.msgNextLevel.replace("%LEVEL%", 1);
+    this.stateLabel.innerHTML = xgalaga.msgNextLevel.replace("%LEVEL%", "1");
     this.showStateLabel();
-    this.reset.bind(this).delay(2);
+    
+    window.setTimeout(this.reset.bind(this), 2000);
 };
 
 
@@ -815,7 +814,7 @@ xgalaga.Game.prototype.startIntro = function()
 /**
  * Checks if the game is over.
  *
- * @return {Boolean} True if game is over, false if not
+ * @return {boolean} True if game is over, false if not
  */
 
 xgalaga.Game.prototype.isGameOver = function()
@@ -861,7 +860,7 @@ xgalaga.Game.prototype.destroyAll = function()
 /**
  * Records a new high score.
  *
- * @param {Number} place
+ * @param {number} place
  *            The achieved place
  * @private
  */
@@ -875,7 +874,7 @@ xgalaga.Game.prototype.newHighScore = function(place)
     rank = highScores.determineRank(score);
     message = xgalaga.msgNewHighScore.replace("%SCORE%",
         xgalaga.formatNumber(score)).
-        replace("%RANK%", rank)
+        replace("%RANK%", "" + rank)
     xgalaga.onPrompt(xgalaga.msgNewHighScoreTitle, message,
         this.saveHighScore, this);
 };
@@ -885,7 +884,7 @@ xgalaga.Game.prototype.newHighScore = function(place)
  * Submits the high score name. This method must be called by the external
  * newHighScore
  *
- * @param {String} name
+ * @param {string} name
  *            The high score name
  * @private
  */

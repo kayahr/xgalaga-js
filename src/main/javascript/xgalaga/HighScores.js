@@ -1,15 +1,9 @@
 /**
- * $Id: HighScores.js 906 2009-08-05 08:35:52Z k $
  * Copyright (C) 2010 Klaus Reimer <k@ailis.de>
  * See LICENSE.TXT for licensing information
  * 
- * @fileoverview
- * Provides the highscores.
- * 
- * @author Klaus Reimer (k@ailis.de)
- * @version $Revision: 906 $
+ * @require jade.js
  */
-
 
 /**
  * Constructs a new instance of the highscores.
@@ -18,50 +12,57 @@
  * @class The highscores.
  * 
  */
-
 xgalaga.HighScores = function()
 {
     this.scores = [];
     this.load();
 };
 
-/** The singleton instance. @private @type {xgalaga.HighScores} */
+/**
+ * The singleton instance.
+ * @private
+ * @type {?xgalaga.HighScores} 
+ */
 xgalaga.HighScores.instance = null;
 
-/** If array with the scores (Entries:name,level,score). @private @type {Array} */
-xgalaga.HighScores.prototype.scores = null;
+/**
+ * Array with the scores (Entries:name,level,score).
+ * @private
+ * @type {!Array.<!{name:string,level:number,score:number}>} 
+ */
+xgalaga.HighScores.prototype.scores;
 
-/** The maximum number of entries in the high score list. @type {String} */
+/**
+ * The maximum number of entries in the high score list.
+ * @type {number} 
+ */
 xgalaga.HighScores.prototype.entries = 5;
-
 
 /**
  * Returns the singleton instance of the high scores list.
  * 
- * @return {xgalaga.HighScores} The high scores
+ * @return {!xgalaga.HighScores} The high scores
  */
-
 xgalaga.HighScores.getInstance = function()
 {
-    if (!this.instance) this.instance = new xgalaga.HighScores();
-    return this.instance;
+    if (!xgalaga.HighScores.instance) xgalaga.HighScores.instance = new xgalaga.HighScores();
+    return xgalaga.HighScores.instance;
 };
-
 
 /**
  * Loads the high scores.
  * 
  * @private
  */
-
 xgalaga.HighScores.prototype.load = function()
 {
     var cookie, name, level, score, i;
-    
+  
+    // TODO IMplement highscore storage.
     // Read high scores from mojo cookies if possible
-    if (window.Mojo && Mojo.Model && Mojo.Model.Cookie)
-        cookie = new Mojo.Model.Cookie("highscores").get();
-
+//    if (window.Mojo && Mojo.Model && Mojo.Model.Cookie)
+//        cookie = new Mojo.Model.Cookie("highscores").get();
+/*
     if (cookie)
     {
         
@@ -78,13 +79,12 @@ xgalaga.HighScores.prototype.load = function()
             });
         }
     } else this.reset();
+    */
 };
-
 
 /**
  * Saves the high scores.
  */
-
 xgalaga.HighScores.prototype.save = function()
 {
     var data, max, entry, i;
@@ -99,8 +99,10 @@ xgalaga.HighScores.prototype.save = function()
     }
 
     // Write to Mojo cookie if available
-    if (window.Mojo && Mojo.Model && Mojo.Model.Cookie)
-        new Mojo.Model.Cookie("highscores").put(data);
+    // TODO Implement highscore saving
+    
+    //if (window.Mojo && Mojo.Model && Mojo.Model.Cookie)
+      //  new Mojo.Model.Cookie("highscores").put(data);
 };
 
 
@@ -125,14 +127,14 @@ xgalaga.HighScores.prototype.reset = function()
  * Returns 0 if this score is not good enough to be recorded in the list at
  * all.
  * 
- * @return {Number} score
+ * @param {number} score
  *             The score
- * @return {Number} The rank or 0 if not in the list.
+ * @return {number} The rank or 0 if not in the list.
  */
 
 xgalaga.HighScores.prototype.determineRank = function(score)
 {
-    var rank, entries;
+    var rank, entries, entry;
     
     for (rank = 0, entries = this.scores.length; rank < entries; rank++)
     {
@@ -147,11 +149,11 @@ xgalaga.HighScores.prototype.determineRank = function(score)
 /**
  * Adds a new high score entry.
  * 
- * @param {String} name
+ * @param {string} name
  *            The name to add
- * @param {Number} level
+ * @param {number} level
  *            The level to add
- * @param {Number} score
+ * @param {number} score
  *            The score to add
  */
 

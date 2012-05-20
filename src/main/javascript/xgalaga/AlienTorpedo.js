@@ -1,33 +1,26 @@
 /**
- * $Id$
  * Copyright (C) 2010 Klaus Reimer <k@ailis.de>
  * See LICENSE.TXT for licensing information
- * 
- * @fileoverview
- * Provides the xgalaga.AlienTorpedo class.
- * 
- * @author Klaus Reimer (k@ailis.de)
- * @version $Revision: 910 $
+ *
+ * @require xgalaga.js
  */
-
 
 /**
  * Constructs a new torpedo.
  *
- * @param {xgalaga.Game} game
+ * @param {!xgalaga.Game} game
  *            The game
- * @param {Number} x
+ * @param {number} x
  *            The X position of the torpedo
- * @param {Number} y
+ * @param {number} y
  *            The Y position of the torpedo
- * @param {Number} xSpeed
+ * @param {number} xSpeed
  *            The X speed
- * @param {Number} ySpeed
+ * @param {number} ySpeed
  *            The Y speed
  * @constructor
  * @class A torpedo
  */
-
 xgalaga.AlienTorpedo = function(game, x, y, xSpeed, ySpeed)
 {
     this.game = game;
@@ -39,38 +32,86 @@ xgalaga.AlienTorpedo = function(game, x, y, xSpeed, ySpeed)
     this.image.src = "images/etorp.png"
 };
 
-/** If torpedo is alive. @private @type {Boolean} */
+/**
+ * The game
+ * @private
+ * @type {!xgalaga.Game}
+ */
+xgalaga.AlienTorpedo.prototype.game;
+
+/**
+ * The HTML element (For HTML rendering mode.
+ * @private
+ * @type {?Element}
+ */
+xgalaga.AlienTorpedo.prototype.element = null;
+
+/**
+ * If torpedo is alive.
+ * @private
+ * @type {boolean} 
+ */
 xgalaga.AlienTorpedo.prototype.alive = true;
 
-/** The torpedo image. @private @type {Image} */
-xgalaga.AlienTorpedo.prototype.image = null;
+/**
+ * The torpedo image.
+ * @private
+ * @type {!Image} 
+ */
+xgalaga.AlienTorpedo.prototype.image;
 
-/** The current animation frame index. @private @type {Number} */
+/**
+ * The current animation frame index.
+ * @private
+ * @type {number} 
+ */
 xgalaga.AlienTorpedo.prototype.frame = 0;
 
-/** The current X position. @private @type {Number} */
-xgalaga.AlienTorpedo.prototype.x = null;
+/**
+ * The current X position.
+ * @private
+ * @type {number} 
+ */
+xgalaga.AlienTorpedo.prototype.x = 0;
 
-/** The current Y position. @private @type {Number} */
-xgalaga.AlienTorpedo.prototype.y = null;
+/**
+ * The current Y position.
+ * @private
+ * @type {number} 
+ */
+xgalaga.AlienTorpedo.prototype.y = 0;
 
-/** The X speed. @private @type {Number} */
-xgalaga.AlienTorpedo.prototype.xSpeed = null;
+/**
+ * The X speed.
+ * @private
+ * @type {number} 
+ */
+xgalaga.AlienTorpedo.prototype.xSpeed = 0;
 
-/** The Y speed. @private @type {Number} */
-xgalaga.AlienTorpedo.prototype.ySpeed = null;
+/**
+ * The Y speed.
+ * @private
+ * @type {number} 
+ */
+xgalaga.AlienTorpedo.prototype.ySpeed = 0;
 
-/** The next torpedo in the linked list. @private @type {xgalaga.AlienTorpedo} */
+/**
+ * The next torpedo in the linked list.
+ * @private
+ * @type {?xgalaga.AlienTorpedo} 
+ */
 xgalaga.AlienTorpedo.prototype.next = null;
 
-/** The previous torpedo in the linked list. @private @type {xgalaga.AlienTorpedo} */
+/**
+ * The previous torpedo in the linked list.
+ * @private
+ * @type {?xgalaga.AlienTorpedo} 
+ */
 xgalaga.AlienTorpedo.prototype.prev = null;
-
 
 /**
  * Moves the torpedo
  */
-
 xgalaga.AlienTorpedo.prototype.move = function()
 {
     this.x += this.xSpeed;
@@ -78,101 +119,91 @@ xgalaga.AlienTorpedo.prototype.move = function()
     this.frame++;
 };
 
-
 /**
  * Returns the next torpedo in the linked list.
  * 
- * @return {xgalaga.AlienTorpedo} The next torpedo or null if none
+ * @return {?xgalaga.AlienTorpedo} 
+ *            The next torpedo or null if none.
  */
-
 xgalaga.AlienTorpedo.prototype.getNext = function()
 {
     return this.next
 };
 
-
 /**
  * Returns the previous torpedo in the linked list.
  *
- * @return {xgalaga.AlienTorpedo} The previous torpedo or null if none
+ * @return {?xgalaga.AlienTorpedo} 
+ *            The previous torpedo or null if none.
  */
-
 xgalaga.AlienTorpedo.prototype.getPrev = function()
 {
     return this.prev;
 };
 
-
 /**
  * Sets the next torpedo in the linked list.
  * 
- * @param {xgalaga.AlienTorpedo} next
- *            The next torpedo to set
+ * @param {?xgalaga.AlienTorpedo} next
+ *            The next torpedo to set. Null for none.
  */
-
 xgalaga.AlienTorpedo.prototype.setNext = function(next)
 {
     this.next = next;
 };
 
-
 /**
  * Sets the previous torpedo in the linked list.
  *
- * @param {xgalaga.AlienTorpedo} prev
- *            The previous torpedo to set
+ * @param {?xgalaga.AlienTorpedo} prev
+ *            The previous torpedo to set. Null for none.
  */
-
 xgalaga.AlienTorpedo.prototype.setPrev = function(prev)
 {
     this.prev = prev;
 };
 
-
 /**
  * Checks if torpedo is alive.
  * 
- * @return {Boolean} True if torped is alive, false if not
+ * @return {boolean} 
+ *            True if torpedo is alive, false if not.
  */
 xgalaga.AlienTorpedo.prototype.isAlive = function()
 {
     return this.alive;
 };
 
-
 /**
  * Returns the current X position of the torpedo.
  *
- * @return {Number} The X position
+ * @return {number} 
+ *            The X position.
  */
-
 xgalaga.AlienTorpedo.prototype.getX = function()
 {
     return this.x;
 };
 
-
 /**
  * Returns the current Y position of the torpedo.
  *
- * @return {Number} The Y position
+ * @return {number} 
+ *            The Y position.
  */
-
 xgalaga.AlienTorpedo.prototype.getY = function()
 {
     return this.y;
 };
 
-
 /**
  * Renders the rorpedo.
  *
- * @param {Object} ctx
+ * @param {(!HTMLElement|!CanvasRenderingContext2D)} ctx
  *            The graphics context. This is either a HTML container element
  *            (For HTML render mode) or a canvas 2D context (For Canvas render
  *            mode)
  */
-
 xgalaga.AlienTorpedo.prototype.render = function(ctx)
 {
     var e, s, tmp, img;
@@ -200,15 +231,15 @@ xgalaga.AlienTorpedo.prototype.render = function(ctx)
                 s.overflow = "hidden";
                 s.position = "absolute";
                 s.backgroundImage = "url(images/etorp.png)";
-                e.prevAlive = false;
-                e.prevFrame = -1;
-                e.prevX = -5;
-                e.prevY = -5;
+                e["prevAlive"] = false;
+                e["prevFrame"] = -1;
+                e["prevX"] = -5;
+                e["prevY"] = -5;
             } else s = e.style;
 
-            if ((tmp = this.alive) != e.prevAlive)
+            if ((tmp = this.alive) != !!e["prevAlive"])
             {
-                e.prevAlive = tmp;
+                e["prevAlive"] = tmp;
                 if (tmp)
                     ctx.appendChild(e);
                 else
@@ -216,13 +247,13 @@ xgalaga.AlienTorpedo.prototype.render = function(ctx)
             }
             if (tmp)
             {
-                if ((tmp = this.x) != e.prevX)
-                    s.left = ((e.prevX = tmp) - 2) + "px";
-                if ((tmp = this.y) != e.prevY)
-                    s.top = ((e.prevY = tmp) - 2) + "px";
-                if ((tmp = this.frame) != e.prevFrame)
+                if ((tmp = this.x) != +e["prevX"])
+                    s.left = ((e["prevX"] = tmp) - 2) + "px";
+                if ((tmp = this.y) != +e["prevY"])
+                    s.top = ((e["prevY"] = tmp) - 2) + "px";
+                if ((tmp = this.frame) != +e["prevFrame"])
                     s.backgroundPosition = "0 " +
-                        (-((e.prevFrame = tmp) % 8) * 5) + "px";
+                        (-((e["prevFrame"] = tmp) % 8) * 5) + "px";
             }
     }
 };

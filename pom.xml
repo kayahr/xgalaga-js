@@ -8,7 +8,7 @@
   <packaging>javascript</packaging>
   <name>xgalaga</name>
   <version>1.0.0-SNAPSHOT</version>
-  <url>http://www.ailis.de/~k/projects/xgalaga/</url>
+  <url>https://github.com/kayahr/${project.artifactId}/</url>
   <description>JavaScript implementation of xgalaga</description>
   <inceptionYear>2010</inceptionYear>
   <organization>
@@ -17,11 +17,11 @@
   </organization>
 
   <scm>
-    <url>https://scm.ailis.de/viewvc/svn/javascript/xgalaga/trunk/</url>
-    <connection>scm:svn:http://scm.ailis.de/svn/javascript/xgalaga/trunk/</connection>
-    <developerConnection>scm:svn:https://scm.ailis.de/svn/javascript/xgalaga/trunk</developerConnection>
+    <connection>scm:git:git://github.com/kayahr/${project.artifactId}.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/kayahr/${project.artifactId}.git</developerConnection>
+    <url>http://github.com/kayahr/${project.artifactId}</url>
   </scm>
-  
+
   <licenses>
     <license>
       <name>LGPL</name>
@@ -40,93 +40,133 @@
   </properties>
 
   <build>
-    <plugins>      
+    <sourceDirectory>src/main/javascript</sourceDirectory>
+    <outputDirectory>target/files</outputDirectory>
+    
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>de.ailis.maven.plugins</groupId>
+                    <artifactId>maven-javascript-plugin</artifactId>
+                    <versionRange>[1.0.0,)</versionRange>
+                    <goals>
+                      <goal>compile</goal>
+                      <goal>resources</goal>
+                      <goal>demo</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <execute />
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    
+    <plugins>
       <plugin>
-        <groupId>de.ailis.maven</groupId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId> 
+        <version>3.0</version>
+        <configuration>
+          <chmod>false</chmod>
+          <locales>en</locales>
+          <inputEncoding>${project.build.sourceEncoding}</inputEncoding>
+          <outputEncoding>${project.build.sourceEncoding}</outputEncoding>
+          <reportPlugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-project-info-reports-plugin</artifactId>
+              <version>2.4</version>
+              <configuration>
+                <dependencyDetailEnabled>false</dependencyDetailEnabled>
+                <dependencyLocationsEnabled>false</dependencyLocationsEnabled>                
+              </configuration>
+              <reports>
+                <report>summary</report>
+                <report>dependencies</report>
+                <report>project-team</report>
+                <report>issue-tracking</report>
+                <report>license</report>
+                <report>scm</report>
+              </reports>
+            </plugin>
+          </reportPlugins>
+        </configuration>
+      </plugin>
+      <plugin> 
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptors>
+            <descriptor>src/main/assembly/dist.xml</descriptor>
+          </descriptors>
+          <archiverConfig>
+            <fileMode>420</fileMode>
+            <directoryMode>493</directoryMode>
+            <defaultDirectoryMode>493</defaultDirectoryMode>
+          </archiverConfig>
+        </configuration>
+        <executions>
+          <execution>
+            <id>package-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attached</goal>
+            </goals>
+          </execution>
+        </executions> 
+      </plugin>
+      <plugin>
+        <groupId>de.ailis.maven.plugins</groupId>
         <artifactId>maven-javascript-plugin</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.5</version>
         <extensions>true</extensions>
         <configuration>
-          <order>
-            <file>xgalaga.js</file>
-            <file>xgalaga/Star.js</file>
-            <file>xgalaga/StarField.js</file>
-            <file>xgalaga/PathEntry.js</file>
-            <file>xgalaga/PathInfo.js</file>
-            <file>xgalaga/Level.js</file>
-            <file>xgalaga/Alien.js</file>
-            <file>xgalaga/AlienTorpedo.js</file>
-            <file>xgalaga/AlienTorpedos.js</file>
-            <file>xgalaga/Aliens.js</file>
-            <file>xgalaga/Player.js</file>
-            <file>xgalaga/Explosion.js</file>
-            <file>xgalaga/Explosions.js</file>
-            <file>xgalaga/Highscores.js</file>
-            <file>xgalaga/Menu.js</file>
-            <file>xgalaga/Hud.js</file>
-            <file>xgalaga/Game.js</file>
-            <file>xgalaga/levels.js</file>
-          </order>
+          <incremental>true</incremental>
         </configuration>
       </plugin>
     </plugins>
   </build>
 
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-         <reportSets>
-           <reportSet>
-             <reports>
-               <report>index</report>
-               <report>dependencies</report>
-               <report>project-team</report>
-               <report>license</report>
-               <report>scm</report>
-             </reports>
-           </reportSet>
-        </reportSets>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>taglist-maven-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </reporting>
-
   <distributionManagement>
     <repository>
       <id>ailis-releases</id>
       <name>Ailis Maven Releases</name>
-      <url>https://www.ailis.de/nexus/content/repositories/releases</url>
+      <url>http://nexus.ailis.de/content/repositories/releases</url>
     </repository>
     <snapshotRepository>
       <id>ailis-snapshots</id>
       <name>Ailis Maven Snapshots</name>
-      <url>https://www.ailis.de/nexus/content/repositories/snapshots</url>
+      <url>http://nexus.ailis.de/content/repositories/snapshots</url>
     </snapshotRepository>
-    <site>
-      <id>k-website</id>
-      <url>scpexe://k@ailis.de/home/k/public_html/projects/wlandsuite</url>
-    </site>
   </distributionManagement>
 
   <repositories>
     <repository>
       <id>ailis-releases</id>
       <name>Ailis Maven Releases</name>
-      <url>https://www.ailis.de/nexus/content/repositories/releases</url>
+      <url>http://nexus.ailis.de/content/repositories/releases</url>
     </repository>
     <repository>
       <id>ailis-snapshots</id>
       <name>Ailis Maven Snapshots</name>
-      <url>https://www.ailis.de/nexus/content/repositories/snapshots</url>
+      <url>http://nexus.ailis.de/content/repositories/snapshots</url>
       <snapshots />
     </repository>
   </repositories>
-    
+
+<!--    
   <dependencies>
     <dependency>
       <groupId>org.prototypejs</groupId>
@@ -134,7 +174,7 @@
       <version>1.6.1</version>
     </dependency>
   </dependencies>
-
+-->
 </project>
 
 

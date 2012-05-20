@@ -1,54 +1,64 @@
 /**
- * $Id$
  * Copyright (C) 2010 Klaus Reimer <k@ailis.de>
  * See LICENSE.TXT for licensing information
- * 
- * @fileoverview
- * Provides the xgalaga.AlienTorpedos class.
- * 
- * @author Klaus Reimer (k@ailis.de)
- * @version $Revision: 910 $
+ *
+ * @require xgalaga.js
  */
-
 
 /**
  * Constructs new alien torpedos.
  *
- * @param {xgalaga.Game} game
+ * @param {!xgalaga.Game} game
  *            The game
  * @constructor
  * @class The alien torpedos
  */
-
 xgalaga.AlienTorpedos = function(game)
 {
     this.game = game;
 };
 
-/** The game. @private @type {xgalaga.Game} */
-xgalaga.AlienTorpedos.prototype.game = null;
+/**
+ * The game.
+ * @private
+ * @type {!xgalaga.Game} 
+ */
+xgalaga.AlienTorpedos.prototype.game;
 
-/** The current level. @private @type {Number} */
-xgalaga.AlienTorpedos.prototype.level = null;
+/**
+ * The current level.
+ * @private
+ * @type {number} 
+ */
+xgalaga.AlienTorpedos.prototype.level = 0;
 
-/** The first torpedo (linked list). @private @type {xgalaga.AlienTorpedo} */
+/**
+ * The first torpedo (linked list).
+ * @private
+ * @type {?xgalaga.AlienTorpedo} 
+ */
 xgalaga.AlienTorpedos.prototype.firstTorp = null;
 
-/** The maximum number of torpedos. @private @type {Number} */
-xgalaga.AlienTorpedos.prototype.maxTorps = null;
+/**
+ * The maximum number of torpedos.
+ * @private
+ * @type {number} 
+ */
+xgalaga.AlienTorpedos.prototype.maxTorps = 0;
 
-/** The current number of torpedos. @private @type {Number} */
-xgalaga.AlienTorpedos.prototype.numTorps = null;
-
-
+/**
+ * The current number of torpedos.
+ * @private
+ * @type {number} 
+ */
+xgalaga.AlienTorpedos.prototype.numTorps = 0;
 
 /**
  * Initializes the alien torpedos for the specified level.
  *
- * @param {Number} level
+ * @param {number} level
  *            The level
  */
-
 xgalaga.AlienTorpedos.prototype.init = function(level)
 {
     this.level = level;
@@ -57,11 +67,9 @@ xgalaga.AlienTorpedos.prototype.init = function(level)
     this.firstTorp = null;
 };
 
-
 /**
  * Updates the alien torpedos
  */
-
 xgalaga.AlienTorpedos.prototype.update = function()
 {
     var t, nextT, game, winWidth, winHeight, x, pldead, plflash, plshield,
@@ -96,8 +104,9 @@ xgalaga.AlienTorpedos.prototype.update = function()
                 this.numTorps--;
             }
             else if (!pldead && !plflash && !plshield &&
-                      (Math.abs(t.getX() - plx) < 8) &&
-                      (Math.abs(t.getY() - (winHeight - parseInt(playerShipHeight / 2))) < 8))
+                (Math.abs(t.getX() - plx) < 8) &&
+                (Math.abs(t.getY() - (winHeight - 
+                    parseInt(playerShipHeight / 2, 10))) < 8))
             {
                 player.destroy();
                 explosions.newExplosion(plx, winHeight - 10, 2);
@@ -107,16 +116,14 @@ xgalaga.AlienTorpedos.prototype.update = function()
     }
 };
 
-
 /**
  * Renders the torpedos.
  *
- * @param {Object} ctx
+ * @param {(!HTMLElement|!CanvasRenderingContext2D)} ctx
  *            The graphics context. This is either a HTML container element
  *            (For HTML render mode) or a canvas 2D context (For Canvas render
  *            mode)
  */
-
 xgalaga.AlienTorpedos.prototype.render = function(ctx)
 {
     var t;
@@ -129,14 +136,12 @@ xgalaga.AlienTorpedos.prototype.render = function(ctx)
     }
 };
 
-
 /**
  * Considers firing a new torpedo.
  *
- * @param {xgalaga.Alien} alien
+ * @param {!xgalaga.Alien} alien
  *            The alien firing the torpedo
  */
-
 xgalaga.AlienTorpedos.prototype.considerTorp = function(alien)
 {
     var weapon, plx, chance, alienX, xs, ys, level, game, player;
@@ -146,11 +151,11 @@ xgalaga.AlienTorpedos.prototype.considerTorp = function(alien)
     level = this.level;
     weapon = player.getWeapon();
     plx = player.getX();
-    chance = Math.max(35, xgalaga.TORP_CHANCE - parseInt(level / 2) -
+    chance = Math.max(35, xgalaga.TORP_CHANCE - parseInt(level / 2, 10) -
         weapon * 5);
 
     if (this.numTorps < this.maxTorps &&
-        (!parseInt(Math.random() * chance)))
+        (!parseInt(Math.random() * chance, 10)))
     {
         // could aim better, not sure it should!
         alienX = alien.getX();
@@ -164,18 +169,24 @@ xgalaga.AlienTorpedos.prototype.considerTorp = function(alien)
             xs = 2;
         else
             xs = 0;
-        ys = (xgalaga.ETORP_SPEED + parseInt(level / 5)) - Math.abs(xs);
+        ys = (xgalaga.ETORP_SPEED + parseInt(level / 5, 10)) - Math.abs(xs);
         this.newTorp(alienX, alien.getY(), xs, ys);
     }
 };
 
-
 /**
  * Fires a new torpedo.
  *
+ * @param {number} x
+ *            Starting X-position.
+ * @param {number} y
+ *            Starting Y-position.
+ * @param {number} xSpeed
+ *            The horizontal speed.
+ * @param {number} ySpeed
+ *            The vertical speed.
  * @private
  */
-
 xgalaga.AlienTorpedos.prototype.newTorp = function(x, y, xSpeed, ySpeed)
 {
     var t;

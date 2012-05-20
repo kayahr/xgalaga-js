@@ -1,3 +1,8 @@
+/**
+ * The levels.
+ * 
+ * @type {!Array.<!xgalaga.Level>}
+ */
 xgalaga.LEVELS = [
 
     // Level 1
