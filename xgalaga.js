@@ -157,7 +157,8 @@ xgalaga.Explosion.prototype.running=!1;xgalaga.Explosion.prototype.frame=0;
 xgalaga.Explosion.prototype.x=0;xgalaga.Explosion.prototype.y=0;
 xgalaga.Explosion.prototype.type=0;
 xgalaga.Explosion.prototype.run=function(b,a,c){this.x=b;this.y=a;this.type=c;this.frame=
-0;this.running=!0};
+0;this.running=!0;switch(c){case 1:this.game.playSound("explode");break;case 2:this.game.playSound("explode_big");
+break;default:this.game.playSound("torphit")}};
 xgalaga.Explosion.prototype.isRunning=function(){return this.running};
 xgalaga.Explosion.prototype.update=function(){this.running&&(this.frame++,4<this.frame&&
 (this.running=!1))};
@@ -188,7 +189,8 @@ this.maxTorps=xgalaga.MIN_TORPS;for(b=0;b<xgalaga.MAX_TORPS;b++)this.torps[b].se
 xgalaga.Player.prototype.getX=function(){return this.x};
 xgalaga.Player.prototype.nextLevel=function(){this.numTorps=0};
 xgalaga.Player.prototype.newTorp=function(b,a,c,d){var e,f;for(e=0;e<this.maxTorps;e++)if(f=
-this.torps[e],!f.isAlive()){f.reset(b,a,c,d);this.numTorps++;break}};
+this.torps[e],!f.isAlive()){f.reset(b,a,c,d);this.numTorps++;this.game.playSound("firetorp");
+break}};
 xgalaga.Player.prototype.update=function(){var b,a,c,d,e,f,h,g;b=this.moveSpeed;c=
 this.game;g=c.getExplosions();a=c.getWidth();c=c.getHeight();this.mx/b>this.x/b?this.x+=
 b:this.mx/b<this.x/b&&(this.x-=b);this.y=c-10;this.x=Math.max(10,Math.min(a-10,this.x));
@@ -296,9 +298,9 @@ this.gameOver||(this.player.update(),this.explosions.update());b=this.ctx;this.r
 xgalaga.RENDER_MODE_CANVAS&&b.clearRect(0,0,this.width,this.height);this.starField.render(b);
 this.aliens.render(b);this.gameOver||(this.player.render(b),this.explosions.render(b),
 this.aliens.getLiveCount()||(this.starField.changeSpeed(1),b=this.starField.getSpeed(),
-2==b&&(this.stateLabel.innerHTML=xgalaga.msgNextLevel.replace("%LEVEL%",""+(this.levelNo+
-1)),this.hud.close(),this.showStateLabel()),120<=b?this.starField.setSpeed(-20):1==
-b&&(this.hideStateLabel(),this.hud.open(),this.gotoLevel(++this.levelNo),this.starField.setSpeed(1))))};
+2==b&&(this.playSound("warp"),this.stateLabel.innerHTML=xgalaga.msgNextLevel.replace("%LEVEL%",
+""+(this.levelNo+1)),this.hud.close(),this.showStateLabel()),120<=b?this.starField.setSpeed(-20):
+1==b&&(this.hideStateLabel(),this.hud.open(),this.gotoLevel(++this.levelNo),this.starField.setSpeed(1))))};
 xgalaga.Game.prototype.getWidth=function(){return this.width};
 xgalaga.Game.prototype.getHeight=function(){return this.height};
 xgalaga.Game.prototype.getRenderMode=function(){return this.renderMode};
@@ -339,7 +341,9 @@ b,this.saveHighScore,this)};
 xgalaga.Game.prototype.saveHighScore=function(b){var a;b&&(a=xgalaga.HighScores.getInstance(),
 a.add(b,this.levelNo,this.player.getScore()));this.startIntro()};
 xgalaga.Game.prototype.showStateLabel=function(){this.stateLabel.className="visible"};
-xgalaga.Game.prototype.hideStateLabel=function(){this.stateLabel.className="hidden"};xgalaga.Hud=function(b){var a,c;this.game=b;a=this.element=document.createElement("div");
+xgalaga.Game.prototype.hideStateLabel=function(){this.stateLabel.className="hidden"};
+xgalaga.Game.prototype.playSound=function(b){var a;if(b=document.getElementById(b+
+"-sound"))a=b.cloneNode(!0),b.cloneNode(!0),a.play&&a.play()};xgalaga.Hud=function(b){var a,c;this.game=b;a=this.element=document.createElement("div");
 a.id="hud";b=document.createElement("div");a.appendChild(b);b.className="bar";b.id=
 "topBar";c=document.createElement("div");b.appendChild(c);c.id="levelDisplay";c.className=
 "display";c.appendChild(document.createTextNode(xgalaga.msgLevel));a=this.levelElement=
