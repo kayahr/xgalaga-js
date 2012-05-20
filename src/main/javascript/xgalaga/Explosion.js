@@ -169,9 +169,9 @@ xgalaga.Explosion.prototype.render = function(ctx)
             if (tmp)
             {
                 if ((tmp = this.x) != +e["prevX"])
-                    s.left = ((e["prevX"] = tmp) - 2) + "px";
+                    s.left = ((e["prevX"] = tmp) - 32) + "px";
                 if ((tmp = this.y) != +e["prevY"])
-                    s.top = ((e["prevY"] = tmp) - 2) + "px";
+                    s.top = ((e["prevY"] = tmp) - 32) + "px";
                 if ((tmp = this.frame) != +e["prevFrame"])
                     s.backgroundPosition = "0 " +
                         (-((e["prevFrame"] = tmp) % 65) * 65) + "px";
