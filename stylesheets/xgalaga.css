@@ -1,0 +1,265 @@
+body
+{
+    margin: 0;
+    padding: 0;
+    background: #888;
+}
+
+#xgalaga
+{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 468px;
+    height: 596px;
+    margin-left: -234px;
+    margin-top: -298px;
+    border-radius: 20px;
+    background: #000;
+    -webkit-box-shadow: 0px 0px 20px 20px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 20px 20px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 20px 20px rgba(0, 0, 0, 0.75);
+    overflow: hidden;
+}
+
+#xgalaga .border
+{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    border: 2px solid #f00;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+#xgalaga .output
+{
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    bottom: 5px;
+    right: 5px;
+}
+
+#xgalaga .canvas
+{
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    background-color: #000;
+    background-position: center center;
+}
+
+#xgalaga .menu
+{
+    background: url(../images/title.png) no-repeat center 10px;    
+    position: absolute;
+    width: 418px;
+    height: 546px;
+    top: 50%;
+    left: 50%;
+    margin-top: -273px;
+    margin-left: -209px;
+    z-index: 3;
+    transition: left 0.5s ease-in-out;
+    -o-transition: left 0.5s ease-in-out;
+    -webkit-transition: left 0.5s ease-in-out;
+    -moz-transition: left 0.5s ease-in-out;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+}
+
+#xgalaga .menu.hidden
+{
+ 	left: -50%;
+}
+
+#xgalaga .menu .version
+{
+    color: #ff0;
+    position: absolute;
+    left: 172px;
+    top: 40px;
+    width: 50px;
+    text-align: center;
+}
+
+#xgalaga .menu .copyright
+{
+    position: absolute;
+    color: #0f0;
+    left: 50px;
+    right: 50px;
+    top: 70px;
+    text-align: center;
+}
+
+#xgalaga .menu .copyright a
+{
+    color: #0f0;
+}
+
+#xgalaga .menu .help
+{
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 50px;
+    color: #0ff;
+}
+
+#xgalaga .menu .help h1
+{
+    color: #f00;
+    font-size: 12px;
+    margin: 0.5em;
+    text-align: center;
+}
+
+#xgalaga .menu tr.important th,
+#xgalaga .menu tr.important td
+{
+    color: #ff0;
+}
+
+#xgalaga .menu table
+{
+    margin: 0 auto;
+}
+
+#xgalaga .menu th
+{
+    font-weight: normal;
+    text-align: left;
+    padding-right: 30px;
+}
+
+#xgalaga .menu .start
+{
+    position: absolute;
+    color: #ff0;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    text-align: center;
+}
+
+#hud
+{
+    font-family: Verdana, sans-serif;
+    font-size: 12px;
+    z-index: 2;
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #0f0;
+    right: 0;
+    bottom: 0;
+    font-size: 10px;
+    font-weight: bold;
+    overflow: hidden;
+}
+
+#hud .bar
+{
+    left: 0;
+    right: 0;
+    position: absolute;
+    height: 35px;
+}
+
+#hud #topBar
+{
+    top: -35px;
+    transition: top 0.5s ease-in-out;
+    -o-transition: top 0.5s ease-in-out;
+    -webkit-transition: top 0.5s ease-in-out;
+    -moz-transition: top 0.5s ease-in-out;
+}
+
+#hud.visible #topBar
+{
+    top: 0;
+}
+
+#hud .bar .display
+{
+    font-size: 10px;
+    position: absolute;
+    white-space: nowrap;
+    text-transform: uppercase;
+}
+
+#hud #levelDisplay
+{
+    left: 8px;
+    top: 6px;
+}
+
+#hud #scoreDisplay
+{
+    right: 8px;
+    top: 6px;
+}
+
+#hud #shipsDisplay
+{
+    left: 128px;
+    top: 6px;
+}
+
+#hud .value
+{
+    color: #0f0;
+	margin: 0 8px;
+    position: relative;
+    top: 1px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+#stateLabel
+{
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    top: 33%;
+    text-align: center;
+    font-family: Verdana, sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+    color: rgba(0, 255, 0, 0);
+    transition: color .5s ease-in-out;
+    -o-transition: color .5s ease-in-out;
+    -webkit-transition: color .5s ease-in-out;
+    -moz-transition: color .5s ease-in-out;
+    text-transform: uppercase;
+}
+
+#stateLabel .detail
+{
+    font-size: 13px;
+    display: block;
+    margin-top: 1em;
+}
+
+#stateLabel .level
+{
+	display: block;
+	font-size: 64px;
+}
+
+#stateLabel .score
+{
+	display: block;
+	font-size: 50px;
+}
+
+#stateLabel.visible
+{
+    color: rgba(96, 255, 96, 0.66);
+}
