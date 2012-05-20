@@ -82,8 +82,8 @@ body
 {
     color: #ff0;
     position: absolute;
-    left: 187px;
-    top: 27px;
+    left: 172px;
+    top: 40px;
     width: 50px;
     text-align: center;
 }
@@ -94,7 +94,7 @@ body
     color: #0f0;
     left: 50px;
     right: 50px;
-    top: 50px;
+    top: 70px;
     text-align: center;
 }
 
