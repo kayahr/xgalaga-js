@@ -962,66 +962,6 @@ xgalaga.onPrompt = function(title, message, onSubmit, context)
 };
 
 /**
- * The roll center. 
- * @type {number}
- */
-xgalaga.ctrlRollCenter = 0;
-
-/**
- * The roll center. 
- * @type {number}
- */
-xgalaga.ctrlPitchCenter = 0;
-
-/**
- * The roll range in degree. 
- * @type {number}
- */
-xgalaga.ctrlRollRange = 45;
-
-/**
- * The roll range in degree. 
- * @type {number}
- */
-xgalaga.ctrlPitchRange = 45;
-
-/**
- * The pitch dead zone in degree. 
- * @type {number}
- */
-xgalaga.ctrlPitchDeadZone = 10;
-
-/**
- * The roll dead zone in degree. 
- * @type {number}
- */
-xgalaga.ctrlRollDeadZone = 10;
-
-/**
- * Keycodes for yaw right. 
- * @type {!Array.<number>}
- */
-xgalaga.ctrlRight = [ 76, 39 ];
-
-/**
- * Keycodes for yaw left. 
- * @type {!Array.<number>}
- */
-xgalaga.ctrlLeft = [ 75, 37 ];
-
-/**
- * Keycodes for fire. 
- * @type {!Array.<number>}
- */
-xgalaga.ctrlFire = [ 32, 81 ];
-
-/**
- * Keycodes for menu. 
- * @type {!Array.<number>}
- */
-xgalaga.ctrlMenu = [ 27, -1 ];
-
-/**
  * The score display label. 
  * @type {string}
  */

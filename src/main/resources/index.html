@@ -5,17 +5,52 @@
     <title>XGalaga</title>
     <link href="stylesheets/xgalaga.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script type="text/javascript" src="../script-bundles/xgalaga.js"></script>
+    <script type="text/javascript" src="../script-source-bundles/xgalaga.js"></script>
     <script type="text/javascript">
     
-    var game = new xgalaga.Game("game-output");
-
+    var game;
+    
+    $(function() {
+        game = new xgalaga.Game($("#xgalaga")[0]);
+    });
+    
     </script>    
   </head>
   <body>  
-    <div id="game-area">
-      <div id="game-output">
+    <div id="xgalaga">
+      <div class="output"></div>
+      <div class="menu">      
+        <p class="version">v1.0.0</p>
+        <p class="copyright">
+          Original XGalaga © 1995-1998 <a href="http://rumsey.org/xgal.html">Joe Rumsey</a><br />
+          JavaScript port © 2010-2012 <a href="http://github.com/kayahr/xgagala-js/">Klaus Reimer</a>
+        </p>
+        <div class="help">
+          <h1>Keyboard controls</h1>
+          <table>
+            <tr class="important">
+              <th>Left / Right</dt>
+              <td>Move spaceship</td>
+            </tr>
+            <tr class="important">
+              <th>Space bar</th>
+              <td>Fire weapon</td>
+            </tr>
+            <tr>
+              <th>P</th>
+              <td>Pause game</td>
+            </tr>
+            <tr>
+              <th>Q</th>
+              <td>End game</td>
+            </tr>
+          </table>
+        </div>
+        <p class="start">
+          Press space bar to start the game
+        </p>
+      </div>
+      <div class="border"></div>
     </div>
-    <div id="xgalaga" style="position:relative;width:468px;height:596px;background:#000"></div>    
   </body>
 </html>

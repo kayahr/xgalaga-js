@@ -572,6 +572,14 @@ xgalaga.Player.prototype.hasShield = function()
     return false;
 };
 
+/**
+ * Ends the game by destoying all remaining ships.
+ */
+xgalaga.Player.prototype.endGame = function()
+{
+    this.ships = 0;
+    this.destroy();
+};
 
 /**
  * Destroys the player ship.
@@ -579,6 +587,7 @@ xgalaga.Player.prototype.hasShield = function()
 
 xgalaga.Player.prototype.destroy = function()
 {
+    this.game.getExplosions().newExplosion(this.x, this.y, 2);
     this.alive = false;
     this.stopMoveLeft();
     this.stopMoveRight();

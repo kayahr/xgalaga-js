@@ -2,86 +2,148 @@ body
 {
     margin: 0;
     padding: 0;
-    background: #000;
+    background: #888;
 }
 
-#game-area
+#xgalaga
 {
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    min-width: 468px;
-    min-height: 596px;
-    margin: auto;
-}
-
-#game-output
-{
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-}
-
-#mainMenu
-{
-    position: absolute;
-    width: 280px;
-    height: 330px;
     top: 50%;
-    left: -50%;
-    margin-top: -165px;
-    margin-left: -140px;
+    left: 50%;
+    width: 468px;
+    height: 596px;
+    margin-left: -234px;
+    margin-top: -298px;
+    border-radius: 20px;
+    background: #000;
+    -webkit-box-shadow: 0px 0px 20px 20px rgba(0, 0, 0, 0.75);
+    overflow: hidden;
+}
+
+#xgalaga .border
+{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
     z-index: 3;
+    border: 2px solid #f00;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+#xgalaga .output
+{
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    bottom: 5px;
+    right: 5px;
+}
+
+#xgalaga .canvas
+{
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    background-color: #000;
+    background-position: center center;
+}
+
+#xgalaga .menu
+{
+    background: url(../images/title.png) no-repeat center 10px;    
+    position: absolute;
+    width: 418px;
+    height: 546px;
+    top: 50%;
+    left: 50%;
+    margin-top: -273px;
+    margin-left: -209px;
+    z-index: 2;
     transition: left 0.5s ease-in-out;
     -o-transition: left 0.5s ease-in-out;
     -webkit-transition: left 0.5s ease-in-out;
     -moz-transition: left 0.5s ease-in-out;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
 }
 
-#mainMenu.visible
+#xgalaga .menu.hidden
 {
- 	left: 50%;
+ 	left: -50%;
 }
 
-#mainMenu #title
+#xgalaga .menu .version
 {
-    height: 37px;
-    background: url(../images/title.png) no-repeat center center;
+    color: #ff0;
+    position: absolute;
+    left: 187px;
+    top: 27px;
+    width: 50px;
+    text-align: center;
 }
 
-#mainMenu #buttons
+#xgalaga .menu .copyright
 {
     position: absolute;
-    left: 0;
-    bottom: 0;
+    color: #0f0;
+    left: 50px;
+    right: 50px;
+    top: 50px;
+    text-align: center;
 }
 
-#mainMenu .button
+#xgalaga .menu .copyright a
 {
-	width: 260px;
-	height: 42px;
-    margin-top: 10px;
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.2) no-repeat center center;
+    color: #0f0;
 }
 
-#mainMenu #newGameButton
+#xgalaga .menu .help
 {
-    background-image: url(../images/newgame.png);
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 50px;
+    color: #0ff;
 }
 
-#mainMenu #continueGameButton
+#xgalaga .menu .help h1
 {
-    background-image: url(../images/continue.png);
+    color: #f00;
+    font-size: 12px;
+    margin: 0.5em;
+    text-align: center;
 }
 
-#mainMenu .hidden-button
+#xgalaga .menu tr.important th,
+#xgalaga .menu tr.important td
 {
-    display: none;
+    color: #ff0;
+}
+
+#xgalaga .menu table
+{
+    margin: 0 auto;
+}
+
+#xgalaga .menu th
+{
+    font-weight: normal;
+    text-align: left;
+    padding-right: 30px;
+}
+
+#xgalaga .menu .start
+{
+    position: absolute;
+    color: #ff0;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    text-align: center;
 }
 
 #hud
@@ -156,16 +218,6 @@ body
     top: 1px;
     font-weight: bold;
     font-size: 14px;
-}
-
-#gameCanvas
-{
-    position: absolute;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    background-color: #000;
-    background-position: center center;
 }
 
 #stateLabel

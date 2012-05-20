@@ -8,34 +8,24 @@
 /**
  * Constructs a new game.
  *
- * @param {string} containerId
- *            The ID of the HTML container element
- * @param {boolean} autoStart
- *            If game should start automatically after initialization.
- *            This parameter is optional and defaults to true
+ * @param {!HTMLElement} container
+ *            The main game HTML element.
  * @constructor
- * @class A game
+ * @class
+ * The main class of the game.
  */
-xgalaga.Game = function(containerId, autoStart)
+xgalaga.Game = function(container)
 {
-    this.containerId = containerId;
-    if (autoStart === false) this.autoStart = false;
+    this.container = container;
     this.init();
 };
-
-/** 
- * The ID of the HTML container element. 
- * @private 
- * @type {string} 
- */
-xgalaga.Game.prototype.containerId;
 
 /**
  * The HTML container element.
  * @private
- * @type {?Element} 
+ * @type {!HTMLElement} 
  */
-xgalaga.Game.prototype.container = null;
+xgalaga.Game.prototype.container;
 
 /**
  * The game canvas.
@@ -143,20 +133,6 @@ xgalaga.Game.prototype.keyDownHandler;
 xgalaga.Game.prototype.keyUpHandler;
 
 /**
- * The mouse down handler.
- * @private
- * @type {!function(!jQuery.event=)} 
- */
-xgalaga.Game.prototype.mouseDownHandler;
-
-/**
- * The mouse up handler.
- * @private
- * @type {!function(!jQuery.event=)} 
- */
-xgalaga.Game.prototype.mouseUpHandler;
-
-/**
  * If game has been paused.
  * @private
  * @type {boolean} 
@@ -178,11 +154,11 @@ xgalaga.Game.prototype.gameOver = true;
 xgalaga.Game.prototype.stateLabel = null;
 
 /**
- * The menu.
+ * If we are in menu mode.
  * @private
- * @type {xgalaga.Menu} 
+ * @type {boolean} 
  */
-xgalaga.Game.prototype.menu = null;
+xgalaga.Game.prototype.menu = true;
 
 /**
  * The hud.
@@ -203,21 +179,13 @@ xgalaga.Game.prototype.initialized = false;
  *
  * @private
  */
- 
 xgalaga.Game.prototype.init = function()
 {
-    var container, canvas, hud, menu, stateLabel;
+    var container, canvas, hud, stateLabel;
     
     // Try to get container reference
-    this.container = container = document.getElementById(this.containerId);
-    
-    // If not yet present then delay initialization
-    if (!container)
-    {
-        window.setTimeout(this.init.bind(this), 100);
-        return;
-    }
-
+    container = /** @type {!HTMLElement} */ jQuery(".output", this.container)[0];
+   
     // Create the canvas
     switch (this.renderMode)
     {
@@ -225,7 +193,7 @@ xgalaga.Game.prototype.init = function()
             canvas = this.canvas = /** @type {HTMLCanvasElement} */ 
                 document.createElement("canvas");
             container.appendChild(canvas);
-            canvas.id = "gameCanvas";
+            canvas.className = "canvas";
             this.ctx = /** @type {!CanvasRenderingContext2D} */ 
                 canvas.getContext("2d");
             break;
@@ -244,8 +212,6 @@ xgalaga.Game.prototype.init = function()
     // Create keyboard listeners
     this.keyDownHandler = this.handleKeyDown.bind(this);
     this.keyUpHandler = this.handleKeyUp.bind(this);
-    this.mouseDownHandler = this.handleMouseDown.bind(this);
-    this.mouseUpHandler = this.handleMouseUp.bind(this);
     
     // Initialize the game size
     this.resize();
@@ -254,10 +220,6 @@ xgalaga.Game.prototype.init = function()
     this.stateLabel = stateLabel = document.createElement("span");
     container.appendChild(stateLabel);
     stateLabel.id = "stateLabel";
-
-    // Create the menu
-    menu = this.menu = new xgalaga.Menu(this);
-    container.appendChild(menu.getElement());
 
     // Create the HUD
     hud = this.hud = new xgalaga.Hud(this);
@@ -290,10 +252,10 @@ xgalaga.Game.prototype.resize = function()
 {
     var container, width, height, canvas;
 
-    container = this.container;
+    container = jQuery(".output", this.container);
     canvas = this.canvas;
-    width = this.width = container.offsetWidth;
-    height = this.height = container.offsetHeight;
+    width = this.width = +container.width();
+    height = this.height = +container.height();
     
     if (this.renderMode == xgalaga.RENDER_MODE_CANVAS)
     {
@@ -367,8 +329,6 @@ xgalaga.Game.prototype.start = function()
     // Install keyboard handlers
     jQuery(window).bind("keydown", this.keyDownHandler);
     jQuery(window).bind("keyup", this.keyUpHandler);
-    jQuery(this.container).bind("mousedown", this.mouseDownHandler);
-    jQuery(this.container).bind("mouseup", this.mouseUpHandler);
 };
 
 /**
@@ -379,8 +339,6 @@ xgalaga.Game.prototype.stop = function()
     // Uninstall keyboard handlers
     jQuery(window).unbind("keydown", this.keyDownHandler);
     jQuery(window).unbind("keyup", this.keyUpHandler);     
-    jQuery(this.container).unbind("mousedown", this.mouseDownHandler);     
-    jQuery(this.container).unbind("mouseup", this.mouseUpHandler);     
 
     // Stop game thread
     if (this.timer)
@@ -427,7 +385,7 @@ xgalaga.Game.prototype.pause = function()
 
 xgalaga.Game.prototype.resume = function()
 {
-    if (this.paused && (this.gameOver || !this.menu.isOpen()))
+    if (this.paused && (this.gameOver || !this.menu))
     {
         // Start the game thread
         if (!this.timer)
@@ -581,100 +539,6 @@ xgalaga.Game.prototype.getStarField = function()
     return this.starField;
 };
 
-
-/**
- * Checks if control is in the specified controls array.
- *
- * @param {number} control
- *            The control to check
- * @param {Array} controls
- *            Controls array
- * @return {boolean} True if control is in the array, false if not
- * @private
- */
-
-xgalaga.Game.prototype.isControl = function(control, controls)
-{
-    var i;
-
-    for (i = controls.length - 1; i >= 0; i--)
-        if (control == controls[i]) return true;
-    return false;
-};
-
-
-/**
- * Handles the control down event.
- *
- * @param {number} control
- *            The control id
- * @return {boolean} True if event was handles, false if not
- *
- * @private
- */
-
-xgalaga.Game.prototype.handleControlDown = function(control)
-{
-    // Controls when within menu
-    if (this.menu.isOpen())
-    {
-        return false;
-    }
-
-    // Controls when playing
-    if (!this.gameOver && !this.paused)
-    {
-        if (this.isControl(control, xgalaga.ctrlRight))
-            this.player.startMoveRight();
-        else if (this.isControl(control, xgalaga.ctrlLeft))
-            this.player.startMoveLeft();
-        else if (this.isControl(control, xgalaga.ctrlFire))
-            this.player.startFire();
-        else if (this.isControl(control, xgalaga.ctrlMenu))
-            this.gotoMenu();
-        else
-            return false;
-    }
-
-    // Unhandled control
-    else return false;
-
-    return true;
-};
-
-
-/**
- * Handles the control up event.
- *
- * @param {number} control
- *            The control id
- * @return {boolean} True if event was handles, false if not
- *
- * @private
- */
-
-xgalaga.Game.prototype.handleControlUp = function(control)
-{
-    // Controls when playing
-    if (!this.menu.isOpen() && !this.gameOver && !this.paused)
-    {
-        if (this.isControl(control, xgalaga.ctrlRight))
-            this.player.stopMoveRight();
-        else if (this.isControl(control, xgalaga.ctrlLeft))
-            this.player.stopMoveLeft();
-        else if (this.isControl(control, xgalaga.ctrlFire))
-            this.player.stopFire();
-        else
-            return false;
-    }
-
-    // Unhandled control
-    else return false;
-
-    return true;
-};
-
-
 /**
  * Handles the key down event.
  *
@@ -682,11 +546,29 @@ xgalaga.Game.prototype.handleControlUp = function(control)
  *            The key down event
  * @private
  */
-
-xgalaga.Game.prototype.handleKeyDown = function(event)
+xgalaga.Game.prototype.handleKeyUp = function(event)
 {
-    if (this.handleControlDown(event.which) ||
-        this.handleControlDown(0)) event.preventDefault();
+    var key;
+    
+    key = event.which;
+    
+    // Controls when playing
+    if (!this.menu && !this.gameOver && !this.paused)
+    {
+        if (key == 39)
+            this.player.stopMoveRight();
+        else if (key == 37)
+            this.player.stopMoveLeft();
+        else if (key == 32)
+            this.player.stopFire();
+        else            
+            return;
+    }
+
+    // Unhandled control
+    else return;
+    
+    event.preventDefault();
 };
 
 
@@ -698,45 +580,56 @@ xgalaga.Game.prototype.handleKeyDown = function(event)
  * @private
  */
 
-xgalaga.Game.prototype.handleKeyUp = function(event)
+xgalaga.Game.prototype.handleKeyDown = function(event)
 {
-    if (this.handleControlUp(event.which) ||
-        this.handleControlUp(0)) event.preventDefault();
+    var key;
+    
+    key = event.which;
+    
+    // Controls when within menu
+    if (this.menu)
+    {
+        if (key == 32)
+            this.newGame();
+        else
+            return;
+    }
+    
+    // Controls when paused
+    else if (this.paused)
+    {
+        if (key == 80)
+            this.resume();
+        else
+            return;
+    }
+    
+    // Controls when playing
+    else if (!this.gameOver)
+    {
+        if (key == 39)
+            this.player.startMoveRight();
+        else if (key == 37)
+            this.player.startMoveLeft();
+        else if (key == 32)
+            this.player.startFire();
+        else if (key == 80)
+            this.pause();
+        else if (key == 81)
+            this.player.endGame();
+        else
+            return;
+    }
+
+    // Unhandled control
+    else return;
+
+    event.preventDefault();
 };
-
-
-/**
- * Handles the mouse down event.
- *
- * @param {!jQuery.event=} event
- *            The mouse down event
- * @private
- */
-
-xgalaga.Game.prototype.handleMouseDown = function(event)
-{
-    if (this.handleControlDown(-1)) event.preventDefault();
-};
-
-
-/**
- * Handles the mouse up event.
- *
- * @param {!jQuery.event=} event
- *            The mouse up event
- * @private
- */
-
-xgalaga.Game.prototype.handleMouseUp = function(event)
-{
-    if (this.handleControlUp(-1)) event.preventDefault();
-};
-
 
 /**
  * Ends the game.
  */
-
 xgalaga.Game.prototype.endGame = function()
 {
     var score;
@@ -749,9 +642,9 @@ xgalaga.Game.prototype.endGame = function()
             xgalaga.formatNumber(score));
         this.showStateLabel();
         
-        if (xgalaga.HighScores.getInstance().determineRank(score))
-            window.setTimeout(this.newHighScore.bind(this), 500);
-        else
+//        if (xgalaga.HighScores.getInstance().determineRank(score))
+  //          window.setTimeout(this.newHighScore.bind(this), 500);
+    //    else
             window.setTimeout(this.startIntro.bind(this), 500);
         this.hud.close();
     }
@@ -779,7 +672,7 @@ xgalaga.Game.prototype.newGame = function()
     //this.playSound(xgalaga.SND_LEVEL_UP);
 
     this.gameOver = true;
-    this.menu.close();
+    this.hideMenu();
     this.resume();
     this.destroyAll();
     this.stateLabel.innerHTML = xgalaga.msgNextLevel.replace("%LEVEL%", "1");
@@ -788,30 +681,25 @@ xgalaga.Game.prototype.newGame = function()
     window.setTimeout(this.reset.bind(this), 2000);
 };
 
-
 /**
  * Plays an intro which is used as a background for the main menu.
  */
-
 xgalaga.Game.prototype.startIntro = function()
 {
     this.hideStateLabel();
     this.aliens.init(1);
-    this.menu.open();
+    this.showMenu();
 };
-
 
 /**
  * Checks if the game is over.
  *
  * @return {boolean} True if game is over, false if not
  */
-
 xgalaga.Game.prototype.isGameOver = function()
 {
     return this.gameOver;
 };
-
 
 /**
  * Pauses the game and opens the menu.
@@ -821,21 +709,40 @@ xgalaga.Game.prototype.gotoMenu = function()
 {
     this.pause();
     this.hud.close();
-    this.menu.open();
+    this.showMenu();
 };
-
 
 /**
  * Closes the menu and continues the game.
  */
-
 xgalaga.Game.prototype.continueGame = function()
 {
-    this.menu.close();
+    this.hideMenu();
     this.hud.open();
     this.resume();
 };
 
+/**
+ * Shows the menu.
+ * @private
+ */
+xgalaga.Game.prototype.showMenu = function()
+{
+    if (this.menu) return;
+    this.menu = true;
+    jQuery(".menu", this.container).removeClass("hidden");
+};
+
+/**
+ * Hides the menu.
+ * @private
+ */
+xgalaga.Game.prototype.hideMenu = function()
+{
+    if (!this.menu) return;
+    this.menu = false;
+    jQuery(".menu", this.container).addClass("hidden");
+};
 
 /**
  * Destroys all items.

@@ -109,7 +109,6 @@ xgalaga.AlienTorpedos.prototype.update = function()
                     parseInt(playerShipHeight / 2, 10))) < 8))
             {
                 player.destroy();
-                explosions.newExplosion(plx, winHeight - 10, 2);
             }
         }
         t = nextT;
