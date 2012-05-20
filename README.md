@@ -6,6 +6,9 @@ Description
 
 This is a JavaScript port of the famous arcade game
 [XGalaga](http://rumsey.org/xgal.html) from Joe Rumsey.
+On modern browsers a HTML 5 2D canvas is used for rendering. If this
+feature is not available (IE7 and IE8 for example) then standard HTML
+elements are used for drawing all the sprites. 
 
 You can play it right here:
 
@@ -19,6 +22,7 @@ TODO
 * Power-ups
 * Bonus ships
 * Highscore-List
+* Fix CSS problems in IE7 and IE8.
 
 
 License
