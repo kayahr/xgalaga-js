@@ -61,6 +61,16 @@ xgalaga.AlienTorpedos.prototype.numTorps = 0;
  */
 xgalaga.AlienTorpedos.prototype.init = function(level)
 {
+    var t;
+    
+    // Destroying existing torpedos
+    t = this.firstTorp;
+    while (t)
+    {
+        t.destroy();
+        t = t.getNext();
+    }
+    
     this.level = level;
     this.maxTorps = 10 + (level * 5);
     this.numTorps = 0;
