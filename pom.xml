@@ -75,36 +75,6 @@
     </pluginManagement>
     
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId> 
-        <version>3.0</version>
-        <configuration>
-          <chmod>false</chmod>
-          <locales>en</locales>
-          <inputEncoding>${project.build.sourceEncoding}</inputEncoding>
-          <outputEncoding>${project.build.sourceEncoding}</outputEncoding>
-          <reportPlugins>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-project-info-reports-plugin</artifactId>
-              <version>2.4</version>
-              <configuration>
-                <dependencyDetailEnabled>false</dependencyDetailEnabled>
-                <dependencyLocationsEnabled>false</dependencyLocationsEnabled>                
-              </configuration>
-              <reports>
-                <report>summary</report>
-                <report>dependencies</report>
-                <report>project-team</report>
-                <report>issue-tracking</report>
-                <report>license</report>
-                <report>scm</report>
-              </reports>
-            </plugin>
-          </reportPlugins>
-        </configuration>
-      </plugin>
       <plugin> 
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
@@ -166,15 +136,6 @@
     </repository>
   </repositories>
 
-<!--    
-  <dependencies>
-    <dependency>
-      <groupId>org.prototypejs</groupId>
-      <artifactId>prototype</artifactId>
-      <version>1.6.1</version>
-    </dependency>
-  </dependencies>
--->
 </project>
 
 
