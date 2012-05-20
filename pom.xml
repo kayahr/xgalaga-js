@@ -3,13 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
                              http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>de.ailis.xgalaga</groupId>
-  <artifactId>xgalaga</artifactId>
+  <groupId>de.ailis.xgalaga-js</groupId>
+  <artifactId>xgalaga-js</artifactId>
   <packaging>javascript</packaging>
-  <name>xgalaga</name>
+  <name>XGalaga JS</name>
   <version>1.0.0-SNAPSHOT</version>
   <url>https://github.com/kayahr/${project.artifactId}/</url>
-  <description>JavaScript implementation of xgalaga</description>
+  <description>JavaScript implementation of XGalaga</description>
   <inceptionYear>2010</inceptionYear>
   <organization>
     <name>Klaus Reimer</name>
@@ -104,6 +104,7 @@
         <extensions>true</extensions>
         <configuration>
           <incremental>true</incremental>
+          <bundleFilename>xgalaga.js</bundleFilename>
         </configuration>
       </plugin>
     </plugins>
