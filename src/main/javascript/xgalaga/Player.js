@@ -306,7 +306,7 @@ xgalaga.Player.prototype.update = function()
                 this.ships--;
                 this.game.getHud().setShips(this.ships);
                 this.maxTorps = xgalaga.MIN_TORPS;
-                this.weapon = 0;
+                this.weapon = xgalaga.WEAPON_SINGLESHOT;
                 this.moveSpeed = xgalaga.MIN_SPEED;
                 this.alive = true;
                 this.flashing = 50;
