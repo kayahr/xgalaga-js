@@ -112,6 +112,13 @@ xgalaga.Game.prototype.player;
 xgalaga.Game.prototype.explosions;
 
 /**
+ * The prizes.
+ * @private
+ * @type {!xgalaga.Prizes} 
+ */
+xgalaga.Game.prototype.prizes;
+
+/**
  * The current level number.
  * @private
  * @type {number} 
@@ -229,7 +236,8 @@ xgalaga.Game.prototype.init = function()
     this.aliens = new xgalaga.Aliens(this);
     this.player = new xgalaga.Player(this);
     this.explosions = new xgalaga.Explosions(this);
-
+    this.prizes = new xgalaga.Prizes(this);
+    
     // Start game with intro
     this.startIntro();
 
@@ -411,6 +419,7 @@ xgalaga.Game.prototype.run = function()
     {
         this.player.update();
         this.explosions.update();
+        this.prizes.update();
     }
     
     ctx = this.ctx;
@@ -426,6 +435,7 @@ xgalaga.Game.prototype.run = function()
     {
         this.player.render(ctx);
         this.explosions.render(ctx);
+        this.prizes.render(ctx);
 
         if (!this.aliens.getLiveCount())
         {
@@ -514,7 +524,6 @@ xgalaga.Game.prototype.getPlayer = function()
     return this.player;
 };
 
-
 /**
  * Returns the explosions.
  *
@@ -526,6 +535,16 @@ xgalaga.Game.prototype.getExplosions = function()
     return this.explosions;
 };
 
+/**
+ * Returns the prizes.
+ *
+ * @return {!xgalaga.Prizes} 
+ *            The prizes.
+ */
+xgalaga.Game.prototype.getPrizes = function()
+{
+    return this.prizes;
+};
 
 /**
  * Returns the star field.

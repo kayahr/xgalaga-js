@@ -172,6 +172,13 @@ xgalaga.Player.prototype.flashing = 0;
 xgalaga.Player.prototype.firing = false;
 
 /**
+ * If player got a lemon.
+ * @private
+ * @type {boolean}
+ */
+xgalaga.Player.prototype.gotLemon = false;
+
+/**
  * Resets the Player.
  */
 xgalaga.Player.prototype.reset = function()
@@ -194,6 +201,14 @@ xgalaga.Player.prototype.reset = function()
 };
 
 /**
+ * Increases the move speed.
+ */
+xgalaga.Player.prototype.incSpeed = function()
+{
+    this.moveSpeed += 1;
+};
+
+/**
  * Returns the current X position of the player.
  * 
  * @return {number} The current X position
@@ -209,7 +224,7 @@ xgalaga.Player.prototype.getX = function()
 xgalaga.Player.prototype.nextLevel = function()
 {
     this.numTorps = 0;
-    // TODO this.gotLemon = false;
+    this.gotLemon = false;
 };
 
 /**
@@ -248,11 +263,12 @@ xgalaga.Player.prototype.newTorp = function(x, y, xs, ys)
 xgalaga.Player.prototype.update = function()
 {
     var moveSpeed, winWidth, winHeight, game, i, torp, alien, aliens, j, k, ne,
-        explosions;
+        explosions, prizes;
 
     moveSpeed = this.moveSpeed;
     game = this.game;
     explosions = game.getExplosions();
+    prizes = game.getPrizes();
     winWidth = game.getWidth();
     winHeight = game.getHeight();
 
@@ -328,11 +344,11 @@ xgalaga.Player.prototype.update = function()
                         else
                         {
                             this.addScore((6 - parseInt(j / 10, 10)) * 100);
-                            /* TODO
-                            if (!Math.parseInt(Math.random() * (this.gotLemon ? 3 : xgalaga.PRIZE_CHANCE)))
-
-                                new_prize(aliens[j].x, aliens[j].y);
-                            */
+                            if (!parseInt(Math.random() * (this.gotLemon ? 3 : 
+                                xgalaga.PRIZECHANCE), 10))
+                            {
+                                prizes.newPrize(alien.getX(), alien.getY());
+                            }
                         }
                         explosions.newExplosion(alien.getX(), alien.getY(), 0);
                     }
@@ -490,6 +506,39 @@ xgalaga.Player.prototype.stopFire = function()
     this.firing = false;
 };
 
+/**
+ * Sets the weapon.
+ * 
+ * @param {number} weapon
+ *           The weapon to set.
+ */
+xgalaga.Player.prototype.setWeapon = function(weapon)
+{
+    this.weapon = weapon;
+    if (weapon == xgalaga.WEAPON_DOUBLESHOT && this.maxTorps < 4)
+        this.maxTorps = 4;
+    else if (weapon == xgalaga.WEAPON_TRIPLESHOT && this.maxTorps < 6)
+        this.maxTorps = 6;
+};
+
+/**
+ * Returns the current weapon.
+ * 
+ * @return {number}
+ *             The current weapon.
+ */
+xgalaga.Player.prototype.getWeapon = function()
+{
+    return this.weapon;
+};
+
+/**
+ * Adds another torpedo.
+ */
+xgalaga.Player.prototype.addTorp = function()
+{
+    this.maxTorps = Math.min(xgalaga.MAX_TORPS, this.maxTorps + 1);
+};
 
 /**
  * Fires a torpedo if possible.
@@ -517,8 +566,8 @@ xgalaga.Player.prototype.fire = function()
                 {
                     this.newTorp(this.x - 5, winHeight - 20, 0, -xgalaga.TORP_SPEED);
                     this.newTorp(this.x + 5, winHeight - 20, 0, -xgalaga.TORP_SPEED);
+                    this.torpOk = xgalaga.TORP_DELAY;
                 }
-                this.torpOk = xgalaga.TORP_DELAY;
                 break;
 
             case xgalaga.WEAPON_TRIPLESHOT:
@@ -527,8 +576,8 @@ xgalaga.Player.prototype.fire = function()
                     this.newTorp(this.x - 5, winHeight - 20, -2, 1 - xgalaga.TORP_SPEED);
                     this.newTorp(this.x, winHeight - 20, 0, -xgalaga.TORP_SPEED);
                     this.newTorp(this.x + 5, winHeight - 20, 2, 1 - xgalaga.TORP_SPEED);
+                    this.torpOk = xgalaga.TORP_DELAY;
                 }
-                this.torpOk = xgalaga.TORP_DELAY;
                 break;
         }
     }
@@ -593,19 +642,6 @@ xgalaga.Player.prototype.destroy = function()
     this.stopMoveRight();
     this.stopFire();
 };
-
-
-/**
- * Returns the currently installed weapon.
- *
- * @return {number} The currently installed weapon
- */
-
-xgalaga.Player.prototype.getWeapon = function()
-{
-    return this.weapon;
-};
-
 
 /**
  * Adds points to the score.

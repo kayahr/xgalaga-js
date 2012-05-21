@@ -945,6 +945,99 @@ xgalaga.WEAPON_DOUBLESHOT = 1;
 xgalaga.WEAPON_TRIPLESHOT = 2;
 
 /**
+ * Constant for the chance of getting a prize.
+ * @final
+ * @type {number}
+ */
+xgalaga.PRIZECHANCE = 25;
+
+/**
+ * Constant for the number of available prizes.
+ * @final
+ * @type {number}
+ */
+xgalaga.NUMPRIZES = 4;
+
+/** 
+ * The prize image URLs.
+ * @final
+ * @type {!Array.<string>}
+ */
+xgalaga.PRIZE_IMG = [
+    "images/pr_sing.png",
+    "images/pr_doub.png",
+    "images/pr_trip.png",
+    "images/pr_speed.png",
+    "images/pr_shield.png",
+    "images/pr_brain.png",
+    "images/pr_lemon.png",
+    "images/pr_extrabullet.png"
+];
+
+/** 
+ * The speed of the prizes. 
+ * @private
+ * @type {number} 
+ */
+xgalaga.PRIZESPEED = 3;
+
+/**
+ * Single weapon prize.
+ * @final
+ * @type {number}
+ */
+xgalaga.PR_SING = 0;
+
+/**
+ * Double weapon prize.
+ * @final
+ * @type {number}
+ */
+xgalaga.PR_DOUB = 1;
+
+/**
+ * Triple weapon prize.
+ * @final
+ * @type {number}
+ */
+xgalaga.PR_TRIP = 2;
+
+/**
+ * Speed prize.
+ * @final
+ * @type {number}
+ */
+xgalaga.PR_SPEED = 3;
+
+/**
+ * Shield prize.
+ * @final
+ * @type {number}
+ */
+xgalaga.PR_SHIELD = 4;
+
+/**
+ * Smart bomb prize.
+ * @final
+ * @type {number}
+ */
+xgalaga.PR_SMART = 5;
+
+/**
+ * Lemon prize.
+ * @final
+ * @type {number}
+ */
+xgalaga.PR_LEMON = 6;
+
+/**
+ * Extra bullet prize.
+ * @final
+ * @type {number}
+ */
+xgalaga.PR_EXTRABULLET = 7;
+
+/**
  * The prompt function. 
  * 
  * @param {string} title
